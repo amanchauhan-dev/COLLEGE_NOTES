@@ -383,3 +383,149 @@ Types of Layout Classes
 => Layout resource files are cleanly included in the /res/layout/ directory and are actively compiled into the application package strictly at build time.
 
 => Standard Layout files might deeply include many interface controls and thoroughly define the layout for an entire screen or precisely describe controls used in other layouts.
+
+# EXAMPLE
+
+Project Structure
+
+```
+app
+├─ java/com/example/myapp
+│ ├─ MainActivity.java
+│ └─ SecondActivity.java
+│
+├─ res/layout
+│ ├─ activity_main.xml
+│ └─ activity_second.xml
+│
+└─ AndroidManifest.xml
+```
+
+1 AndroidManifest.xml
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.myapp">
+
+    <application
+        android:label="IntentExample"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+
+        <activity android:name=".SecondActivity" />
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
+```
+
+2 MainActivity.java
+
+```java
+package com.example.myapp;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
+
+public class MainActivity extends AppCompatActivity {
+
+    Button btn;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        btn = findViewById(R.id.btnNext);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+
+                intent.putExtra("username", "Aman");
+
+                startActivity(intent);
+
+            }
+        });
+    }
+}
+```
+
+3 SecondActivity.java
+
+```java
+package com.example.myapp;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.TextView;
+import android.content.Intent;
+
+public class SecondActivity extends AppCompatActivity {
+
+    TextView txt;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_second);
+
+        txt = findViewById(R.id.txtName);
+
+        Intent intent = getIntent();
+
+        String name = intent.getStringExtra("username");
+
+        txt.setText(name);
+    }
+}
+```
+
+4 activity_main.xml
+
+```xml
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btnNext"
+        android:text="Open Second Activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+```
+
+5 activity_second.xml
+
+```xml
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtName"
+        android:textSize="22sp"
+        android:text="Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+```
