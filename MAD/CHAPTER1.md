@@ -1,6 +1,6 @@
-**1 Overview of Android**
+## **1 Overview of Android**
 
-**1.1 Introduction to Android**
+### **1.1 Introduction to Android**
 
 => Definition: Android is an open-source software development platform used for creating mobile applications.
 
@@ -21,9 +21,9 @@ Types of software stack components
 
 => Android itself is only a software, but by leveraging its Linux kernel to interface with hardware, it can run on many different devices manufactured by multiple cell phone manufacturers.
 
-**1.1.1 Advantages and Disadvantages of Android**
+#### **1.1.1 Advantages and Disadvantages of Android**
 
-Advantages
+#### Advantages
 
 1. Supports 2D, 3D graphics: It easily supports various multimedia platforms like 2D and 3D.
 2. Supports multiple languages: Android natively supports different languages.
@@ -38,17 +38,17 @@ Advantages
 11. Low chance of crashing: The Android OS is very smooth and easy to operate with significantly fewer chances of crashing down.
 12. Stability: Stability and security are better than other mobile operating systems because it is built upon the robust Linux Kernel.
 
-Disadvantages
+#### Disadvantages
 
 1. Slow response: Compared to Apple's iOS or Microsoft's Windows, the response of Android is observed to be slower when opening the same apps across different platforms.
 2. Heat: Android makes highly efficient use of processes, which forces the processor to generate heat, especially during long operations and at low battery levels.
 3. Advertisement: Users often encounter multiple ads during application use because anyone can insert ad logic into the app program, potentially interfering with the phone's information.
 
-**1.2 Android APIs**
+#### **1.2 Android APIs**
 
 => Android offers a vast number of APIs for developing applications, ensuring all Android devices support at least these core APIs.
 
-Types of core APIs
+#### Types of core APIs
 
 1. android.util: The core utility package containing low-level classes like specialized containers, string formatters, and XML parsing utilities.
 2. android.os: The operating system package providing access to basic OS services like message passing, interprocess communication, clock functions, and debugging.
@@ -64,11 +64,11 @@ Types of core APIs
 12. android.telephony: Telephony APIs that grant the ability to directly interact with the device's phone stack for making calls, receiving calls, and monitoring SMS messages.
 13. android.webkit: The WebKit package featuring APIs for working with web-based content, including a WebView control for embedding browsers.
 
-**1.3 Android Architecture**
+### **1.3 Android Architecture**
 
 => The Android stack consists of different software layers.
 
-Types of layers in the Android stack
+#### Types of layers in the Android stack
 
 1. Linux kernel layer.
 2. Native layer.
@@ -130,7 +130,7 @@ Types of standard applications installed with every device
 3. Web browser.
 4. Contact manager.
 
-**1.4 Android Application Framework**
+### **1.4 Android Application Framework**
 
 => Definition: The application framework provides the specific classes used to create Android applications.
 
@@ -156,7 +156,7 @@ Types of key application lifecycle components
 
 => Built-in applications such as the Contact manager act as content providers, allowing third-party apps unlimited access to contact data.
 
-**1.5 Android Application Components**
+### **1.5 Android Application Components**
 
 => Application components are the essential building blocks of an Android application.
 
@@ -169,7 +169,7 @@ Types of main components in an application
 3. Broadcast Receivers: They strictly handle communication between the Android OS and applications.
 4. Content Providers: They handle complex data and database management issues.
 
-**1.5.1 Manifest File**
+#### **1.5.1 Manifest File**
 
 => Every application must possess an AndroidManifest.xml file precisely named in its root directory.
 
@@ -191,7 +191,7 @@ Types of main components in an application
 
 => It meticulously lists the libraries that the application must be linked against.
 
-**1.5.2 Downloading and Installing Android**
+#### **1.5.2 Downloading and Installing Android**
 
 => To write Android applications, a developer must configure the programming environment for Java development.
 
@@ -208,7 +208,7 @@ Steps for required software installation
 
 => The Android SDK fundamentally comes with five major components: SDK License Agreement, Android Documentation, Application Framework, Tools, and Sample Applications.
 
-**1.6 Exploring the Development Environment**
+### **1.6 Exploring the Development Environment**
 
 => Developers have multiple choices when selecting integrated development environments (IDEs).
 
@@ -224,9 +224,9 @@ Types of supported operating systems for development
 
 => Developers are absolutely not constrained to using Eclipse and can choose other IDEs.
 
-**1.7 Android Developing Tools**
+### **1.7 Android Developing Tools**
 
-**Android SDK**
+#### **Android SDK**
 
 => The Android Software Development Kit contains the necessary tools to create, compile, and package Android applications.
 
@@ -236,13 +236,13 @@ Types of supported operating systems for development
 
 => The SDK can be freely and easily downloaded directly from the Android website.
 
-**Android Debug Bridge (ADB)**
+#### **Android Debug Bridge (ADB)**
 
 => The SDK contains the Android Debug Bridge, which securely connects a virtual or real Android device to the environment.
 
 => This tool is utilized for the primary purpose of managing the device or debugging the active application.
 
-**Android Developer Tools and Android Studio**
+#### **Android Developer Tools and Android Studio**
 
 => Google provides two primary Integrated Development Environments to develop new applications.
 
@@ -254,7 +254,7 @@ Types of supported operating systems for development
 
 => They also allow the developer to independently create and start virtual Android devices for vital testing.
 
-**Dalvik Virtual Machine (DVM)**
+#### **Dalvik Virtual Machine (DVM)**
 
 => Android traditionally uses the Dalvik virtual machine with just-in-time compilation to run Dalvik byte code.
 
@@ -268,7 +268,7 @@ Types of supported operating systems for development
 
 => While older Android versions use DVM, the latest versions introduced a new runtime architecture.
 
-**Android RunTime (ART)**
+#### **Android RunTime (ART)**
 
 => With Android 4.4, Google first introduced the Android RunTime (ART) as an optional architecture.
 
@@ -286,7 +286,7 @@ Types of supported operating systems for development
 
 => The garbage collection in ART has been aggressively optimized to noticeably reduce application freeze times.
 
-**1.8 Developing Android Application**
+### **1.8 Developing Android Application**
 
 => Android applications are primarily written end-to-end in the Java programming language.
 
@@ -296,7 +296,7 @@ Types of supported operating systems for development
 
 => When developers logically trigger the deployment in their IDE, the whole application is safely compiled, packaged, deployed, and started.
 
-**1.8.1 Conversion Process from Source Code to Android Application**
+#### **1.8.1 Conversion Process from Source Code to Android Application**
 
 Processes with sequential order
 
@@ -306,7 +306,7 @@ Processes with sequential order
 4. The .dex file and physical project resources (images, XML) are packed tightly into an .apk (Android package) file via the 'aapt' tool.
 5. The final resulting .apk file contains all necessary data and is seamlessly deployed to a device via the 'adb' tool.
 
-**1.8.2 Android SDK Features**
+#### **1.8.2 Android SDK Features**
 
 => Important feature: There are no licensing, distributions, development fees, or release approval processes involved.
 
@@ -332,7 +332,7 @@ Processes with sequential order
 
 => Important feature: The Android emulator accurately shows how the built app will visibly look and strictly behave on a real Android hardware device.
 
-**1.9 Developing Android Application On Eclipse Platform**
+### **1.9 Developing Android Application On Eclipse Platform**
 
 => Eclipse operates as an Integrated Development Environment (IDE), providing all the essential tools heavily needed for editing, running, and debugging Java programs.
 
