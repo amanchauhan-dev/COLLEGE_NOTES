@@ -13,6 +13,8 @@ Types of software stack components
 3. Key mobile applications: Built-in applications such as Email, SMS, PIM, web browser, etc.
 4. API libraries for writing mobile applications: Includes various open-source libraries like SQLite, WebKit, and OpenGL ES.
 
+![description](./images/unit-1.1.png)
+
 => The components of the underlying OS are written in C or C++, whereas both user applications and built-in applications are written in Java.
 
 => An important feature of the Android platform is that there is absolutely no difference between the built-in applications and the applications created with the Software Development Kit (SDK).
@@ -72,6 +74,8 @@ Types of layers in the Android stack
 2. Native layer.
 3. Application framework layer.
 4. Applications layer.
+
+![description](./images/unit-1.2.png)
 
 **1. The Linux kernel layer**
 

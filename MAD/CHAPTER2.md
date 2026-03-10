@@ -8,6 +8,8 @@
 
 => To securely navigate transitions between stages of the activity lifecycle, the Activity class provides a core set of six distinct callbacks.
 
+![description](./images/unit-2.1.png)
+
 Processes with sequential order
 
 1. onCreate(): This callback must be implemented and fires when the system first creates your activity to initialize essential components, such as creating views and binding data.
@@ -78,6 +80,8 @@ Steps
 => There can be multiple fragments active inside one activity, allowing fragments to smartly represent multiple screens within a single Activity container.
 
 => The Android fragment lifecycle is deeply affected by the activity lifecycle because fragments are tightly embedded inside the host activity.
+
+![description](./images/unit-2.2.png)
 
 Processes with sequential order
 
