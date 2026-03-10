@@ -14,6 +14,47 @@
 
 => This process can in turn trigger a change of the view's state entirely without user intervention.
 
+```xml
+<!-- res/layout/activity_main.xml -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="Hello Android UI"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:text="Click Me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+```
+
+Example 2 — Creating UI dynamically in Java
+
+```java
+LinearLayout layout = new LinearLayout(this);
+layout.setOrientation(LinearLayout.VERTICAL);
+
+TextView text = new TextView(this);
+text.setText("Dynamic UI Example");
+
+Button button = new Button(this);
+button.setText("Click");
+
+layout.addView(text);
+layout.addView(button);
+
+setContentView(layout);
+```
+
 **3.2 Layouts in Android**
 
 => Definition: Layouts are invisible structured containers used for holding other Views and nested layouts.
@@ -24,6 +65,17 @@
 
 => Once your layout has been created, you can securely load the layout resource from your application code within your Activity.onCreate() callback implementation.
 
+Loading Layout in Activity
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    setContentView(R.layout.activity_main);
+}
+```
+
 **Android Layout types**
 
 => There are a number of Layouts provided by Android which you will use in almost all Android applications to provide different views, looks, and feels.
@@ -31,12 +83,81 @@
 Types
 
 1. Linear Layout: A view group that aligns all children in a single direction, either vertically or horizontally.
+
+```xml
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- code -->
+</LinearLayout>
+```
+
 2. Relative Layout: A view group that displays child views in relative positions.
+
+```xml
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- code -->
+</RelativeLayout>
+```
+
 3. Table Layout: A view that groups views into specific rows and columns.
+
+```xml
+<TableLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TableRow>
+        <TextView android:text="Name"/>
+        <EditText android:hint="Enter Name"/>
+    </TableRow>
+</TableLayout>
+```
+
 4. Absolute Layout: A layout that enables you to specify the exact location of its children.
 5. Frame Layout: A placeholder on the screen that you can use to display a single view.
+
+```xml
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+</FrameLayout>
+```
+
 6. List View: A view group that accurately displays a list of scrollable items.
+
+```xml
+<ListView
+    android:id="@+id/listView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+```
+
+```java
+String[] cities = {"Delhi","Mumbai","Ahmedabad"};
+
+ArrayAdapter<String> adapter =
+        new ArrayAdapter<>(this,
+        android.R.layout.simple_list_item_1,
+        cities);
+
+ListView listView = findViewById(R.id.listView);
+listView.setAdapter(adapter);
+```
+
 7. Grid View: A view group that displays items in a two-dimensional, scrollable grid.
+
+```xml
+<GridView
+    android:id="@+id/grid"
+    android:numColumns="2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+```
 
 **3.3 Android User Interface**
 
@@ -92,6 +213,23 @@ Types of areas in the Android UI interface
 
 => Grouping RadioButton controls together in a dedicated container called a RadioGroup actively enables the developer to strictly enforce that only one RadioButton is selected at a time.
 
+```xml
+<RadioGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <RadioButton
+        android:text="Male"/>
+    <RadioButton
+        android:text="Female"/>
+</RadioGroup>
+
+<ToggleButton
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textOn="ON"
+    android:textOff="OFF"/>
+```
+
 **3.3.3 Creating Radio Button**
 
 => To create each radio button option, you must securely create a RadioButton in your layout.
@@ -108,9 +246,59 @@ Types of areas in the Android UI interface
 
 => Developers can accurately specify the string array of options inside an XML file stored in res/values/planets_array.xml.
 
+```xml
+<Spinner
+    android:id="@+id/spinner"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+```
+
+```java
+String[] planets = {"Mercury","Venus","Earth","Mars"};
+
+Spinner spinner = findViewById(R.id.spinner);
+
+ArrayAdapter<String> adapter =
+        new ArrayAdapter<>(this,
+        android.R.layout.simple_spinner_item,
+        planets);
+
+adapter.setDropDownViewResource(
+        android.R.layout.simple_spinner_dropdown_item);
+
+spinner.setAdapter(adapter);
+```
+
 **3.4 Event Handling**
 
 => Core concept: Input Events are utilized to precisely capture events, such as button clicks and edittext touches, from the View objects defined in the user interface when the user interacts with them.
+
+```java
+Button btn = findViewById(R.id.button);
+
+btn.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+
+        Toast.makeText(MainActivity.this,
+        "Button Clicked",
+        Toast.LENGTH_SHORT).show();
+
+    }
+});
+```
+
+```xml
+<Button
+    android:text="Click"
+    android:onClick="showMessage"/>
+```
+
+```java
+public void showMessage(View view) {
+    Toast.makeText(this,"Clicked",Toast.LENGTH_SHORT).show();
+}
+```
 
 => To securely handle input events in android, the active views must have an event listener in place.
 
