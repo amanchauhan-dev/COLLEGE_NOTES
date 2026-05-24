@@ -2,7 +2,7 @@
 
 ## **2.1 Activity Lifecycle**
 
-=> Definition: An application comprises one or more activities, and the user's experience of an activity is governed by a set of states known as the lifecycle.
+=> **Definition**: `An application comprises one or more activities, and the user's experience of an activity is governed by a set of states known as the lifecycle.`
 
 => The lifecycle efficiently manages system resources and user progress, preventing the app from crashing during interruptions like phone calls or screen rotations between landscape and portrait orientations.
 
@@ -31,7 +31,7 @@ Processes with sequential order
 
 ## **2.2 Fragments in Android**
 
-=> Core concept: The Fragment class in Android is utilized to build dynamic User Interfaces and should be strictly used within an Activity.
+=> **Core concept**: `The Fragment class in Android is utilized to build dynamic User Interfaces and should be strictly used within an Activity.`
 
 => A fragment functionally represents a behavior or a distinct portion of the user interface within a FragmentActivity.
 
@@ -57,7 +57,7 @@ Processes with sequential order
 
 ### **2.2.2 Purpose of Fragments**
 
-=> Definition: The main purpose of a Fragment is to reliably support a more dynamic UI on varying screen sizes like tablets and smartphones, making the reuse of UI components significantly easier.
+=> **Definition**: `The main purpose of a Fragment is to reliably support a more dynamic UI on varying screen sizes like tablets and smartphones, making the reuse of UI components significantly easier.`
 
 => To logically create a Fragment, developers have to subclass the Fragment class and heavily provide a public no-argument constructor to reinstantiate the Fragment class when a state restore is needed.
 
@@ -106,7 +106,7 @@ Processes with sequential order
 
 => To safely allow the user to navigate backward through fragment transactions, you must explicitly call `addToBackStack()` before committing the `FragmentTransaction`.
 
-=> Important explanation point: When you dynamically remove or replace a fragment and thoughtfully add the transaction to the back stack, the removed fragment is merely stopped rather than completely destroyed.
+=> **Important explanation point**: `When you dynamically remove or replace a fragment and thoughtfully add the transaction to the back stack, the removed fragment is merely stopped rather than completely destroyed.`
 
 => If the transaction is intelligently added to the back stack, navigating back will successfully restore and restart the fragment.
 
@@ -136,7 +136,7 @@ Processes with sequential order
 
 ## **2.6 Intent to Start Another Activity**
 
-=> Core concept: An Intent acts as an object that fundamentally provides a runtime binding between completely separate components, most commonly between two different activities.
+=> **Core concept**: `An Intent acts as an object that fundamentally provides a runtime binding between completely separate components, most commonly between two different activities.`
 
 => The Intent programmatically represents an application's strict intent to actively perform a task, with one of the most common tasks being the initiation of another activity.
 
@@ -161,7 +161,7 @@ Processes with sequential order
 
 => _Example_: If an app wants to quickly trigger a phone call using an implicit intent, it logically only has to specify the corresponding standardized action named `ACTION_DIAL`.
 
-=> Example: An explicit intent is initialized by clearly defining the targeted context and the explicit class name parameter, such as `new Intent(myContext, AnotherActivity.class)`.
+=> **Example**: `An explicit intent is initialized by clearly defining the targeted context and the explicit class name parameter, such as `new Intent(myContext, AnotherActivity.class)`.`
 
 ## **2.8 Android Virtual Device (AVD)**
 
