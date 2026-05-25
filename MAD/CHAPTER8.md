@@ -2,210 +2,377 @@
 
 ## **8.1 Signing the Android Application**
 
-=> **Core concept**: `The Android platform requires every application file to be digitally signed in order to run on a device or emulator.`
+=> **Definition**: `Signing is the process of digitally attaching a certificate to an Android application package.`
 
-=> **Important explanation point**: `Without a signature, an application simply won't run.`
+=> Every Android application must be signed before it can be installed on a device or emulator.
 
-=> The signing requirement is entirely transparent to most developers until it is time to publish an application for others to use.
+### Why signing is required
 
-=> When you are publishing an application for distribution, the application needs to be signed with a nondebug signature.
+1. Identifies the author of the application.
+2. Ensures application integrity.
+3. Allows Android to verify app updates.
+4. Helps protect apps from unauthorized modification.
+5. Required for Play Store publishing.
 
-=> Fortunately, the applications can be self-signed, meaning a certificate authority isn't required.
+### Types of signing
 
-=> This keeps the complexity and cost down considerably compared to the signing process required for other mobile platforms.
+1. **Debug signing**
 
-=> The Export Android Application wizard simplifies the process of creating and signing a release build of your application package.
+=> Used during development and testing.
 
-Steps
+=> Android Studio automatically signs debug builds using a debug key.
 
-1. Open the application in Android Studio.
+2. **Release signing**
 
-2. Generate a signed .apk file from Android Studio.
+=> Used when publishing app to users.
 
-3. Fill the details and press Next.
+=> Developer signs the app using a private keystore.
 
-4. Choose the Variant and version according to choice and requirement, and then press Finish.
+### Steps to generate signed APK/AAB in Android Studio
 
-=> Having selected a signing certificate, the next step is to select an output destination for your package.
+1. Open project in Android Studio.
+2. Click **Build -> Generate Signed Bundle / APK**.
+3. Select **Android App Bundle** or **APK**.
+4. Create a new keystore or select existing keystore.
+5. Enter key alias, password and certificate details.
+6. Select release build variant.
+7. Click **Finish**.
 
-=> The wizard will then compile, sign, and zip-align the package.
+=> Android Studio creates a signed release build that can be uploaded or distributed.
 
-## **8.2 Publishing Android App**
+## **8.2 APK and AAB**
 
-=> **Definition**: `Publishing an application involves digitally signing it and uploading it to the appropriate platforms.`
+### APK
 
-=> There are various possibilities in which the application can be released, such as on Google Play, Websites or directly to the Users.
+=> **APK** stands for **Android Package Kit**.
 
-=> Google Play uses application package names as unique identifiers and will not allow you to upload a duplicate package name.
+=> It is the package file used to install Android applications directly on devices.
 
-=> To release an app on Google Play, you need to follow specific simple steps.
+### AAB
 
-Steps
+=> **AAB** stands for **Android App Bundle**.
 
-1. Add some promotional material like screen shots, videos and interesting features of the app.
+=> It is a publishing format used by Google Play to generate optimized APKs for different devices.
 
-2. Configure options with information such as language, country, type, category, etc.
+### Difference
 
-=> Publish the release version: Once the application is ready to be released, we can click on the Publish button on the console.
+| APK | AAB |
+|---|---|
+| Installed directly on device. | Uploaded to Play Store. |
+| Contains all resources for all devices. | Play Store generates optimized APKs. |
+| Useful for manual distribution. | Preferred for Play Store publishing. |
 
-=> In a few minutes, the application would be available throughout the world to download.
+## **8.3 Versioning in Android Application**
 
-### **8.2.1 Process of Publishing an Android Application**
+=> Versioning identifies different releases of an Android application.
 
-=> The steps of the publishing process are summarized systematically.
+### Important fields
 
-Processes with sequential order
+1. **versionCode**
 
-1. Select an appropriate AppStore.
+=> Internal integer used by Android and Play Store to compare versions.
 
-2. Read and understand the policies and agreements of the selected AppStore.
+=> It must be increased for every new release.
 
-3. Quality test.
+2. **versionName**
 
-4. Determine the content rating for the Android application.
+=> User-visible version string such as `1.0`, `1.1`, `2.0`.
 
-5. Determine the country or countries to distribute.
+### Example
 
-6. Confirm the overall size, platform and the screen compatibility ranges.
+```gradle
+android {
+    defaultConfig {
+        versionCode 3
+        versionName "1.2"
+    }
+}
+```
 
-7. Decide the revenue model.
+### Uses
 
-8. Decide how to bill or collect the revenue (e.g., In-App or using Google Pay).
+1. Supports app updates.
+2. Helps track releases.
+3. Required when uploading a new version to Play Store.
+4. Allows users to identify installed app version.
 
-9. Set the price or prices.
+## **8.4 Publishing Android App**
 
-10. Localization.
+=> **Definition**: `Publishing is the process of preparing, signing and making an Android application available to users.`
 
-11. Prepare promotional graphics, videos and screencasts.
+=> Android apps can be published through Google Play Store, company website, third-party app stores or direct APK sharing.
 
-12. Build and upload the release version.
+### Steps to publish Android app on Play Store
 
-13. Plan for Beta release.
+1. **Complete development**
 
-14. Complete AppStore listing.
+=> Finish coding, UI design and required features.
 
-15. Support users after launch.
+2. **Test application**
 
-## **8.3 Distribution of Android App**
+=> Test on emulator and real devices with different screen sizes and Android versions.
 
-=> Android applications are distributed as Android package files (.APK).
+3. **Set app details**
 
-=> Google Play is a robust platform that supports us to release, sell and distribute applications throughout the world.
+=> Set app icon, app name, package name, versionCode and versionName.
 
-=> Another way to get great distribution is to partner with device manufacturers and mobile operators, who often select applications to pre-load onto devices prior to purchase.
+4. **Prepare release build**
 
-=> Look for special developer programs that can help you foster partnerships and other distribution relationships with manufacturers, carriers, and the like.
+=> Remove debug logs, test code and unused files.
 
-=> Various third-party sites also offer distribution channels.
+5. **Generate signed APK/AAB**
 
-=> These sites have different agreement types and different payment models, so you should research them carefully before using them.
+=> Use Android Studio to generate a signed release build.
 
-## **8.4 App Characteristics**
+6. **Create Play Console account**
 
-### **8.4.1 Performance of App**
+=> Register as Google Play developer.
 
-=> The performance of an app plays an important role in getting a 5-star rating in all marketplaces like playstore, app store or windows store.
+7. **Create app listing**
 
-=> If an application takes more than 10 seconds to load then it will not be used by users.
+=> Add app title, short description, full description, screenshots, app icon and feature graphic.
 
-=> If an application takes too long a time to process data then it will not be used by users.
+8. **Set category and tags**
 
-=> If an application takes too long a time to switch between screens then it will not be used by users.
+=> Choose app category such as Education, Tools, Games, Business, etc.
 
-=> The performance of an app is an important factor which decides the success of the app.
+9. **Complete content rating**
 
-=> Understand your target device: Most developers classify devices based on operating system, but forget about the configuration of devices.
+=> Fill content rating questionnaire.
 
-=> Always classify devices based on a specification sheet and try developing apps based on low specification mobiles which will automatically run in all mobiles.
+10. **Add privacy policy and data safety**
 
-=> Understand your tools: Try to understand the tools that are used to develop the mobile app, as this helps to make important architectural designs.
+=> Explain what user data the app collects and how it is used.
 
-=> **Example**: `Understanding about phone gap helps to develop an app for multiple platforms.`
+11. **Set pricing and distribution**
 
-=> Understand core concepts of the language used to build the app: Understanding the core programming language used to develop an app will help to avoid performance issues.
+=> Select free/paid app and target countries.
 
-=> **Example**: `An extra string comparison in jscript will surely reduce the performance.`
+12. **Upload release build**
 
-=> Understand the library: Try to understand the library used in tools.
+=> Upload signed APK/AAB to Play Console.
 
-=> If you simply call third-party methods for simple operations then it will increase battery usage and reduce the performance, so always use standard codes for simple tasks.
+13. **Submit for review**
 
-### **8.4.2 Modifiability of App**
+=> Google reviews the app. After approval, it becomes available to users.
 
-=> Modifiability helps to release multiple versions of an app more easily.
+## **8.5 Deploying APK Files**
 
-=> Modifiability is achieved by developing as multiple units instead of a single unit.
+=> Deploying APK means installing or distributing an Android package file on a device.
 
-=> If any bugs arise after launch then it is easy to modify the unit instead of changing everything in the code.
+### Ways to deploy APK
 
-=> Modifiability is minimizing the technical risks and cost impact of changes in software.
+1. Install through Android Studio.
+2. Install using ADB.
+3. Share APK file directly.
+4. Upload APK to website.
+5. Upload APK/AAB to Play Store.
 
-=> In order to achieve modifiability as a system quality, software architects need to envision and incorporate modifiability support in the system's design cycle.
+### ADB command
 
-=> The architectural design supports the modifiability requirements of a system.
+```text
+adb install app-release.apk
+```
 
-=> The modifiability quality of a system can be expressed in terms of cohesion and coupling.
+### Important points
 
-=> Coupling measures the mutual association strength between the system's software components.
+1. APK must be signed before installation.
+2. Device may require "Install unknown apps" permission for manual APK install.
+3. Release APK should be tested before distribution.
+4. Play Store distribution requires app listing and policy compliance.
 
-=> Cohesion is a measure for the number of internal relationships between the responsibilities of a software component.
+## **8.6 Distribution of Android App**
 
-### **8.4.3 Availability of App**
+=> Distribution means delivering the app to users.
 
-=> Availability refers to continuous working of the application in both offline and online modes.
+### Distribution methods
 
-=> Today mobile users are travelling across multiple cell sites which frequently disturb the wireless internet connectivity to mobile.
+1. **Google Play Store**
 
-=> This interruption should not affect the mobile app.
+=> Most common and trusted distribution platform.
 
-=> It is possible to achieve high availability by effectively managing offline data.
+2. **Website download**
 
-=> High availability can be provided by giving an effective synchronization mechanism.
+=> Developer can host APK on a website.
 
-### **8.4.4 Security of App**
+3. **Third-party app stores**
 
-=> Mobile apps should satisfy stringent requirements for data security and privacy.
+=> Apps may be distributed through other stores.
 
-=> This is no longer the exclusive domain of the enterprise, as organizations of every size and function are subject to mounting ethical and legal pressure to control and protect the information under their purview.
+4. **Enterprise distribution**
 
-=> Fiduciary responsibility and internal and external policies exist to govern what organizations must do in this regard, from data storage to disaster recovery, encryption to secure updating.
+=> Companies distribute private apps to employees.
 
-=> By definition, internet access and mobile devices carry inherent security risks, including but not limited to the apps that run on them.
+5. **Pre-installation**
 
-## **8.5 Short Questions and Answers**
+=> App may be preloaded by device manufacturers or mobile operators.
 
-=> **Question**: `List out at least four versions of Android.`
+### Advantages of Google Play Store
 
-=> **Answer**: `Android alpha (1.0), Cupcake (1.5), Eclair (2.0 - 2.1), Gingerbread (2.3 - 2.3.7), Android beta (1.1), Doughnut (1.6), Froyo (2.2 - 2.2.3), Honeycomb (3.0 - 3.2.6), Ice Cream Sandwich (4.0 - 4.0.4), Jelly Bean (4.1 - 4.3.1), KitKat (4.4 - 4.4 w),.`
+1. Large user base.
+2. Automatic updates.
+3. User reviews and ratings.
+4. Payment and in-app purchase support.
+5. Security scanning through Play Protect.
 
-=> **Question**: `Each application can have zero or more activities. True or False? Justify in short.`
+## **8.7 App Characteristics**
 
-=> **Answer**: `True, an Android application can contain zero or more activities.`
+=> Good Android applications should be performant, modifiable, available and secure.
 
-=> When your application has more than one activity, you may need to navigate from one activity to another.
+### **8.7.1 Performance**
 
-## **8.6 Multiple Choice Questions**
+=> Performance means how fast and smoothly the application works.
 
-=> **Question 1**: `Android applications must be signed ____.`
+### Important points
 
-=> **Answer**: `before they are installed.`
+1. App should start quickly.
+2. UI should not freeze.
+3. Heavy tasks should not run on main thread.
+4. Images should be optimized.
+5. Battery and memory usage should be controlled.
 
-=> **Question 2**: `The emulated device for android ____.`
+### Ways to improve performance
 
-=> **Answer**: `runs the same code base as the actual device, all the way down to the machine layer.`
+1. Use background threads for heavy work.
+2. Avoid memory leaks.
+3. Use efficient layouts.
+4. Cache data where needed.
+5. Test on low-end devices.
 
-=> **Question 3**: `The ____ file specifies the layout of your screen.`
+### **8.7.2 Modifiability**
 
-=> **Answer**: `layout file.`
+=> Modifiability means the app can be changed, fixed or extended easily.
 
-=> **Question 4**: `What runs in the background and doesn't have any UI components?.`
+### Important points
 
-=> **Answer**: `Services.`
+1. Divide app into modules.
+2. Keep code reusable.
+3. Use proper naming and structure.
+4. Reduce tight coupling.
+5. Keep related logic together.
 
-=> **Question 5**: `What is AAPT?.`
+=> Modifiability helps in bug fixing and releasing new versions.
 
-=> **Answer**: `Android Asset Packaging Tool.`
+### **8.7.3 Availability**
 
-=> **Question 6**: `What is contained within the manifest xml file?.`
+=> Availability means the app should remain usable when needed.
 
-=> **Answer**: `The permissions the app requires.`
+### Important points
+
+1. App should handle network failure.
+2. Offline data should be available where possible.
+3. App should recover from crashes.
+4. Synchronization should be used when network returns.
+5. Server errors should be handled gracefully.
+
+### **8.7.4 Security**
+
+=> Security means protecting user data and app functionality from unauthorized access.
+
+### Important points
+
+1. Request only required permissions.
+2. Store sensitive data securely.
+3. Use HTTPS for network communication.
+4. Validate user input.
+5. Avoid hardcoding passwords or API keys.
+6. Sign release builds properly.
+7. Keep dependencies updated.
+
+## **8.8 Why Android Apps Have Less Chance of Device Corruption**
+
+=> Android apps are less likely to corrupt the device because Android provides a controlled and secure execution environment.
+
+### Reasons
+
+1. **Application sandboxing**
+
+=> Each app runs in its own sandbox and cannot directly access other apps' private data.
+
+2. **Linux kernel security**
+
+=> Android uses Linux permissions, process isolation and user IDs.
+
+3. **Permission model**
+
+=> Apps must request permission before using protected features like camera, contacts and location.
+
+4. **Managed runtime**
+
+=> Dalvik/ART manages app execution and memory safety.
+
+5. **Application signing**
+
+=> Apps must be digitally signed before installation.
+
+6. **Play Protect**
+
+=> Play Store apps are scanned for harmful behavior.
+
+=> Because of these protections, normal apps cannot freely modify system files or damage the operating system.
+
+## **8.9 Important Manifest Entries for Publishing**
+
+### Permissions
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.CAMERA" />
+```
+
+### App version and SDK in Gradle
+
+```gradle
+android {
+    defaultConfig {
+        applicationId "com.example.myapp"
+        minSdk 23
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+    }
+}
+```
+
+### Launcher activity
+
+```xml
+<activity
+    android:name=".MainActivity"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+</activity>
+```
+
+## **8.10 Exam Short Questions**
+
+=> **Question**: `Android applications must be signed when?`
+
+=> **Answer**: Android applications must be signed before they are installed or published.
+
+=> **Question**: `What is APK?`
+
+=> **Answer**: APK is Android Package Kit, the installable package file of an Android app.
+
+=> **Question**: `What is AAB?`
+
+=> **Answer**: AAB is Android App Bundle, the preferred Play Store publishing format.
+
+=> **Question**: `What is AAPT?`
+
+=> **Answer**: AAPT stands for Android Asset Packaging Tool. It packages resources into the app build.
+
+=> **Question**: `What is contained within AndroidManifest.xml?`
+
+=> **Answer**: It contains app components, permissions, package information, launcher activity and application metadata.
+
+=> **Question**: `Each application can have zero or more activities. True or False?`
+
+=> **Answer**: True. An Android app may have zero or more activities depending on its purpose.
+
+=> **Question**: `List four Android versions.`
+
+=> **Answer**: Cupcake, Donut, Eclair, Froyo, Gingerbread, Honeycomb, Ice Cream Sandwich, Jelly Bean, KitKat, Lollipop.

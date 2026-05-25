@@ -1,231 +1,396 @@
 # **7 Audio, Video and Camera Use**
 
-## **7.1 Media Player**
+## **7.1 Android Multimedia Framework**
 
-=> Media player is a part of the Android multimedia framework that plays audio or video from the resource directory and gallery.
+=> Android provides multimedia APIs to play, record and manage audio, video and camera data.
 
-=> It also streams music or video from a URL.
+### Important multimedia classes
 
-=> By using media player class audio or video files from application (raw) resources can be accessed.
+1. `MediaPlayer`: Plays audio and video.
+2. `VideoView`: Displays video in a view.
+3. `MediaController`: Provides video controls such as play, pause and seek.
+4. `MediaRecorder`: Records audio and video.
+5. `AudioRecord`: Records raw audio from microphone.
+6. `AudioTrack`: Plays raw audio data.
+7. `SoundPool`: Plays short sound effects with low latency.
+8. `Camera` / CameraX: Used to capture images and video.
 
-=> Standalone files in file system or from a data stream arriving over a network connection can play audio or video files.
+## **7.2 MediaPlayer**
 
-=> It provides multiple playback options such as play, pause, forward, backward, etc.
+=> **Definition**: `MediaPlayer is an Android class used to play audio and video files or streams.`
 
-### **7.1.1 User Media Player**
+=> MediaPlayer can play media from:
 
-=> The media player class primarily handles the playback of audio and video within an android application.
+1. `res/raw` resources.
+2. Local file path.
+3. Content URI.
+4. Network URL.
 
-=> You can play the media stored in application resources, local files, Content Providers or streamed from a network URL using the media player.
+### Common methods
 
-=> Media player's management of audio and video are handled in the form of state machines.
+1. `create()`: Creates MediaPlayer for a resource.
+2. `setDataSource()`: Sets file, URI or URL as source.
+3. `prepare()`: Prepares player synchronously.
+4. `prepareAsync()`: Prepares player asynchronously.
+5. `start()`: Starts or resumes playback.
+6. `pause()`: Pauses playback.
+7. `stop()`: Stops playback.
+8. `seekTo()`: Moves playback to a specific position.
+9. `isPlaying()`: Checks whether media is playing.
+10. `release()`: Releases resources.
 
-=> To play a media resource, you need to create an instance of MediaPlayer class, then initialize it with media source and prepare it for playback.
+### MediaPlayer state sequence
 
-Processes with sequential order
+```text
+Idle -> Initialized -> Prepared -> Started
+                       |          |
+                       v          v
+                    Paused      Stopped
+                       |
+                       v
+                    Playback completed
+```
 
-1. Initialize the media player with media to play.
+### Example: Play audio from res/raw
 
-2. Prepare the media player for the playback.
+Place file:
 
-3. Start the playback.
+```text
+res/raw/song.mp3
+```
 
-4. Pause or stop the playback prior to its completing.
+```java
+MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.song);
 
-5. The playback is completed.
+btnPlay.setOnClickListener(v -> mediaPlayer.start());
 
-## **7.2 Recording and Playing Sound**
+btnPause.setOnClickListener(v -> {
+    if (mediaPlayer.isPlaying()) {
+        mediaPlayer.pause();
+    }
+});
 
-=> The audio track and audio record classes let you record audio directly from the audio output hardware.
+btnStop.setOnClickListener(v -> {
+    mediaPlayer.stop();
+    mediaPlayer.release();
+});
+```
 
-=> The audio record class is used to record audio directly from the hardware buffers.
+=> Always call `release()` when MediaPlayer is no longer needed.
 
-=> The audio track class is used to directly play the raw audio into the hardware buffers.
+## **7.3 Recording and Playing Sound**
 
-### **7.2.1 Media Formats**
+=> Android provides classes for both high-level and low-level audio handling.
 
-=> Depending on the codecs used, Android phones can support and play several audio file types.
+### Audio recording classes
 
-Types of Supported Audio Formats
+1. **MediaRecorder**
 
-1. AAC LC.
+=> Used to record audio in common formats with less code.
 
-2. HE-AACv1 (AAC+).
+2. **AudioRecord**
 
-3. HE-AACv2 (enhanced AAC+).
+=> Used to record raw audio from hardware buffers. It gives more control but requires more code.
 
-4. AAC ELD (enhanced low delay AAC).
+### Audio playback classes
 
-5. AMR-NB.
+1. **MediaPlayer**
 
-6. AMR-WB.
+=> Used for normal music or audio playback.
 
-7. FLAC.
+2. **AudioTrack**
 
-8. MP3.
+=> Used to play raw PCM audio data directly.
 
-9. MIDI.
+3. **SoundPool**
 
-10. Vorbis.
+=> Used for short sound effects.
 
-11. PCM/WAVE.
+### Supported audio formats
 
-=> Depending on the codec used to compress the video container format, it may still not play on your Android phone even though it generally is supported.
+1. MP3
+2. AAC
+3. AMR-NB
+4. AMR-WB
+5. FLAC
+6. MIDI
+7. OGG/Vorbis
+8. PCM/WAVE
 
-=> To watch your videos still, you can convert the video into another format or choose an Android compatible conversion right away.
+### Example: Record audio using MediaRecorder
 
-=> The codecs supported by Android phones are H.263, H.264, MPEG-4, and V8.
+```xml
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+```
 
-Types of Supported Video Container Formats
+```java
+MediaRecorder recorder = new MediaRecorder();
 
-1. 3GP.
+recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+recorder.setOutputFile(getExternalFilesDir(null) + "/record.3gp");
 
-2. MKV.
+recorder.prepare();
+recorder.start();
 
-3. MP4.
+// Stop recording later
+recorder.stop();
+recorder.release();
+```
 
-4. TS.
+## **7.4 Playing Video**
 
-5. WEBM.
+=> Android can play video using `VideoView` with `MediaController`.
 
-### **7.2.2 Playing Audio**
+=> `VideoView` displays the video, while `MediaController` provides playback controls.
 
-=> To play local audio in the supported formats, you first should put the local audio file into the res/raw folder.
+### Supported video formats
 
-=> We can use the MediaPlayer in order to playback any local files.
+1. MP4
+2. 3GP
+3. MKV
+4. WEBM
+5. TS
 
-=> On call to start() method, the music will start playing from the beginning.
+### Common codecs
 
-=> If this method is called again after the pause() method, the music would start playing from where it left off and not from the beginning.
+1. H.263
+2. H.264
+3. MPEG-4
+4. VP8/VP9
 
-=> To play back audio from a local file path, you simply initialize a Uri, set the data source, prepare, and start the playback.
+### Example: Play video from res/raw
 
-### **7.2.3 Playing Video**
+```xml
+<VideoView
+    android:id="@+id/videoView"
+    android:layout_width="match_parent"
+    android:layout_height="300dp" />
+```
 
-=> In Android, VideoView is used to display a video file.
+```java
+VideoView videoView = findViewById(R.id.videoView);
 
-=> It can load images from various sources (such as content providers or resources) taking care of computing its measurement from the video so that it can be used for any layout manager, providing display options such as scaling and tinting.
+Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video);
+videoView.setVideoURI(uri);
 
-=> MediaController is a class which is used to provide the controls for the video playback.
+MediaController controller = new MediaController(this);
+controller.setAnchorView(videoView);
+videoView.setMediaController(controller);
 
-=> If a video is simply played using the VideoView class then the user will not be given any control over the playback of the video which will run until the end of the video is reached.
+videoView.start();
+```
 
-=> This issue can be addressed by attaching an instance of the MediaController class to the VideoView instance.
+## **7.5 SoundPool**
 
-=> The MediaController will then provide a set of controls allowing the user to manage the playback (such as seeking backwards/forwards and pausing in the video timeline).
+=> **Definition**: `SoundPool is used to load and play short audio clips with low latency.`
 
-## **7.3 Creating a SoundPool**
+=> It is suitable for games and apps that need quick sound effects.
 
-=> The SoundPool helps developers to make a collection of samples, to load them into memory, not only from a resource of the application APK, but also from a folder in the file system.
+### Uses
 
-=> Creating a SoundPool preloads the audio tracks used by your application and optimizes their require management.
+1. Button click sound.
+2. Game sound effects.
+3. Notification-like short sound.
+4. Multiple sounds at the same time.
 
-=> You can create a SoundPool class to manage audio when your application requires low audio latency or will be playing multiple audio streams simultaneously (such as a game with multiple sound effects).
+### SoundPool vs MediaPlayer
 
-=> You can setup SoundPool to make a sound in specific stream type.
+| SoundPool | MediaPlayer |
+|---|---|
+| Best for short sounds. | Best for long audio/video. |
+| Low latency. | More suitable for music/video. |
+| Can play multiple sounds. | Usually handles one media stream. |
 
-=> AudioManager allows you to adjust the volume on the different audio streams.
+### Example
 
-=> Using STREAM_MUSIC the sound will be produced through one audio device (phone speaker, earphone, bluetooth speaker or something else) connected to the phone.
+```java
+SoundPool soundPool = new SoundPool.Builder()
+        .setMaxStreams(5)
+        .build();
 
-=> Using STREAM_RING the sound will be produced through all audio device connected to the phone, though this behavior might be differed for each devices.
+int soundId = soundPool.load(this, R.raw.click, 1);
 
-Types of Audio Streams Supported
+button.setOnClickListener(v -> {
+    soundPool.play(soundId, 1, 1, 1, 0, 1);
+});
+```
 
-1. AudioManager.STREAM_ALARM.
+## **7.6 AudioManager and Audio Streams**
 
-2. AudioManager.STREAM_DTMF.
+=> `AudioManager` is used to manage audio volume, stream type and audio modes.
 
-3. AudioManager.STREAM_MUSIC.
+### Common audio streams
 
-4. AudioManager.STREAM_NOTIFICATION.
+1. `AudioManager.STREAM_MUSIC`
+2. `AudioManager.STREAM_RING`
+3. `AudioManager.STREAM_ALARM`
+4. `AudioManager.STREAM_NOTIFICATION`
+5. `AudioManager.STREAM_VOICE_CALL`
+6. `AudioManager.STREAM_SYSTEM`
 
-5. AudioManager.STREAM_RING.
+### Example: Set music stream volume
 
-6. AudioManager.STREAM_SYSTEM.
+```java
+AudioManager audioManager =
+        (AudioManager) getSystemService(AUDIO_SERVICE);
 
-7. AudioManager.STREAM_VOICE_CALL.
+audioManager.setStreamVolume(
+        AudioManager.STREAM_MUSIC,
+        5,
+        AudioManager.FLAG_SHOW_UI);
+```
 
-## **7.4 Using Camera**
+## **7.7 Using Camera**
 
-=> Android provides working with camera in two ways.
+=> Android provides two common ways to use camera.
 
-Types of Camera Usage
+### 1. Camera Intent
 
-1. Camera Intent.
+=> This is the easiest method. It opens the built-in camera app and returns the captured image.
 
-2. Camera API.
+```java
+Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+startActivityForResult(intent, 100);
+```
 
-=> The easiest way to take a picture from within your application is by using an Intent and applying the constants from the MediaStore class ACTION_IMAGE_CAPTURE.
+### 2. Camera API / CameraX
 
-=> This launches a Camera application to take the photo, providing your users with the full suite of camera functionality without having to rewrite the native Camera application.
+=> Used when the app needs a custom camera screen, preview, focus control or advanced camera features.
 
-=> Once users are satisfied with the image, the result is returned to your application within the Intent received by the onActivityResult handler.
+### Required permission
 
-Steps to use Camera API
+```xml
+<uses-permission android:name="android.permission.CAMERA" />
+```
 
-1. Add the CAMERA permission to your application manifest.
+### Camera Intent example
 
-2. Use the Camera class to adjust camera settings, specify image preferences, and take pictures.
+```java
+Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-3. **Access the camera using the static open method on the Camera class**: camera = Camera.open().
+if (intent.resolveActivity(getPackageManager()) != null) {
+    startActivityForResult(intent, 100);
+}
+```
 
-4. **When you are finished with the Camera, remember to free the camera resources by calling release**: camera.release().
+### Receive thumbnail image
 
-## **7.5 Recording Video**
+```java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
 
-=> Android has two methods for recording video.
+    if (requestCode == 100 && resultCode == RESULT_OK) {
+        Bitmap photo = (Bitmap) data.getExtras().get("data");
+        imageView.setImageBitmap(photo);
+    }
+}
+```
 
-Types of Methods to Record Video
+### Camera API steps
 
-1. Intents to Record Video.
+1. Add camera permission.
+2. Open camera.
+3. Configure preview surface.
+4. Capture photo or video.
+5. Release camera resources.
 
-2. Media Recording API.
+## **7.8 Recording Video**
 
-=> The easiest way to record a video from within your application is by using an Intent and applying the constants from the MediaStore class ACTION_VIDEO_CAPTURE.
+=> Android supports video recording using Intent or MediaRecorder.
 
-=> Starting a new Activity with this Intent launches the native video recorder, allowing users to start, stop, review, and retake their video.
+### 1. Recording video using Intent
 
-=> You can use the MediaRecorder class to record video directly.
+```java
+Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+startActivityForResult(intent, 200);
+```
 
-=> To record any media in Android, your application needs the CAMERA and RECORD_AUDIO and/or RECORD_VIDEO permissions as applicable.
+### 2. Recording video using MediaRecorder
 
-=> Media Recorder manages recording as a state machine, and the order in which you manage and configure the Media Recorder is important.
+=> MediaRecorder provides more control over camera, audio source, video source, output format and output file.
 
-=> When the recoding is finished free all the resources on your Media Recorder object using mediaRecorder.release().
+### Required permissions
 
-Processes with sequential order for Media Recorder state machine
+```xml
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+```
 
-1. Create a new Media Recorder.
+### MediaRecorder sequence
 
-2. Unlock the Camera and assign it to the Media Recorder.
+1. Create `MediaRecorder`.
+2. Set audio source.
+3. Set video source.
+4. Set output format.
+5. Set audio and video encoder.
+6. Set output file.
+7. Prepare recorder.
+8. Start recording.
+9. Stop recording.
+10. Release recorder.
 
-3. Specify the input sources to record from.
+### Example
 
-4. Select a profile to use for Android 2.2 and above, or define the output format and specify the audio and video encoder, frame rate, and output size.
+```java
+MediaRecorder recorder = new MediaRecorder();
 
-5. Select an output file.
+recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+recorder.setOutputFile(getExternalFilesDir(null) + "/video.mp4");
 
-6. Assign a preview Surface.
+recorder.prepare();
+recorder.start();
 
-7. Prepare the Media Recorder for recording.
+// Stop later
+recorder.stop();
+recorder.release();
+```
 
-8. Record.
-
-9. End the recording.
-
-## **7.6 Short Questions and Answers**
-
-=> **Definition**: `A SoundPool is a collection of samples that can be loaded into memory from a resource inside the APK or from a file in the file system.`
-
-=> The SoundPool library uses the MediaPlayer service to decode the audio into a raw 16-bit PCM mono or stereo stream.
-
-=> This allows applications to ship with compressed streams without having to suffer the CPU load and latency of decompressing during playback.
-
-=> The Camera.open method will turn on and initialize the camera, getting it ready for you to modify settings, configure the preview surface, and take pictures.
-
-=> Media player class can be used to control playback of audio/video files and streams in Android devices.
+## **7.9 ANR**
 
 => **Definition**: `ANR stands for Application Not Responding.`
 
-=> It is a notification or pop-up displayed by the Android platform whenever the application is performing too many functions at a time and is suddenly not responding for a long time to the user action.
+=> Android shows ANR when an app does not respond to user input for a long time.
+
+### Common reasons
+
+1. Long task on main UI thread.
+2. Network operation on main thread.
+3. Heavy database operation on main thread.
+4. Infinite loop.
+5. BroadcastReceiver taking too long.
+
+### Prevention
+
+1. Run heavy work in background thread.
+2. Use WorkManager, Executor, Thread or Coroutine.
+3. Keep `BroadcastReceiver.onReceive()` short.
+4. Avoid blocking UI thread.
+
+## **7.10 Exam Short Questions**
+
+=> **Question**: `What is MediaPlayer?`
+
+=> **Answer**: MediaPlayer is used to play audio and video files or streams in Android.
+
+=> **Question**: `What is SoundPool?`
+
+=> **Answer**: SoundPool is used to play short sound effects with low latency.
+
+=> **Question**: `How can camera be used in Android?`
+
+=> **Answer**: Camera can be used using Camera Intent or Camera API/CameraX.
+
+=> **Question**: `Why is release() important in MediaPlayer?`
+
+=> **Answer**: It frees system resources used by the player.
+
+=> **Question**: `What is VideoView?`
+
+=> **Answer**: VideoView is a UI component used to display and play video.

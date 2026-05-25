@@ -1,190 +1,431 @@
-# **6 Graphics and Animation**
+# **6 Graphics, Animation, Alarm and Download Manager**
 
 ## **6.1 Working with Graphics**
 
-=> **Core concept**: `Graphics are created by the developer and added to the application.`
+=> **Definition**: `Graphics in Android means drawing and displaying visual elements such as shapes, images, text, icons, custom views and animations on the screen.`
 
-=> They can be created from results from various operations such as querying, identifying, geoprocessing, geocoding, or routing.
+=> Android does not use Java AWT or Swing for graphics. It provides its own graphics APIs.
 
-=> Graphics can also be created from external data sources.
+### Important packages
 
-=> **Important explanation point**: `If you want to persist the data in a map or scene, then you must use features.`
+1. `android.graphics`: Provides classes like Canvas, Paint, Bitmap, Color and Path.
+2. `android.graphics.drawable`: Provides Drawable classes for images, shapes and animation drawables.
+3. `android.view`: Provides View and custom drawing support using `onDraw()`.
+4. `android.view.animation`: Provides view animation classes.
+5. `android.animation`: Provides property animation classes.
 
-=> Graphics can also be created dynamically by the developer as a result of a map click or touch.
+### Common uses of graphics
 
-=> The Android SDK provides a huge set of APIs that allows you to create 2-D and 3-D graphics.
+1. Display static images and icons.
+2. Draw shapes like line, circle, rectangle and oval.
+3. Create custom UI components.
+4. Draw charts, games and diagrams.
+5. Animate views and objects.
+6. Apply visual effects such as rotation, scaling and translation.
 
-=> Android supports 2D graphics via its own library in the packages `android.graphics.drawable` and `android.view.animation`.
+## **6.2 Canvas and Paint**
 
-=> **Limitation**: `Take note that Android strictly does not support the JDK's AWT and Swing packages.`
+=> **Canvas** is a drawing surface used to draw 2D graphics.
 
-=> The `android.graphics.drawable` and `android.view.animation` packages are exactly where you will find the common classes used for drawing and animating in two-dimensions.
+=> **Paint** defines how drawing should appear, such as color, stroke width, text size and style.
 
-### **6.1.1 Uses of Graphics**
+### Common Canvas methods
 
-Types of common uses for graphics
+1. `drawLine()` - draws a line.
+2. `drawCircle()` - draws a circle.
+3. `drawRect()` - draws a rectangle.
+4. `drawText()` - draws text.
+5. `drawBitmap()` - draws an image.
+6. `drawPath()` - draws a custom path.
 
-1. Display text on top of a map or scene.
-2. Highlight a section of the map or scene by overlaying a polygon graphic.
-3. Display results from spatial analysis, such as buffer polygons created around features.
-4. Display a route between two locations.
-5. Display geometry drawn interactively by the app user.
-6. Animate data items that change quickly, such as moving objects.
+### Example: Custom View using Canvas
 
-## **6.2 Using Drawable Object**
+```java
+public class DrawingView extends View {
+    private Paint paint;
 
-=> Android provides a set of View widgets that provide general functionality for a wide array of user interfaces.
+    public DrawingView(Context context) {
+        super(context);
+        paint = new Paint();
+        paint.setColor(Color.BLUE);
+        paint.setStrokeWidth(6);
+        paint.setTextSize(40);
+    }
 
-=> You can also extend these widgets to modify the way they look or behave.
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
 
-=> Custom 2D rendering can be done using the various drawing methods contained in the Canvas class.
+        canvas.drawLine(50, 50, 300, 50, paint);
+        canvas.drawRect(50, 100, 300, 250, paint);
+        canvas.drawCircle(180, 400, 80, paint);
+        canvas.drawText("Android Graphics", 50, 550, paint);
+    }
+}
+```
 
-=> You can create Drawable objects for things such as textured buttons or frame-by-frame animations.
+Use in Activity:
 
-=> **Definition**: `A drawable resource is a general concept for a graphic that can be drawn to the screen.`
+```java
+setContentView(new DrawingView(this));
+```
 
-=> **Important explanation point**: `When you need to display static images in your app, you can use the Drawable class and its subclasses to draw shapes and images.`
+## **6.3 Drawable Object**
 
-=> Drawables are used to define shapes, colors, borders, and gradients, which can then be applied to views within an Activity.
+=> **Definition**: `A Drawable is a graphic resource that can be drawn to the screen.`
 
-=> Every Drawable is stored as individual files in one of the `res/drawable` folders.
+=> Drawables are commonly stored in the `res/drawable` folder.
 
-Types of ways to define and instantiate a drawable
+### Uses of Drawables
 
-1. Using an image saved in your project resources.
-2. Using an XML file that defines the Drawable properties.
-3. Using the normal class constructors.
+1. Set image in `ImageView`.
+2. Set background for Button, TextView or layout.
+3. Create custom shapes using XML.
+4. Create frame-by-frame animation.
+5. Define different UI states such as pressed, focused and selected.
 
-## **6.3 Using the Shape Drawable Object**
+### Types of Drawable
 
-=> **Core concept**: `A drawable object is a primitive shape.`
+1. **BitmapDrawable**: Displays image files such as PNG or JPG.
+2. **ShapeDrawable**: Draws simple shapes such as rectangle, oval, line or ring.
+3. **LayerDrawable**: Combines multiple drawables in layers.
+4. **StateListDrawable**: Changes drawable according to view state.
+5. **AnimationDrawable**: Shows frame-by-frame animation.
 
-=> When you want to dynamically draw some two-dimensional graphics, a Shape Drawable object will probably suit your needs.
+### Example: Use image drawable
 
-=> With a Shape Drawable, you can programmatically draw primitive shapes and style them in any way imaginable.
+```xml
+<ImageView
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:src="@drawable/logo" />
+```
 
-=> A Shape Drawable is an extension of Drawable, so you can use one wherever a Drawable is expected, perhaps for the background of a view set with `setBackgroundDrawable()`.
+## **6.4 ShapeDrawable**
 
-=> You can also draw your shape as its own custom View to be added to your layout however you please.
+=> **Definition**: `ShapeDrawable is used to draw simple geometric shapes such as rectangle, oval, line and ring.`
 
-=> Because the Shape Drawable has its own `draw()` method, you can create a subclass of View that draws the Shape Drawable during the `onDraw()` method.
+=> ShapeDrawable is useful for creating button backgrounds, borders, circles and rounded rectangles without using image files.
 
-=> A Shape Drawable takes a Shape object and manages its presence on the screen.
+### Features
 
-=> If no shape is given, then the Shape Drawable will default to a rectangle shape.
+1. Defines shape type.
+2. Defines solid color.
+3. Defines stroke or border.
+4. Defines corner radius.
+5. Defines gradient and padding.
 
-=> Shape Drawables are XML files which allow you to define a geometric object with colors, borders, and gradients.
+### Example: Rounded button background
 
-=> **Advantage**: `The advantage of using XML shape Drawables is that they automatically adjust to the correct size.`
+Create `res/drawable/button_bg.xml`:
 
-## **6.4 Hardware Acceleration**
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
 
-=> Android 3.0 (API level 11) introduced a new rendering pipeline to allow applications to benefit from hardware-accelerated 2-D graphics.
+    <solid android:color="#2196F3" />
 
-=> You can use hardware acceleration if you have complex computations like scaling, rotating, or translation of images.
+    <stroke
+        android:width="2dp"
+        android:color="#0D47A1" />
 
-=> Hardware Acceleration is used to improve the performance and aesthetics of your activities and views.
+    <corners android:radius="8dp" />
 
-=> **Important explanation point**: `All the SDK Views, layouts, and effects support hardware acceleration.`
+    <padding
+        android:left="12dp"
+        android:right="12dp"
+        android:top="8dp"
+        android:bottom="8dp" />
+</shape>
+```
 
-=> Android gives you the option to enable or disable hardware acceleration at multiple levels.
+Use in layout:
 
-Types of levels to control hardware acceleration
+```xml
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/button_bg"
+    android:text="Submit" />
+```
 
-1. **Application level**: In your Android manifest file, add the attribute `android:hardwareAccelerated="true"` to the `<application>` tag to enable hardware acceleration for your entire application.
-2. **Activity level**: If your application does not behave properly with hardware acceleration turned on globally, you can control it for individual activities as well by using the `android:hardwareAccelerated="false"` attribute for the `<activity>` element.
-3. **Window level**: If you need even more fine-grained control, you can enable hardware acceleration for a given window with the following code: `getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);`.
-4. **View level**: You can disable hardware acceleration for an individual view at runtime with the following code: `myView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);`.
+## **6.5 Ways to Draw 2D Graphics in Android**
 
-## **6.5 Working with Animation**
+### 1. Using XML Drawable
 
-=> Animations can add visual cues that notify users about what's going on in your app.
+=> XML drawable is best for simple shapes and backgrounds.
 
-=> They are especially useful when the UI changes state, such as when new content loads or new actions become available.
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#4CAF50" />
+</shape>
+```
 
-=> Animations also add a polished look to your app, which gives it a higher quality look and feel.
+### 2. Using Canvas and Paint
 
-Types of Animation
+=> Canvas and Paint are used for custom drawing in a View.
 
-1. **Property animation**: Property animators were introduced in Android 3.0 (API level 11). It is a powerful framework that can be used to animate almost any property on a target object. Property animators are extremely useful and are used extensively for animating fragments.
-2. **View animations**: Animations that can be applied for views to rotate, move and stretch.
-3. **Frame animations**: Frame-by-frame animations produce a sequence of Drawables, each of which is displayed for a specified duration.
+```java
+canvas.drawCircle(200, 200, 100, paint);
+```
 
-### **6.5.1 Clock for Animated Graphics**
+### 3. Using Bitmap
 
-=> The methods (functions) provided by the android class SystemClock are used to create animated graphics.
+=> Bitmap is used to draw and manipulate images.
 
-=> The class consists of core timekeeping facilities.
+```java
+Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
+canvas.drawBitmap(bitmap, 50, 50, paint);
+```
 
-=> To use the methods, we have to import the class by adding the header statement, `import android.os.SystemClock;`.
+### 4. Using ShapeDrawable Programmatically
 
-Types of clocks used to keep time
+```java
+ShapeDrawable shape = new ShapeDrawable(new OvalShape());
+shape.getPaint().setColor(Color.RED);
+shape.setBounds(50, 50, 250, 250);
+shape.draw(canvas);
+```
 
-1. `currentTimeMillis()`: Gives the current time and date expressed in milliseconds since the epoch. This clock can be set by the user or the phone network.
-2. `uptimeMillis()`: Gives the active time lapse in milliseconds since the system was booted. This clock stops when the process is in a blocked or a sleep state such as waiting for an I/O event or executing `Thread.sleep()`.
-3. `elapsedRealtime()`: Counts the time in milliseconds since the system was booted, including the time when the process is blocked or in a sleep state.
+## **6.6 Hardware Acceleration**
 
-### **6.5.2 Controlling Timing Events**
+=> **Definition**: `Hardware acceleration means using device hardware, mainly GPU, to render graphics faster.`
 
-=> There are several ways to control the timing events in an animation process.
+=> Android introduced hardware-accelerated 2D rendering from Android 3.0/API level 11.
 
-Types of methods to control timing events
+### Significance
 
-1. `Thread.sleep(millis) and Object.wait(millis)`: Standard blocking functions that can be used to generate desired time delays. When these functions are executed, the `uptimeMillis()` clock stops. The thread can be woken up by the function `Thread.interrupt()`.
-2. `SystemClock.sleep(millis)`: A utility function very similar to `Thread.sleep(millis)`, except that it ignores `InterruptedException`.
-3. **Handler class**: We can use the Handler class to schedule asynchronous callbacks at an absolute or relative time. A handler object uses the `uptimeMillis()` clock to keep time and requires an event loop to wait for an event to happen.
-4. **AlarmManager class**: We can use the AlarmManager class to access the system alarm services such as triggering one-time or recurring events when the thread is in a blocked state.
+1. Improves UI rendering speed.
+2. Makes animations smoother.
+3. Reduces CPU load.
+4. Improves scaling, rotation and translation effects.
+5. Helps apps with complex graphics.
 
-## **6.6 Alarms in Android**
+### Enable at application level
 
-=> **Core concept**: `In Android, alarms give you a way to schedule your application to run at some point in the future.`
+```xml
+<application
+    android:hardwareAccelerated="true">
+</application>
+```
 
-=> Alarms can be used for a wide range of applications, from notifying a user of an appointment to something more sophisticated, such as having an application start, checking for software updates, and then shutting down.
+### Enable or disable at activity level
 
-=> Alarms (based on the AlarmManager class) give you a way to perform time-based operations outside the lifetime of your application.
+```xml
+<activity
+    android:name=".MainActivity"
+    android:hardwareAccelerated="true" />
+```
 
-=> **Example**: `You could use an alarm to initiate a long-running operation, such as starting a service once a day to download a weather forecast.`
+### Enable at window level
 
-=> An alarm works by registering an Intent with the alarm; at the scheduled time, the alarm broadcasts the Intent.
+```java
+getWindow().setFlags(
+        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+```
 
-=> Android automatically starts the targeted application, even if the Android handset is asleep.
+### Disable for a specific View
 
-=> Android manages all alarms somewhat as it manages the NotificationManager via an AlarmManager class.
+```java
+myView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+```
 
-=> **Characteristics**: `They let you fire Intents at set times and/or intervals.`
+## **6.7 Animation in Android**
 
-=> **Characteristics**: `You can use them in conjunction with broadcast receivers to start services and perform other operations.`
+=> **Definition**: `Animation is the process of creating motion or visual changes in UI elements over time.`
 
-=> **Characteristics**: `They operate outside of your application, so you can use them to trigger events or actions even when your app is not running, and even if the device itself is asleep.`
+=> Animation improves user experience by making screen changes smooth and giving visual feedback.
 
-=> **Characteristics**: `They help you to minimize your app's resource requirements. You can schedule operations without relying on timers or continuously running background services.`
+### Types of Animation
 
-## **6.7 Download Manager**
+1. **View Animation**
 
-=> **Definition**: `The download manager is a system service that handles long-running HTTP downloads.`
+=> Used for simple effects on views such as rotate, scale, translate and alpha.
 
-=> Clients may request that a URI be downloaded to a particular destination file.
+2. **Property Animation**
 
-=> The download manager was introduced in Android 2.3 (API level 9).
+=> Animates actual properties of objects such as `alpha`, `translationX`, `rotation`, `scaleX`.
 
-Advantages of the Android Download Manager
+3. **Frame Animation**
 
-1. It optimizes the handling of long-running downloads in the background.
-2. It flawlessly handles HTTP connections, monitors connectivity changes and reboots, and ensures each download completes successfully.
-3. The download manager will effectively conduct the download in the background, taking care of HTTP interactions and retrying downloads after failures across connectivity changes and system reboots.
+=> Displays a sequence of drawable images one after another.
 
-=> **Important explanation point**: `If you want to download over a cellular network, you cannot use Retrofit or Volley, because both recommend using DownloadManager instead.`
+### Example: View animation
 
-=> Apps that request downloads through this API should register a broadcast receiver for `ACTION_NOTIFICATION_CLICKED` to appropriately handle when the user clicks on a running download in a notification or from the downloads UI.
+Create `res/anim/fade_in.xml`:
 
-=> The application must securely have the `Manifest.permission.INTERNET` permission to use this class.
+```xml
+<alpha xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="1000"
+    android:fromAlpha="0.0"
+    android:toAlpha="1.0" />
+```
 
-## **6.8 Multiple Choice Questions**
+Use in Activity:
 
-=> **Question 1**: `Resource manager is used for?` **Answer**: `It provides access to non-code embedded resources such as strings, color settings and user interface layouts.`
+```java
+Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+textView.startAnimation(animation);
+```
 
-=> **Question 2**: `What is a correct statement about an XML layout file?` **Answer**: `A file that contains a single activity widget.`
+### Example: Property animation
 
-=> **Question 3**: `Which is the most popular software used for creating 2D animation for use in web pages?` **Answer**: `Flash.`
+```java
+ObjectAnimator animator =
+        ObjectAnimator.ofFloat(textView, "translationX", 0f, 300f);
+animator.setDuration(1000);
+animator.start();
+```
 
-=> **Question 4**: `What is the purpose of the image switcher?` **Answer**: `The image switcher enables images to be displayed with animation, and it allows you to add some transitions on the images.`
+### Example: Frame animation
+
+Create `res/drawable/frame_animation.xml`:
+
+```xml
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item android:drawable="@drawable/frame1" android:duration="100" />
+    <item android:drawable="@drawable/frame2" android:duration="100" />
+</animation-list>
+```
+
+## **6.8 Clock and Timing Events**
+
+=> Android provides time-related classes to schedule animation and delayed tasks.
+
+### SystemClock methods
+
+1. `currentTimeMillis()`: Returns current wall-clock time in milliseconds.
+2. `uptimeMillis()`: Returns time since boot, excluding deep sleep.
+3. `elapsedRealtime()`: Returns time since boot, including sleep time.
+
+### Methods to control timing
+
+1. `Thread.sleep(millis)`: Pauses the current thread.
+2. `SystemClock.sleep(millis)`: Sleeps without throwing `InterruptedException`.
+3. `Handler.postDelayed()`: Runs code after a delay on a thread's message queue.
+4. `AlarmManager`: Schedules work at a specific time outside app lifetime.
+
+### Handler example
+
+```java
+new Handler(Looper.getMainLooper()).postDelayed(() -> {
+    textView.setText("Task completed");
+}, 2000);
+```
+
+## **6.9 Alarms in Android**
+
+=> **Definition**: `AlarmManager is used to schedule an operation at a specific time or after a time interval.`
+
+=> Alarms work outside the lifetime of the app. At the scheduled time, Android fires a `PendingIntent`.
+
+### Uses
+
+1. Reminder application.
+2. Alarm clock.
+3. Scheduled notification.
+4. Periodic background work.
+
+### Important classes
+
+1. `AlarmManager`: System service used to schedule alarms.
+2. `PendingIntent`: Intent executed in future.
+3. `BroadcastReceiver`: Receives alarm event.
+
+### Example: Set one alarm after 10 seconds
+
+```java
+AlarmManager alarmManager =
+        (AlarmManager) getSystemService(ALARM_SERVICE);
+
+Intent intent = new Intent(this, AlarmReceiver.class);
+PendingIntent pendingIntent = PendingIntent.getBroadcast(
+        this, 1, intent, PendingIntent.FLAG_IMMUTABLE);
+
+long triggerTime = System.currentTimeMillis() + 10000;
+
+alarmManager.set(
+        AlarmManager.RTC_WAKEUP,
+        triggerTime,
+        pendingIntent);
+```
+
+### AlarmReceiver.java
+
+```java
+public class AlarmReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Toast.makeText(context, "Alarm triggered", Toast.LENGTH_LONG).show();
+    }
+}
+```
+
+### Manifest
+
+```xml
+<receiver android:name=".AlarmReceiver" />
+```
+
+## **6.10 Download Manager**
+
+=> **Definition**: `DownloadManager is a system service that handles long-running HTTP downloads in the background.`
+
+=> It automatically manages network changes, retries, notifications and downloaded files.
+
+### Advantages
+
+1. Downloads files in background.
+2. Shows download progress in notification.
+3. Handles network failure and retry.
+4. Continues download even if app is not in foreground.
+5. Reduces need to write manual networking code for file downloads.
+
+### Required permission
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
+### Example
+
+```java
+DownloadManager.Request request = new DownloadManager.Request(
+        Uri.parse("https://example.com/file.pdf"));
+
+request.setTitle("Downloading file");
+request.setDescription("Please wait");
+request.setNotificationVisibility(
+        DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+request.setDestinationInExternalPublicDir(
+        Environment.DIRECTORY_DOWNLOADS, "file.pdf");
+
+DownloadManager manager =
+        (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+manager.enqueue(request);
+```
+
+## **6.11 Exam Short Questions**
+
+=> **Question**: `Resource manager is used for?`
+
+=> **Answer**: Resource manager provides access to non-code resources such as strings, colors, images and layouts.
+
+=> **Question**: `What is Canvas?`
+
+=> **Answer**: Canvas is a 2D drawing surface used to draw lines, circles, rectangles, text and images.
+
+=> **Question**: `What is ShapeDrawable?`
+
+=> **Answer**: ShapeDrawable is used to draw simple shapes like rectangle, oval, line and ring using XML or code.
+
+=> **Question**: `What is the purpose of ImageSwitcher?`
+
+=> **Answer**: ImageSwitcher displays images with animation and transition effects.
+
+=> **Question**: `Why use hardware acceleration?`
+
+=> **Answer**: It uses GPU for faster and smoother UI rendering.
