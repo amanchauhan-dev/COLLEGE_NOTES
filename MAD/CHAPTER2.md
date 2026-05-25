@@ -1,209 +1,551 @@
-# **2 Activities and Fragments**
+# **2 Activities, Fragments, Intents and AVD**
 
-## **2.1 Activity Lifecycle**
+## **2.1 Activity**
 
-=> **Definition**: `An application comprises one or more activities, and the user's experience of an activity is governed by a set of states known as the lifecycle.`
+=> **Definition**: `An Activity is an Android application component that represents a single screen with a user interface.`
 
-=> The lifecycle efficiently manages system resources and user progress, preventing the app from crashing during interruptions like phone calls or screen rotations between landscape and portrait orientations.
+=> Example: Login screen, registration screen, home screen and settings screen.
 
-=> To securely navigate transitions between stages of the activity lifecycle, the Activity class provides a core set of six distinct callbacks.
+=> An Android app can contain one or more activities.
 
-![description](./images/unit-2.1.png)
+### Simple Activity example
 
-Processes with sequential order
+```java
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+}
+```
 
-1. `onCreate()`: This callback must be implemented and fires when the system first creates your activity to initialize essential components, such as creating views and binding data.
-2. `onStart()`: As `onCreate()` exits, the activity enters the Started state, becomes visible to the user, and makes final preparations for coming to the foreground to become interactive.
-3. `onResume()`: The system invokes this callback just before the activity starts interacting with the user, placing the activity at the top of the activity stack to capture all user input.
-4. `onPause()`: This occurs when the activity loses focus and enters a Paused state, meaning it is partially visible but the user is actively leaving the activity.
-5. `onStop()`: The system calls this when the activity is no longer visible to the user because it is being destroyed, a new activity is starting, or an existing one is resuming.
-6. `onDestroy()`: This is the final callback an activity receives before it is destroyed, implemented to ensure that all of an activity's resources are completely released.
+### Activity declaration in manifest
 
-=> Inside the `onCreate()` method, developers must strictly call `setContentView()` to define the layout for the activity's user interface.
+```xml
+<activity
+    android:name=".MainActivity"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+</activity>
+```
 
-=> An activity in the Paused state may dynamically continue to update the UI if the user expects it to, such as a media player playing or a navigation map updating.
+## **2.2 Activity Lifecycle**
 
-=> Developers should never use the `onPause()` callback to save application or user data, make network calls, or execute database transactions.
+=> **Definition**: `Activity lifecycle is the set of states through which an Activity passes from creation to destruction.`
 
-=> Depending on what happens after the activity enters the Paused state, the subsequent callback is either `onStop()` or `onResume()`.
+=> Android calls lifecycle methods automatically according to user actions and system events.
 
-=> The callback following `onStop()` is either `onRestart()`if the activity is coming back to interact with the user, or `onDestroy()` if the activity is completely terminating.
+![Activity lifecycle](./images/unit-2.1.png)
 
-## **2.2 Fragments in Android**
+### Diagram
 
-=> **Core concept**: `The Fragment class in Android is utilized to build dynamic User Interfaces and should be strictly used within an Activity.`
+```text
+Activity launched
+      |
+      v
+  onCreate()
+      |
+      v
+  onStart()
+      |
+      v
+  onResume()
+      |
+      v
+Activity running
+      |
+      v
+  onPause()
+   /      \
+  v        v
+onResume() onStop()
+             |
+             v
+        onRestart()
+             |
+             v
+          onStart()
 
-=> A fragment functionally represents a behavior or a distinct portion of the user interface within a FragmentActivity.
+Finish activity:
+onPause() -> onStop() -> onDestroy()
+```
 
-=> A fragment acts as a modular section of an activity, which possesses its own lifecycle, receives its own input events, and can be added or removed while the activity is running.
+### Lifecycle methods
 
-=> A fragment must always be securely hosted in an activity, and its lifecycle is directly affected by the host activity's lifecycle.
+1. **onCreate()**
 
-=> `When the host activity is paused or destroyed, all active fragments contained within it are simultaneously paused or destroyed.`
+=> Called when Activity is first created.
 
-=> While an activity is actively running in the resumed state, developers can manipulate each fragment independently, such as adding or removing them.
+=> Used to initialize variables and set layout using `setContentView()`.
 
-=> The back stack safely allows the user to reverse a fragment transaction and navigate backwards by simply pressing the Back button.
+2. **onStart()**
 
-=> You can natively insert a fragment into your activity layout by declaring it as a `<fragment>` element in the layout file, or programmatically by adding it to an existing ViewGroup from your application code.
+=> Called when Activity becomes visible.
 
-### **2.2.1 Importance of Fragments**
+3. **onResume()**
 
-### Advantages
+=> Called when Activity starts interacting with user.
 
-1. **Reusing View and Logic Components**: Fragments effectively enable the re-use of parts of the screen, including views and event logic, across many disparate activities.
-2. **Tablet Support**: Fragments logically enable device-specific activities to reuse shared elements, allowing a tablet version to have a substantially different layout from the phone version.
-3. **Screen Orientation**: Fragments actively enable applications to provide substantially different layouts for portrait and landscape versions while cleanly reusing shared elements.
+4. **onPause()**
 
-### **2.2.2 Purpose of Fragments**
+=> Called when Activity loses focus.
 
-=> **Definition**: `The main purpose of a Fragment is to reliably support a more dynamic UI on varying screen sizes like tablets and smartphones, making the reuse of UI components significantly easier.`
+=> Used to pause animations, sensors or camera preview.
 
-=> To logically create a Fragment, developers have to subclass the Fragment class and heavily provide a public no-argument constructor to reinstantiate the Fragment class when a state restore is needed.
+5. **onStop()**
 
-=> A Fragment can transparently exist without its own UI, acting as an invisible worker for the parent Activity.
+=> Called when Activity is no longer visible.
 
-### **2.2.3 Communication between Fragments and Activity**
+6. **onRestart()**
 
-### Steps
+=> Called when stopped Activity starts again.
 
-1. Execute the `Fragment.getActivity()` method to successfully return the `FragmentActivity` object to which the Fragment belongs.
-2. Use the `FragmentActivity.getSupportFragmentManager()` method to natively return an `android.support.v4.app.FragmentManager` instance.
-3. Execute the `FragmentManager.findFragmentById()` method to securely retrieve the desired Fragment object with the specified ID.
-4. Call the `Fragment.getView().findViewById()` method to accurately get the view controls housed inside that specific Fragment.
-5. Safely change the view control's property and programmatically add an event listener as needed.
+7. **onDestroy()**
 
-## **2.3 Life Cycle of Fragment**
+=> Called before Activity is destroyed.
 
-=> **Definition**: `An Android Fragment is defined as a part of an activity and is often referred to as a sub-activity.`
+### Lifecycle code example
 
-=> There can be multiple fragments active inside one activity, allowing fragments to smartly represent multiple screens within a single Activity container.
+```java
+public class MainActivity extends AppCompatActivity {
+    @Override protected void onCreate(Bundle b) {
+        super.onCreate(b);
+        setContentView(R.layout.activity_main);
+    }
 
-=> The Android fragment lifecycle is deeply affected by the activity lifecycle because fragments are tightly embedded inside the host activity.
+    @Override protected void onStart() { super.onStart(); }
+    @Override protected void onResume() { super.onResume(); }
+    @Override protected void onPause() { super.onPause(); }
+    @Override protected void onStop() { super.onStop(); }
+    @Override protected void onRestart() { super.onRestart(); }
+    @Override protected void onDestroy() { super.onDestroy(); }
+}
+```
 
-![description](./images/unit-2.2.png)
+## **2.3 Bundle**
 
-Processes with sequential order
+=> **Bundle** is a key-value data structure used to pass and save data in Android.
 
-1. `onAttach(Activity)`: This method is called exactly once when the fragment is securely attached to the activity.
-2. `onCreate(Bundle)`: This method is explicitly used to initialize the fragment.
-3. `onCreateView(LayoutInflater, ViewGroup, Bundle)`: This dynamically creates and returns the specific view hierarchy for the fragment.
-4. `onActivityCreated(Bundle)`: This is invoked immediately after the completion of the host activity's onCreate() method.
-5. `onViewStateRestored(Bundle)`: This provides essential information to the fragment that all the saved states of the fragment view hierarchy have been perfectly restored.
-6. `onStart()`: This smoothly transitions the fragment to be visible to the user.
-7. `onResume()`: This natively makes the fragment interactive to user input.
-8. `onPause()`: This is called precisely when the fragment is no longer interactive.
-9. `onStop()`: This is safely called when the fragment is no longer visible.
-10. `onDestroyView()`: This allows the fragment to efficiently clean up resources associated with its view.
-11. `onDestroy()`: This allows the fragment to do the final clean up of its fragment state.
-12. `onDetach()`: This is called immediately prior to the fragment no longer being securely associated with its host activity.
+### Uses
 
-## **2.4 Replacing Fragment**
+1. Pass data between activities.
+2. Save temporary state during configuration changes.
+3. Receive data in lifecycle methods.
+4. Store values like String, int, boolean and arrays.
 
-=> The standard procedure to replace a fragment is remarkably similar to adding one, but it strictly requires utilizing the `replace()` method instead of the `add()` method.
+### Example
 
-=> When fragment transactions like replacing or removing are performed, it is highly appropriate to allow the user to navigate backward and seamlessly "undo" the change.
+```java
+Intent intent = new Intent(this, SecondActivity.class);
+Bundle bundle = new Bundle();
+bundle.putString("name", "Aman");
+bundle.putInt("age", 20);
+intent.putExtras(bundle);
+startActivity(intent);
+```
 
-=> To safely allow the user to navigate backward through fragment transactions, you must explicitly call `addToBackStack()` before committing the `FragmentTransaction`.
+Receive data:
 
-=> **Important explanation point**: `When you dynamically remove or replace a fragment and thoughtfully add the transaction to the back stack, the removed fragment is merely stopped rather than completely destroyed.`
+```java
+Bundle bundle = getIntent().getExtras();
+String name = bundle.getString("name");
+int age = bundle.getInt("age");
+```
 
-=> If the transaction is intelligently added to the back stack, navigating back will successfully restore and restart the fragment.
+## **2.4 Screen Orientation and State Handling**
 
-=> If you explicitly do not add the transaction to the back stack, the fragment is permanently destroyed when it is removed or replaced.
+=> Android normally destroys and recreates Activity when screen orientation changes.
 
-=> The `addToBackStack()` method cleanly accepts an optional string parameter that carefully specifies a unique name for the transaction, used primarily for advanced FragmentManager operations.
+=> This allows Android to load resources suitable for portrait or landscape mode.
 
-## **2.5 Intent**
+### Provide different layouts
 
-=> **Definition**: `An Intent is a specialized messaging object utilized to request an action from another app component, such as activities, services, broadcast receivers, and content providers.`
+Portrait:
 
-=> Intent application components securely allow an Android application to connect with completely other Android applications.
+```text
+res/layout/activity_main.xml
+```
 
-=> `Intents act as highly asynchronous messages which seamlessly allow application components to request targeted functionality from other Android components.`
+Landscape:
 
-=> An intent can reliably contain extensive data packaged via a Bundle, which can then be read and used by the receiving component.
+```text
+res/layout-land/activity_main.xml
+```
 
-=> In Android architecture, the active reuse of other application components is a highly important concept known as a task.
+### Save state
 
-=> A task allows your application to successfully trigger another component in the Android system, even if that specific component is not part of your application, and safely return the generated data back to your application.
+```java
+@Override
+protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString("username", "Aman");
+}
+```
 
-### Types
+### Restore state
 
-1. **Starting an activity**: By passing an Intent object to the `startActivity()` method, developers can cleanly perform required actions using a new or existing Activity.
-2. **Starting a service**: By passing an Intent object to the `startService()` method, developers can effortlessly send required instructions to an active or new Service.
-3. **Delivering a broadcast**: By passing an Intent object to the `sendBroadcast()` method, developers cleanly deliver a specific message to other active app broadcast receivers.
+```java
+if (savedInstanceState != null) {
+    String username = savedInstanceState.getString("username");
+}
+```
+
+### Fix orientation
+
+```xml
+<activity
+    android:name=".MainActivity"
+    android:screenOrientation="portrait" />
+```
 
-## **2.6 Intent to Start Another Activity**
+## **2.5 Fragment**
 
-=> **Core concept**: `An Intent acts as an object that fundamentally provides a runtime binding between completely separate components, most commonly between two different activities.`
+=> **Definition**: `A Fragment is a reusable portion of an Activity UI and behavior.`
 
-=> The Intent programmatically represents an application's strict intent to actively perform a task, with one of the most common tasks being the initiation of another activity.
+=> A Fragment must be hosted inside an Activity.
 
-=> The constructor of the Intent object requires exactly two parameters: a Context and a Class.
+=> It has its own lifecycle and can be added, removed or replaced while the Activity is running.
 
-=> The Context parameter is intentionally used first because the Activity class is inherently a subclass of the Context package.
+### Advantages of fragments
 
-=> The Class parameter specifically identifies the exact app component to which the Android system must efficiently deliver the Intent.
+1. Reuse UI and logic in multiple screens.
+2. Create flexible UI for phones and tablets.
+3. Support different layouts for portrait and landscape.
+4. Add, remove or replace UI parts dynamically.
+5. Support back stack navigation.
 
-=> The `putExtra()` method logically adds values to the intent in the format of key-value pairs, which are widely known as extras.
+### Fragment example
 
-=> It is strongly considered good practice to meticulously define keys for intent extras by using your app's package name as a prefix, ensuring that the keys logically remain unique during cross-app interactions.
+```java
+public class HomeFragment extends Fragment {
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+}
+```
 
-=> The `startActivity()` method safely starts an operational instance of the target activity strictly specified by the fully configured Intent.
+### Fragment layout container
 
-## **2.7 Implicit and Explicit Intent**
+```xml
+<FrameLayout
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+```
 
-### Types
+### Add or replace fragment
 
-1. **Implicit Intent**: This cleverly does not name a specific component but instead firmly declares a general action to perform. The background system dynamically searches for an appropriate component, and if multiple components are compatible, it displays a dialog so the user can accurately pick which app to use.
-2. **Explicit Intent**: This forcefully specifies the targeted component by explicitly defining the fully-qualified class name, acting as the most common method to securely start a component located within the very same app.
+```java
+getSupportFragmentManager()
+        .beginTransaction()
+        .replace(R.id.container, new HomeFragment())
+        .commit();
+```
 
-=> _Example_: If an app wants to quickly trigger a phone call using an implicit intent, it logically only has to specify the corresponding standardized action named `ACTION_DIAL`.
+## **2.6 Fragment Lifecycle**
 
-=> **Example**: `An explicit intent is initialized by clearly defining the targeted context and the explicit class name parameter, such as `new Intent(myContext, AnotherActivity.class)`.`
+=> Fragment lifecycle is affected by the lifecycle of its host Activity.
 
-## **2.8 Android Virtual Device (AVD)**
+![Fragment lifecycle](./images/unit-2.2.png)
 
-=> **Definition**: `An Android Virtual Device (AVD) acts as a highly specialized configuration that completely defines the characteristics of an Android phone, tablet, Wear OS, Android TV, or Automotive OS device.`
+### Lifecycle methods
 
-=> The AVD safely works in tandem with the Android emulator to successfully provide a virtual device-specific environment in which developers can cleanly install and reliably run Android apps.
+1. `onAttach()`: Fragment is attached to Activity.
+2. `onCreate()`: Fragment is initialized.
+3. `onCreateView()`: Fragment UI is created.
+4. `onViewCreated()`: Called after fragment view is created.
+5. `onStart()`: Fragment becomes visible.
+6. `onResume()`: Fragment becomes interactive.
+7. `onPause()`: Fragment is no longer interactive.
+8. `onStop()`: Fragment is no longer visible.
+9. `onDestroyView()`: Fragment view is destroyed.
+10. `onDestroy()`: Fragment object is destroyed.
+11. `onDetach()`: Fragment is detached from Activity.
 
-=> `Key components: An active AVD dynamically contains a strictly defined hardware profile, a specific system image, an allocated storage area, a visual skin, and other configured properties.`
+### Fragment lifecycle diagram
 
-=> The avdmanager smoothly operates as a command-line tool securely provided in the Android SDK Tools package that powerfully allows you to actively create and cleanly manage AVDs directly from the command line.
+```text
+onAttach()
+   |
+onCreate()
+   |
+onCreateView()
+   |
+onViewCreated()
+   |
+onStart()
+   |
+onResume()
+   |
+onPause()
+   |
+onStop()
+   |
+onDestroyView()
+   |
+onDestroy()
+   |
+onDetach()
+```
 
-=> If developers are securely using the Android Studio IDE, they smartly do not need to use the command line tool and can instead effortlessly create and manage AVDs visually from within the IDE interface.
+## **2.7 Communication between Fragment and Activity**
 
-## **2.9 Mapping Application to Process**
+### Fragment can access Activity
 
-=> **Core concept**: Android applications are robustly written primarily in the standard Java programming language.
+```java
+MainActivity activity = (MainActivity) getActivity();
+```
 
-=> During active development, the software developer transparently creates the required Android specific configuration files and meticulously writes the application logic strictly in Java.
+### Activity can access Fragment
 
-=> `The ADT (Android Developer Tools) or Android Studio IDE tools quietly transparently convert these compiled application files safely into a complete Android application.`
+```java
+HomeFragment fragment =
+        (HomeFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.container);
+```
 
-=> When developers forcefully trigger a deployment from their IDE, the entire targeted application is securely compiled, cleanly packaged, efficiently deployed, and successfully started.
+### Recommended simple approach
 
-### Processes with sequential order
+=> Use interface callbacks when Fragment needs to send data to Activity.
 
-1. The provided Java source files are cleanly converted into Java class files natively by the Java compiler.
-2. `The specialized Android SDK tool called dx securely converts the Java class files into a highly optimized .dex (Dalvik Executable) file.`
-3. During this conversion phase, completely redundant information logically optimized so the resulting .dex file actively remains much smaller in size compared to the original class files.
-4. `The generated .dex file and all physical resources of the Android project (e.g., images and XML files) are packed firmly into an .apk (Android package) file strictly utilizing the aapt (Android Asset Packaging Tool) program.`
-5. The tightly created .apk file safely contains all necessary runtime data and is finally deployed over to a targeted Android device accurately via the adb tool.
+```java
+public interface OnMessageSendListener {
+    void onMessageSend(String message);
+}
+```
 
-### Types of Android SDK Features
+## **2.8 Replacing Fragment and Back Stack**
 
-1. Requires absolutely no licensing, has zero required distributions or development fees, and securely avoids complex release approval processes.
-2. Grants developers transparent and full multimedia hardware control.
-3. Delivers deep APIs specifically designed for elegantly using sensor hardware including the accelerometer and the compass.
-4. Exposes highly optimized APIs exclusively for building advanced location based services.
-5. Deeply handles advanced native Android Inter-Process Communication (IPC).
-6. Provides secure and flexible shared data storage.
-7. Cleanly executes transparent background applications and processes.
-8. Safely enables robust dynamic home screen widgets and useful live folders.
-9. Completely implements an optimized HTML5 WebKit-based web browser directly natively.
-10. Directly supports hardware GSM, EDGE, and 3G networks smoothly for fast telephony and reliable data transfer.
-11. Generously includes advanced development tools logically aimed to seamlessly help safely compile and highly effectively debug any mobile app.
-12. Offers an integrated visually responsive Android emulator actively showing exactly how an app will visually look and strictly behave identically on a real Android hardware device.
+=> Fragment can be added, replaced or removed using `FragmentTransaction`.
+
+=> `addToBackStack()` allows the user to return to the previous fragment using Back button.
+
+### Example
+
+```java
+getSupportFragmentManager()
+        .beginTransaction()
+        .replace(R.id.container, new DetailFragment())
+        .addToBackStack(null)
+        .commit();
+```
+
+=> If transaction is not added to back stack, the replaced fragment is destroyed and user cannot return to it using Back button.
+
+## **2.9 Intent**
+
+=> **Definition**: `Intent is a messaging object used to request an action from another Android component.`
+
+### Uses of Intent
+
+1. Start an Activity.
+2. Start a Service.
+3. Send a Broadcast.
+4. Pass data between components.
+5. Open system apps such as browser, dialer, camera and map.
+
+## **2.10 Explicit Intent**
+
+=> Explicit Intent specifies the exact target component.
+
+=> It is mostly used to navigate between activities in the same app.
+
+### Example
+
+```java
+Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+intent.putExtra("username", "Aman");
+startActivity(intent);
+```
+
+Receive in `SecondActivity`:
+
+```java
+String username = getIntent().getStringExtra("username");
+```
+
+## **2.11 Implicit Intent**
+
+=> Implicit Intent does not specify the exact target component.
+
+=> It specifies only an action. Android finds a suitable app to handle that action.
+
+### Open dialer
+
+```java
+Intent intent = new Intent(Intent.ACTION_DIAL);
+intent.setData(Uri.parse("tel:9876543210"));
+startActivity(intent);
+```
+
+### Open browser
+
+```java
+Intent intent = new Intent(Intent.ACTION_VIEW);
+intent.setData(Uri.parse("https://www.google.com"));
+startActivity(intent);
+```
+
+### Difference between explicit and implicit intent
+
+| Explicit Intent | Implicit Intent |
+|---|---|
+| Target component is specified. | Target component is not specified. |
+| Mostly used inside same app. | Used to call system or other apps. |
+| Example: Open `SecondActivity`. | Example: Open browser/dialer. |
+
+## **2.12 Intent Filter**
+
+=> **Definition**: `Intent filter declares the type of intents an Android component can receive.`
+
+=> It is written in `AndroidManifest.xml`.
+
+### Uses
+
+1. Defines launcher Activity.
+2. Allows components to respond to implicit intents.
+3. Specifies action, category and data accepted by a component.
+
+### Launcher Activity example
+
+```xml
+<activity android:name=".MainActivity">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+</activity>
+```
+
+## **2.13 Broadcast using Intent**
+
+=> Intent can be used to send broadcast messages.
+
+=> BroadcastReceiver receives the broadcast and performs required action.
+
+### Send broadcast
+
+```java
+Intent intent = new Intent("com.example.MY_EVENT");
+intent.putExtra("message", "Hello Receiver");
+sendBroadcast(intent);
+```
+
+### BroadcastReceiver
+
+```java
+public class MyReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String msg = intent.getStringExtra("message");
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+}
+```
+
+### Manifest
+
+```xml
+<receiver android:name=".MyReceiver">
+    <intent-filter>
+        <action android:name="com.example.MY_EVENT" />
+    </intent-filter>
+</receiver>
+```
+
+## **2.14 Android Virtual Device (AVD)**
+
+=> **Definition**: `Android Virtual Device is a configuration that defines a virtual Android device for testing apps in an emulator.`
+
+### AVD contains
+
+1. Hardware profile.
+2. System image.
+3. Android version.
+4. Screen size and resolution.
+5. Storage area.
+6. Device skin.
+
+### Uses
+
+1. Test app without physical device.
+2. Test different screen sizes.
+3. Test different Android versions.
+4. Debug app using emulator.
+
+### Steps to create AVD in Android Studio
+
+1. Open Android Studio.
+2. Go to **Tools -> Device Manager**.
+3. Click **Create Device**.
+4. Select hardware profile.
+5. Select or download system image.
+6. Configure device name and settings.
+7. Click **Finish**.
+8. Start emulator using Play button.
+
+## **2.15 Mapping Application to Process**
+
+=> Android build tools convert source files and resources into an installable app package.
+
+### Process
+
+```text
+Java/Kotlin source code
+        |
+        v
+Compiled class files
+        |
+        v
+DEX bytecode
+        |
+        v
+Resources + Manifest packaged
+        |
+        v
+APK/AAB generated
+        |
+        v
+Installed on device using ADB or Play Store
+```
+
+### Important tools
+
+1. Java/Kotlin compiler.
+2. D8/R8 compiler for DEX and optimization.
+3. AAPT for resource packaging.
+4. Gradle for build automation.
+5. ADB for installing and debugging.
+
+## **2.16 Exam Short Questions**
+
+=> **Question**: `What is Activity?`
+
+=> **Answer**: Activity is an Android component that represents one screen with a user interface.
+
+=> **Question**: `What is Fragment?`
+
+=> **Answer**: Fragment is a reusable part of Activity UI with its own lifecycle.
+
+=> **Question**: `What is Intent?`
+
+=> **Answer**: Intent is a messaging object used to request an action from another component.
+
+=> **Question**: `What is AVD?`
+
+=> **Answer**: AVD is Android Virtual Device, used to test apps on an emulator.
+
+=> **Question**: `What is Bundle?`
+
+=> **Answer**: Bundle is a key-value structure used to pass or save data.
+
+=> **Question**: `Why use addToBackStack()?`
+
+=> **Answer**: It allows the user to return to the previous fragment using Back button.

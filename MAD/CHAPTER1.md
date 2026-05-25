@@ -2,348 +2,548 @@
 
 ## **1.1 Introduction to Android**
 
-=> **Definition**: `Android is an open-source software development platform used for creating mobile applications.`
+=> **Definition**: `Android is an open-source operating system and software development platform used to build mobile applications.`
 
-=> It is based on an open-source software stack.
+=> Android is mainly designed for smartphones, tablets, TV, watches and other smart devices.
 
-Types of software stack components
+=> It is based on the Linux kernel and provides a complete software stack for mobile application development.
 
-1. **Operating system**: A Linux operating system kernel that provides a low-level interface with hardware, memory management, and process control.
-2. **Middleware**: A runtime environment used to execute Android applications.
-3. **Key mobile applications**: Built-in applications such as Email, SMS, PIM, web browser, etc.
-4. **API libraries for writing mobile applications**: Includes various open-source libraries like SQLite, WebKit, and OpenGL ES.
+### Android software stack
 
-![description](./images/unit-1.1.png)
+1. **Operating System**
 
-=> The components of the underlying OS are written in C or C++, whereas both user applications and built-in applications are written in Java.
+=> Linux kernel provides low-level services such as memory management, process management, security, networking and hardware drivers.
 
-=> An important feature of the Android platform is that there is absolutely no difference between the built-in applications and the applications created with the Software Development Kit (SDK).
+2. **Middleware / Runtime**
 
-=> Android itself is only a software, but by leveraging its Linux kernel to interface with hardware, it can run on many different devices manufactured by multiple cell phone manufacturers.
+=> Android runtime executes Android applications.
 
-### **1.1.1 Advantages and Disadvantages of Android**
+=> Older Android versions used Dalvik Virtual Machine. Modern Android uses ART.
+
+3. **Application Framework**
+
+=> Provides high-level APIs such as Activity Manager, Content Provider, Resource Manager, View System and Notification Manager.
+
+4. **Applications**
+
+=> Built-in and user-installed applications such as Phone, SMS, Contacts, Camera, Browser and third-party apps.
+
+![Android software stack](./images/unit-1.1.png)
+
+## **1.2 Features of Android**
+
+### Important features
+
+1. **Open source**
+
+=> Android source code is open, so developers and device manufacturers can customize it.
+
+2. **Linux-based**
+
+=> Android uses Linux kernel for security, memory management, process management and device drivers.
+
+3. **Rich application framework**
+
+=> Provides reusable APIs for UI, storage, media, telephony, location, sensors and notifications.
+
+4. **Multitasking**
+
+=> Android supports multiple applications and background services.
+
+5. **Media support**
+
+=> Supports audio/video formats such as MP3, MP4, 3GP, AAC, MIDI and image formats like JPEG and PNG.
+
+6. **SQLite database**
+
+=> Provides built-in lightweight database support for structured local data.
+
+7. **Connectivity**
+
+=> Supports Wi-Fi, Bluetooth, GSM, EDGE, 3G, 4G, 5G and NFC depending on device hardware.
+
+8. **Web browser support**
+
+=> Provides WebKit/Chromium-based web support and `WebView`.
+
+9. **Sensor support**
+
+=> Supports GPS, accelerometer, gyroscope, compass, proximity and other sensors.
+
+10. **Better notification system**
+
+=> Android provides notifications to alert users about events from apps.
+
+## **1.3 Advantages and Disadvantages of Android**
 
 ### Advantages
 
-1. **Supports 2D, 3D graphics**: It easily supports various multimedia platforms like 2D and 3D.
-2. **Supports multiple languages**: Android natively supports different languages.
-3. **Java support**: The Java supporting feature enables developers to enhance and add more features.
-4. **Faster web browser**: It easily loads multimedia, making the web browsing experience much faster.
-5. **Supports MP4, 3GP, MPEG4, MIDI**: It supports different types of multimedia formats directly, eliminating the need to convert from one format to another.
-6. **Video calling**: Faster data connections enable users to perform video calls.
-7. **Open source framework**: The open-source nature means users can create their own applications and modify existing code.
-8. **Uses of tools are very simple**: The development tools provided are highly user-friendly.
-9. **Social networking integration**: It provides the freedom to customize applications and features using user-enabled development.
-10. **Better notification system**: It allows users to conveniently check important notifications directly from the dashboard.
-11. **Low chance of crashing**: The Android OS is very smooth and easy to operate with significantly fewer chances of crashing down.
-12. **Stability**: Stability and security are better than other mobile operating systems because it is built upon the robust Linux Kernel.
+1. Open-source platform.
+2. Large developer community.
+3. Supports many hardware devices.
+4. Easy app distribution through Play Store.
+5. Rich APIs for camera, location, sensors, media and database.
+6. Supports multitasking and background services.
+7. Built-in SQLite database support.
+8. Customizable user interface.
 
 ### Disadvantages
 
-1. **Slow response**: Compared to Apple's iOS or Microsoft's Windows, the response of Android is observed to be slower when opening the same apps across different platforms.
-2. **Heat**: Android makes highly efficient use of processes, which forces the processor to generate heat, especially during long operations and at low battery levels.
-3. **Advertisement**: Users often encounter multiple ads during application use because anyone can insert ad logic into the app program, potentially interfering with the phone's information.
+1. Device fragmentation due to many screen sizes and Android versions.
+2. Battery consumption can be high for background apps and location services.
+3. Security risk if apps are installed from unknown sources.
+4. Performance may vary across low-end and high-end devices.
+5. Testing is difficult because many device configurations exist.
 
-### **1.2 Android APIs**
+## **1.4 Android APIs**
 
-=> Android offers a vast number of APIs for developing applications, ensuring all Android devices support at least these core APIs.
+=> Android APIs are packages and classes used to develop Android applications.
 
-### Types of core APIs
+### Important Android API packages
 
-1. `android.util`: The core utility package containing low-level classes like specialized containers, string formatters, and XML parsing utilities.
-2. `android.os`: The operating system package providing access to basic OS services like message passing, interprocess communication, clock functions, and debugging.
-3. `android.graphics`: The graphics API that supplies low-level graphics classes supporting canvases, colors, and drawing primitives.
-4. `android.text`: The text processing tools used for displaying and parsing text.
-5. `android.database`: Supplies the low-level classes required for handling cursors when working with databases.
-6. `android.content`: The content API used to manage data access and publishing by providing services for dealing with resources, content providers, and packages.
-7. `android.view`: The core user interface class where all user interface elements are constructed using a series of Views for user interaction components.
-8. `android.widget`: Built on the View package, these are ready-to-use user-interface elements like lists, buttons, and layouts.
-9. `com.google.android.maps`: A high-level API providing access to native map controls, including the MapView, Overlay, and MapController classes.
-10. `android.app`: A high-level package providing access to the application model, including the Activity and Service APIs that form the basis for all Android applications.
-11. `android.provider`: Offers classes to provide developer access to standard databases (such as the contacts database) included in all Android distributions.
-12. `android.telephony`: Telephony APIs that grant the ability to directly interact with the device's phone stack for making calls, receiving calls, and monitoring SMS messages.
-13. `android.webkit`: The WebKit package featuring APIs for working with web-based content, including a WebView control for embedding browsers.
+1. `android.app`
 
-## **1.3 Android Architecture**
+=> Provides classes for Activity, Service, Dialog and application model.
 
-=> The Android stack consists of different software layers.
+2. `android.os`
 
-### Types of layers in the Android stack
+=> Provides operating system services such as Bundle, Handler, Message and system clock.
 
-1. Linux kernel layer.
-2. Native layer.
-3. Application framework layer.
-4. Applications layer.
+3. `android.view`
 
-![description](./images/unit-1.2.png)
+=> Provides UI building blocks such as View, ViewGroup and event handling.
 
-**1. The Linux kernel layer**
+4. `android.widget`
 
-=> The Linux kernel includes drivers for hardware, networking, file system access, and inter-process communication.
+=> Provides ready-made UI controls such as TextView, EditText, Button, ListView and Spinner.
 
-=> It is positioned at the absolute bottom of the Android stack.
+5. `android.content`
 
-=> It never directly interacts with users or developers, but serves as the heart of the whole system.
+=> Provides Intent, Context, BroadcastReceiver and ContentResolver.
 
-Types of functions provided by the Linux kernel
+6. `android.database`
+
+=> Provides database classes such as Cursor.
+
+7. `android.database.sqlite`
+
+=> Provides SQLite database support.
+
+8. `android.graphics`
+
+=> Provides graphics classes such as Canvas, Paint, Bitmap and Color.
+
+9. `android.media`
+
+=> Provides media playback and recording classes like MediaPlayer and MediaRecorder.
+
+10. `android.location`
+
+=> Provides location-related classes.
+
+11. `android.provider`
+
+=> Provides access to system content providers like Contacts and MediaStore.
+
+12. `android.webkit`
+
+=> Provides WebView for displaying web content inside Android apps.
+
+## **1.5 Android Architecture**
+
+=> Android architecture is a layered software stack.
+
+![Android architecture](./images/unit-1.2.png)
+
+### Block diagram
+
+```text
++----------------------------------+
+|          Applications             |
+| Phone, SMS, Contacts, Browser     |
++----------------------------------+
+|      Application Framework        |
+| Activity Manager, View System,    |
+| Resource Manager, Content         |
+| Providers, Notification Manager   |
++----------------------------------+
+| Android Runtime + Native Libraries|
+| ART/DVM, Core Libraries, SQLite,  |
+| WebKit, OpenGL ES, Media Library  |
++----------------------------------+
+|            Linux Kernel           |
+| Drivers, Memory, Process, Power,  |
+| Security, Network Stack           |
++----------------------------------+
+```
+
+### 1. Linux Kernel Layer
+
+=> It is the bottom layer of Android architecture.
+
+### Functions
 
 1. Hardware abstraction.
-2. Memory management programs.
-3. Security settings.
-4. Power management software.
-5. Other hardware drivers.
-6. Support for shared libraries.
+2. Memory management.
+3. Process management.
+4. Device drivers.
+5. Security.
+6. Power management.
 7. Network stack.
 
-**2. Native code libraries layer**
+### 2. Native Libraries and Android Runtime
 
-=> The next layer in the Android architecture includes Android's native libraries, which carry instructions to guide the device in handling different data types.
+=> Native libraries are written mainly in C/C++.
 
-=> These native libraries include daemons and services written in C or C++.
+### Examples
 
-=> They provide browser technology from WebKit, database support via SQLite, and advanced graphics/media support.
+1. SQLite for database.
+2. WebKit/Chromium for web support.
+3. OpenGL ES for graphics.
+4. Media libraries for audio/video.
+5. SSL libraries for secure communication.
 
-=> Android Runtime: The runtime environments are written in Java and executed in Dalvik.
+=> Android Runtime executes Android applications.
 
-=> The core Java packages provide a full-featured Java programming environment.
+=> Older Android versions used DVM. Modern Android uses ART.
 
-=> Dalvik is open-source software responsible for running apps on Android devices.
+### 3. Application Framework Layer
 
-**3. Application framework layer**
+=> Provides high-level services to app developers.
 
-=> An important block of the application framework is the application manager.
+### Important managers
 
-=> The application managers include windows, contents, activities, telephony, location, and notifications.
+1. Activity Manager.
+2. Window Manager.
+3. Resource Manager.
+4. Content Providers.
+5. Notification Manager.
+6. View System.
+7. Location Manager.
+8. Package Manager.
 
-**4. Application layer**
+### 4. Application Layer
 
-=> Applications are located at the topmost layer of the Android stack.
+=> Top layer of Android architecture.
 
-=> An average user of the Android device mostly interacts with this topmost layer for basic functions.
+=> Contains system apps and user-installed apps.
 
-=> The layers further down the stack are accessed mostly by developers and programmers.
+### Examples
 
-Types of standard applications installed with every device
+1. Phone.
+2. SMS.
+3. Contacts.
+4. Camera.
+5. Browser.
+6. Third-party apps.
 
-1. SMS client app.
-2. Dialer.
-3. Web browser.
-4. Contact manager.
+## **1.6 Android Application Framework**
 
-## **1.4 Android Application Framework**
+=> **Definition**: `Android Application Framework provides reusable classes and services used to build Android applications.`
 
-=> **Definition**: `The application framework provides the specific classes used to create Android applications.`
+### Main framework components
 
-=> It provides a generic abstraction for hardware access and actively manages the user interface and application resources.
+1. **Activity Manager**
 
-=> The application framework provides everything necessary to implement an average application.
+=> Manages Activity lifecycle and back stack.
 
-Types of key application lifecycle components
+2. **Window Manager**
 
-1. **Activity Manager**: Controls all aspects of the application lifecycle and activity stack.
-2. **Content Providers**: Allows applications to securely publish and share data with other applications.
-3. **Resource Manager**: Provides access to non-code embedded resources such as strings, color settings, and user interface layouts.
-4. **Notifications Manager**: Allows applications to display alerts and notifications to the user.
-5. **View System**: An extensible set of views used strictly to create application user interfaces.
+=> Manages windows and screen display.
 
-=> The framework includes traditional programming constructs like threads, processes, and specially designed data structures for mobile applications.
+3. **View System**
 
-=> Developers can rely on familiar class libraries such as java.net and java.text, along with specialty libraries for graphics and databases.
+=> Provides UI components such as Button, TextView, layouts and event handling.
 
-=> Android applications can interact with the operating system and underlying hardware using a collection of managers, each responsible for keeping the state of a system service.
+4. **Resource Manager**
 
-=> The ViewManager and WindowManager handle user interface fundamentals.
+=> Provides access to non-code resources like strings, images, colors and layouts.
 
-=> Built-in applications such as the Contact manager act as content providers, allowing third-party apps unlimited access to contact data.
+5. **Content Providers**
 
-## **1.5 Android Application Components**
+=> Allows apps to share data securely.
 
-=> Application components are the essential building blocks of an Android application.
+6. **Notification Manager**
 
-=> These components are loosely coupled by the application manifest file that describes each component and how they interact.
+=> Allows apps to show notifications to users.
 
-Types of main components in an application
+7. **Package Manager**
 
-1. **Activities**: They dictate the UI and handle the user interaction to the smart phone screen.
-2. **Services**: They handle background processing associated with an application.
-3. **Broadcast Receivers**: They strictly handle communication between the Android OS and applications.
-4. **Content Providers**: They handle complex data and database management issues.
+=> Provides information about installed applications and permissions.
 
-### **1.5.1 Manifest File**
+8. **Location Manager**
 
-=> Every application must possess an AndroidManifest.xml file precisely named in its root directory.
+=> Provides location-based services.
 
-=> The manifest presents essential information about the application to the Android system before the code can run.
+## **1.7 Android Application Components**
 
-=> It names the Java package for the application, serving as a unique identifier.
+=> Application components are the building blocks of Android applications.
 
-=> It strictly describes the components of the application (activities, services, broadcast receivers, content providers) and publishes their capabilities.
+### Main components
 
-=> It actively determines which processes will host application components.
+1. **Activity**
 
-=> It declares the exact permissions the application must have to access protected parts of the API.
+=> Represents a single screen with user interface.
 
-=> It also declares the permissions that other applications must have to interact with its components.
+=> Example: Login screen, home screen, registration screen.
 
-=> It temporarily lists Instrumentation classes that provide profiling data while running, which are removed before publishing.
+2. **Service**
 
-=> It strongly declares the minimum required level of the Android API for the application.
+=> Performs background work without user interface.
 
-=> It meticulously lists the libraries that the application must be linked against.
+=> Example: Music playback, file download, data sync.
 
-### **1.5.2 Downloading and Installing Android**
+3. **Broadcast Receiver**
 
-=> To write Android applications, a developer must configure the programming environment for Java development.
+=> Receives broadcast messages from Android system or other applications.
 
-=> The required software is available online for download at zero cost.
+=> Example: Battery low, boot completed, network changed.
 
-=> Development can be actively performed on Windows, Macintosh, or Linux computer systems.
+4. **Content Provider**
 
-Steps for required software installation
+=> Manages and shares application data with other applications.
 
-1. Download and install The Java Development Kit (JDK) Version 5 or 6.
-2. Download and install a compatible Java IDE such as Eclipse along with its JDT plug-in.
-3. Download the Android SDK, tools, and documentation.
-4. Install the Android Development Tools (ADT) plug-in for Eclipse through the software update mechanism.
+=> Example: Contacts provider.
 
-=> The Android SDK fundamentally comes with five major components: SDK License Agreement, Android Documentation, Application Framework, Tools, and Sample Applications.
+### Component summary
 
-## **1.6 Exploring the Development Environment**
+| Component | Main use |
+|---|---|
+| Activity | UI screen |
+| Service | Background task |
+| BroadcastReceiver | Receive events |
+| ContentProvider | Share data |
 
-=> Developers have multiple choices when selecting integrated development environments (IDEs).
+## **1.8 AndroidManifest.xml**
 
-=> The majority of developers choose the popular and freely available Eclipse IDE to design applications.
+=> **Definition**: `AndroidManifest.xml is a configuration file that gives essential information about the app to the Android system.`
 
-=> There is a dedicated Android plug-in available strictly for facilitating Android development within Eclipse.
+=> Every Android application must have a manifest file.
 
-Types of supported operating systems for development
+### Uses
 
-1. Windows XP (32-bit) or Vista (32-bit or 64-bit).
-2. Mac OS X 10.5.8 or later (x86 only).
-3. Linux (tested on Linux Ubuntu 8.04 LTS, Hardy Heron).
+1. Declares app package name.
+2. Declares activities, services, receivers and providers.
+3. Declares permissions required by the app.
+4. Declares launcher Activity.
+5. Defines minimum SDK and app features.
+6. Declares intent filters.
+7. Defines application theme, icon and label.
 
-=> Developers are absolutely not constrained to using Eclipse and can choose other IDEs.
+### Example
 
-## **1.7 Android Developing Tools**
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-### **Android SDK**
+    <uses-permission android:name="android.permission.INTERNET" />
 
-=> The Android Software Development Kit contains the necessary tools to create, compile, and package Android applications.
+    <application
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
 
-=> Most of these essential development tools are entirely command-line based.
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
-=> The primary method to develop applications relies heavily on the Java programming language.
+        <service android:name=".MyService" />
+        <receiver android:name=".MyReceiver" />
 
-=> The SDK can be freely and easily downloaded directly from the Android website.
+    </application>
+</manifest>
+```
 
-### **Android Debug Bridge (ADB)**
+## **1.9 Android Development Environment**
 
-=> The SDK contains the Android Debug Bridge, which securely connects a virtual or real Android device to the environment.
+=> Android applications are commonly developed using Android Studio.
 
-=> This tool is utilized for the primary purpose of managing the device or debugging the active application.
+### Required tools
 
-### **Android Developer Tools and Android Studio**
+1. **JDK**
 
-=> Google provides two primary Integrated Development Environments to develop new applications.
+=> Java Development Kit required for Java-based Android development.
 
-=> The Android Developer Tools (ADT) are heavily based on the Eclipse IDE, acting as plug-ins that extend its capabilities.
+2. **Android Studio**
 
-=> Google additionally supports a dedicated IDE called Android Studio, which is fundamentally based on the IntelliJ IDE.
+=> Official IDE for Android development.
 
-=> Both provided IDEs contain all required functionality to perfectly create, compile, debug, and deploy Android applications.
+3. **Android SDK**
 
-=> They also allow the developer to independently create and start virtual Android devices for vital testing.
+=> Contains Android platform APIs and tools.
 
-### **Dalvik Virtual Machine (DVM)**
+4. **Gradle**
 
-=> Android traditionally uses the Dalvik virtual machine with just-in-time compilation to run Dalvik byte code.
+=> Build system used to compile and package Android applications.
 
-=> Dalvik byte code is usually translated directly from Java byte code.
+5. **Emulator / AVD**
 
-=> It acts as an interpreter-only virtual machine that precisely executes files formatted in the Dalvik Executable (.dex) format.
+=> Used to test apps on virtual Android devices.
 
-=> The format is inherently optimized for efficient storage and memory-mappable execution.
+### Older tools
 
-=> The virtual machine is register-based and can successfully run classes compiled by a Java compiler.
+=> Eclipse with ADT plugin was used earlier for Android development.
 
-=> While older Android versions use DVM, the latest versions introduced a new runtime architecture.
+=> Modern Android development mostly uses Android Studio.
 
-### **Android RunTime (ART)**
+## **1.10 Android Developing Tools**
 
-=> With Android 4.4, Google first introduced the Android RunTime (ART) as an optional architecture.
+### Android SDK
 
-=> It currently serves as the default mandatory runtime for all Android versions post-4.4.
+=> Android SDK contains tools, libraries, emulator and APIs needed for Android development.
 
-=> ART strictly uses Ahead of Time compilation.
+### Android Studio
 
-=> During the initial deployment process, the application code is completely translated into machine code.
+=> Official IDE used to create, build, run, debug and publish Android apps.
 
-=> This translation results in a 30% larger compiled code size but allows significantly faster execution right from the beginning.
+### ADB
 
-=> This process fundamentally saves battery life because the compilation is only executed once during the application's first start.
+=> **ADB** stands for Android Debug Bridge.
 
-=> The 'dex2oat' tool actively takes the .dex file and natively compiles it into an Executable and Linkable Format (ELF) file containing native code and meta-data.
+=> It connects a computer to an emulator or physical Android device.
 
-=> The garbage collection in ART has been aggressively optimized to noticeably reduce application freeze times.
+### Uses of ADB
 
-## **1.8 Developing Android Application**
+1. Install APK.
+2. Debug app.
+3. View logs.
+4. Copy files.
+5. Run shell commands on device.
 
-=> Android applications are primarily written end-to-end in the Java programming language.
+### Common ADB commands
 
-=> During active development, the developer manually creates the Android-specific configuration files and application logic.
+```text
+adb devices
+adb install app-debug.apk
+adb logcat
+adb shell
+```
 
-=> The ADT or Android Studio tools transparently convert these individual files into a completely packaged Android application.
+### Emulator
 
-=> When developers logically trigger the deployment in their IDE, the whole application is safely compiled, packaged, deployed, and started.
+=> Emulator runs a virtual Android device on the computer.
 
-### **1.8.1 Conversion Process from Source Code to Android Application**
+=> It helps test apps without a physical device.
 
-Processes with sequential order
+## **1.11 Dalvik Virtual Machine (DVM)**
 
-1. The Java source files are converted to Java class files strictly by the Java compiler.
-2. The Android SDK tool named 'dx' perfectly converts the Java class files into a single Dalvik Executable (.dex) file.
-3. Redundant information is logically optimized, resulting in a .dex file much smaller in size than corresponding class files.
-4. The .dex file and physical project resources (images, XML) are packed tightly into an .apk (Android package) file via the 'aapt' tool.
-5. The final resulting .apk file contains all necessary data and is seamlessly deployed to a device via the 'adb' tool.
+=> **Definition**: `Dalvik Virtual Machine is the virtual machine traditionally used by Android to execute Dalvik bytecode.`
 
-### **1.8.2 Android SDK Features**
+=> Android apps written in Java are compiled into `.class` files and then converted into `.dex` files.
 
-=> **Important feature**: `There are no licensing, distributions, development fees, or release approval processes involved.`
+=> DVM executes `.dex` files.
 
-=> **Important feature**: `Provides full multimedia hardware control capabilities.`
+### Features of DVM
 
-=> **Important feature**: `Includes APIs specifically for using sensor hardware like the accelerometer and the compass.`
+1. Optimized for low memory mobile devices.
+2. Register-based virtual machine.
+3. Runs each app in a separate process.
+4. Provides app isolation and security.
+5. Supports multiple instances for multiple apps.
 
-=> **Important feature**: `Contains deep APIs specifically for location-based services.`
+### Java to APK process
 
-=> **Important feature**: `Fully supports Android Inter-Process Communication (IPC).`
+```text
+Java source code
+      |
+      v
+.class files
+      |
+      v
+.dex file
+      |
+      v
+APK file
+      |
+      v
+Installed on device
+```
 
-=> **Important feature**: `Offers robust shared data storage functionality.`
+## **1.12 Android Runtime (ART)**
 
-=> **Important feature**: `Supports robust background applications and automated background processes.`
+=> **ART** stands for Android Runtime.
 
-=> **Important feature**: `Supports dynamic home screen widgets and live interactive folders.`
+=> ART replaced Dalvik as the default runtime in modern Android.
 
-=> **Important feature**: `Integrates a highly capable HTML5 WebKit-based web browser.`
+### Features
 
-=> **Important feature**: `Natively handles GSM, EDGE, and 3G networking standards for telephony and fast data transfer.`
+1. Uses Ahead-of-Time and Just-in-Time compilation.
+2. Improves app performance.
+3. Reduces app startup time.
+4. Provides improved garbage collection.
+5. Reduces UI freezing caused by memory cleanup.
 
-=> **Important feature**: `The Android SDK includes robust development tools designed to logically compile and debug any app.`
+### DVM vs ART
 
-=> **Important feature**: `The Android emulator accurately shows how the built app will visibly look and strictly behave on a real Android hardware device.`
+| DVM | ART |
+|---|---|
+| Older runtime. | Modern Android runtime. |
+| Executes Dalvik bytecode. | Compiles bytecode more efficiently. |
+| More runtime interpretation. | Better performance and garbage collection. |
 
-## **1.9 Developing Android Application On Eclipse Platform**
+## **1.13 Building an Android Application**
 
-=> Eclipse operates as an Integrated Development Environment (IDE), providing all the essential tools heavily needed for editing, running, and debugging Java programs.
+=> Android build tools convert source code and resources into an installable app package.
 
-=> The Java Development Kit (JDK) is a required set of foundational development tools specifically for programming Java applications.
+### Build process
 
-=> The Eclipse IDE absolutely requires that a compatible JDK be locally installed on the system.
+1. Java/Kotlin source code is compiled.
+2. Compiled classes are converted into DEX bytecode.
+3. XML layouts, images and resources are packaged.
+4. Manifest is merged and processed.
+5. DEX files and resources are packaged into APK/AAB.
+6. App is signed.
+7. APK/AAB is installed or published.
 
-Steps to create a new Android Application
+### Important build files
 
-1. In the Eclipse platform, navigate to File -> New -> Project.
-2. Logically select an 'Android Project' from the Android Folder and quickly press Next.
-3. Fill in all the mandatory details of your targeted Android application.
-4. Provide standard specific example values such as Project Name (SampleApp), Build Target (2.3.3), Application Name, Package Name (com.sample.example), and Create Activity.
-5. Finalize the complete process by clicking on Finish.
+1. `AndroidManifest.xml`: App configuration.
+2. `build.gradle`: Build configuration.
+3. `res/layout`: UI layout files.
+4. `res/values`: Strings, colors, styles.
+5. `java` or `kotlin` folder: Application source code.
+
+## **1.14 Android SDK Features**
+
+### Features
+
+1. No licensing fee for development.
+2. Full multimedia support.
+3. Sensor hardware APIs.
+4. Location-based service APIs.
+5. Inter-process communication support.
+6. Shared data storage.
+7. Background services.
+8. Widgets and notifications.
+9. WebView browser support.
+10. Telephony and networking APIs.
+11. Emulator and debugging tools.
+
+## **1.15 Exam Short Questions**
+
+=> **Question**: `Define Android.`
+
+=> **Answer**: Android is an open-source Linux-based operating system and development platform used to build mobile applications.
+
+=> **Question**: `List Android application components.`
+
+=> **Answer**: Activity, Service, BroadcastReceiver and ContentProvider.
+
+=> **Question**: `What is ADB?`
+
+=> **Answer**: ADB stands for Android Debug Bridge. It is used to communicate with emulator or physical device for debugging and installation.
+
+=> **Question**: `What is AndroidManifest.xml?`
+
+=> **Answer**: It is the configuration file that declares app components, permissions, launcher activity and other app information.
+
+=> **Question**: `What is DVM?`
+
+=> **Answer**: DVM is Dalvik Virtual Machine, used by older Android versions to execute `.dex` bytecode.
+
+=> **Question**: `What is Resource Manager?`
+
+=> **Answer**: Resource Manager provides access to non-code resources such as strings, layouts, colors and images.

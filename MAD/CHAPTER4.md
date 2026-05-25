@@ -1,272 +1,446 @@
-# **4 Storing the Data Persistently**
+# **4 Storing Data Persistently**
 
-## **4.1 Storage Data Folder**
+## **4.1 Data Storage in Android**
 
-=> **Core concept**: `The application data folder is used to store application-specific data.`
+=> **Definition**: `Data storage means saving application data so it can be used later.`
 
-=> The application data folder is a special hidden folder that your app can use to store application-specific data, such as configuration files.
+=> Android provides multiple storage options depending on data size, privacy and structure.
 
-=> The application data folder is automatically created when you attempt to create a file in it.
+### Android storage options
 
-=> Use this folder to store any files that the user shouldn't directly interact with.
+1. SharedPreferences.
+2. Internal Storage.
+3. External Storage.
+4. SQLite Database.
+5. Content Provider.
+6. Network or cloud storage.
 
-=> This folder is only accessible by your application and its contents are hidden from the user and from other Drive apps.
+### Choosing correct storage
 
-=> The application data folder is deleted when a user uninstalls your app from their MyDrive.
+| Requirement | Suitable storage |
+|---|---|
+| Small settings | SharedPreferences |
+| Private app files | Internal Storage |
+| Public media/files | External Storage |
+| Structured records | SQLite |
+| Share data with apps | Content Provider |
+| Sync across devices | Network/Cloud |
 
-=> Users can also delete your app's data folder manually.
+## **4.2 Internal Storage**
 
-### **4.1.1 Application Data Folder Scope**
+=> **Internal Storage** stores private files inside app-specific storage.
 
-=> Before you can access the application data folder, you must request access to the https://www.googleapis.com/auth/drive.appdata scope.
+=> Other apps cannot access these files.
 
-### **4.1.2 Creating File in App Data Folder**
+=> Files are deleted when the app is uninstalled.
 
-=> To create a file in the application data folder, specify appDataFolder in the parents property of the file.
+### Important methods
 
-=> Use the files.create method to upload the file to the folder.
+1. `openFileOutput()`
+2. `openFileInput()`
+3. `getFilesDir()`
+4. `getCacheDir()`
 
-### **4.1.3 Search for Files in App Data Folder**
+### Write file example
 
-=> To search for files in the application data folder, set the spaces field to appDataFolder and use the files.list method.
+```java
+String data = "Hello Android";
 
-## **4.2 Using Internal Storage**
+FileOutputStream fos = openFileOutput("data.txt", MODE_PRIVATE);
+fos.write(data.getBytes());
+fos.close();
+```
 
-=> **Core concept**: `Android read write data to internal file.`
+### Read file example
 
-=> Android data can be saved in internal storage (ROM), external storage (SD card), shared preferences or SQLite database.
+```java
+FileInputStream fis = openFileInput("data.txt");
+BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
 
-=> Android is based on Linux, and the android file system is Linux based also.
+String line = reader.readLine();
+reader.close();
+```
 
-=> Android studio provides an android device monitor tool for you to monitor and transfer files between the android device and your PC.
+## **4.3 External Storage**
 
-=> All android app internal data files are saved in the /data/data/<your app package name> folder.
+=> **External Storage** stores files in shared or app-specific external storage.
 
-=> **Example**: `my app data internal file is saved in /data/data/com.dev2qa.example folder.`
+=> It is useful for images, videos, documents and downloaded files.
 
-=> There are files and cache sub folders under the package name folder.
+### Types
 
-Types of internal storage folders
+1. **Primary external storage**
 
-1. **Files folder**: android.content.Context's getFilesDir() method can return this folder, which is used to save general files.
-2. **Cache folder**: android.content.Context's getCacheDir() method can return this folder, which is used to save cached files.
+=> Built-in shared storage.
 
-=> **Important explanation point**: `When device internal storage space is low, cache files will be removed by android OS automatically to make internal storage space bigger.`
+2. **Secondary external storage**
 
-=> Generally, you need to delete the unused cache files in code timely, and total cache file size is better not more than 1 MB.
+=> Removable storage such as SD card.
 
-## **4.3 Using External Storage**
+### Important methods
 
-=> Android data can be saved in internal storage (ROM), external storage (SD card), shared preferences or SQLite database.
+1. `Environment.getExternalStorageState()`
+2. `getExternalFilesDir()`
+3. `getExternalCacheDir()`
 
-=> Android external storage can be used to write and save data, read configuration files etc.
+### Write to app-specific external storage
 
-=> External storage such as SD card can also store application data, and there is no security enforced upon files you save to the external storage.
+```java
+File file = new File(getExternalFilesDir(null), "data.txt");
 
-Types of External Storage
+FileOutputStream fos = new FileOutputStream(file);
+fos.write("Hello External Storage".getBytes());
+fos.close();
+```
 
-1. **Primary External Storage**: In-built shared storage which is accessible by the user by plugging in a USB cable and mounting it as a drive on a host computer (Example: Nexus 5 32 GB).
-2. **Secondary External Storage**: Removable storage like an SD Card.
+### Check storage state
 
-=> All applications can read and write files placed on the external storage and the user can remove them.
+```java
+String state = Environment.getExternalStorageState();
 
-=> We need to check if the SD card is available and if we can write to it before allowing operations like saving.
+if (Environment.MEDIA_MOUNTED.equals(state)) {
+    // External storage is available for read and write.
+}
+```
 
-=> Firstly, we need to make sure that the application has permission to read and write data to the users SD card by adding permissions in the AndroidManifest.xml.
+### Note
 
-=> External storage may be tied up by the user having mounted it as a USB storage device, so we need to check if it is available and is not read-only.
+=> On newer Android versions, public shared storage access is restricted. App-specific external files usually do not need storage permission.
 
-=> getExternalStorageState() is a static method of Environment to determine if external storage is presently available or not.
+## **4.4 SharedPreferences**
 
-Types of External Storage Methods
+=> **Definition**: `SharedPreferences are used to store small amounts of primitive data as key-value pairs.`
 
-1. `Environment.getExternalStorageState()`: returns path to internal SD mount point like "/mnt/sdcard".
-2. `getExternalFilesDir()`: It returns the path to files folder inside Android/data/data/application_package/ on the SD card.
+### Suitable for
 
-=> The getExternalFilesDir() folder is used to store any required files for your app like images downloaded from web or cache files.
+1. Login status.
+2. Username.
+3. App theme.
+4. Language preference.
+5. Small settings.
 
-=> Once the app is uninstalled, any data stored in this folder is gone too.
+### Supported data types
 
-## **4.4 Shared Preferences**
+1. String
+2. int
+3. boolean
+4. float
+5. long
+6. Set<String>
 
-=> **Core concept**: `Shared preferences allow you to read and write small amounts of primitive data as key/value pairs to a file on the device storage.`
+### Write data
 
-=> The SharedPreference class provides APIs for getting a handle to a preference file and for reading, writing, and managing this data.
+```java
+SharedPreferences preferences =
+        getSharedPreferences("MyPrefs", MODE_PRIVATE);
 
-=> The shared preferences file itself is managed by the Android framework and is accessible to (shared with) all the components of your app.
+SharedPreferences.Editor editor = preferences.edit();
+editor.putString("username", "Aman");
+editor.putBoolean("isLogin", true);
+editor.apply();
+```
 
-=> **Important explanation point**: `That data is not, however, shared with or accessible to any other apps.`
+### Read data
 
-=> The data you save to shared preferences is different from the data in the saved activity state.
+```java
+SharedPreferences preferences =
+        getSharedPreferences("MyPrefs", MODE_PRIVATE);
 
-=> The data in the activity instance state is retained across activity instances in the same user session.
+String username = preferences.getString("username", "");
+boolean isLogin = preferences.getBoolean("isLogin", false);
+```
 
-=> Shared preferences persist across user sessions, even if your app is killed and restarted or if the device is rebooted.
+### Difference from Activity state
 
-=> Use shared preferences only when you need to save a small amount of simple key/value pairs.
+=> Activity state is temporary for current session.
 
-=> To manage larger amounts of persistent app data, use other methods such as SQL databases.
+=> SharedPreferences persist even after app restart or phone reboot.
 
-### **4.4.1 Creating Private and Shared Preferences**
+## **4.5 SQLite Database**
 
-=> Individual activities can have their own private preferences.
+=> **Definition**: `SQLite is a lightweight relational database used to store structured data persistently in Android.`
 
-=> These preferences are for the specific Activity only and are not shared with other activities within the application.
+=> SQLite is built into Android and does not require a separate server.
 
-=> The activity gets only one group of private preferences.
+### Features
 
-=> You can access shared preferences by name from any activity in the application.
+1. Lightweight database.
+2. Requires little memory.
+3. Supports SQL.
+4. Stores data persistently.
+5. Useful for structured records.
+6. Automatically managed inside Android app.
 
-=> There is no limit to the number of different shared preferences you can create.
+### SQLite data types
 
-=> **Example**: `You can have some shared preferences called UserNetworkPreferences and another called AppDisplayPreferences.`
+1. `TEXT`
+2. `INTEGER`
+3. `REAL`
+4. `BLOB`
+5. `NULL`
 
-=> How you organize shared preferences is up to you, the developer.
+### Common operations
 
-=> It is recommended to declare your preference name as a variable (in a base class or header) so that you can reuse the name across multiple activities.
+1. Create table.
+2. Insert data.
+3. Read/query data.
+4. Update data.
+5. Delete data.
 
-## **4.5 SQLite**
+## **4.6 SQLiteOpenHelper**
 
-=> **Definition**: `SQLite is a software library that provides a relational database management system.`
+=> `SQLiteOpenHelper` is used to create and manage SQLite database in Android.
 
-=> The 'lite' in SQLite means lightweight in terms of setup, database administration, and required resource.
+### Important methods
 
-=> A SQLite database is a good storage solution when you have structured data that you need to store persistently and access, search, and change frequently.
+1. `onCreate(SQLiteDatabase db)`
 
-=> SQLite is self-contained, meaning it requires minimal support from the operating system or external library.
+=> Called when database is created first time.
 
-=> This makes SQLite usable in any environments, especially in embedded devices like iPhones, Android phones, game consoles, handheld media players, etc.
+2. `onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)`
 
-=> SQLite is developed using ANSI-C, with the source code available as a big sqlite3.c and its header file sqlite3.h.
+=> Called when database version changes.
 
-=> If you want to develop an application that uses SQLite, you just need to drop these files into your project and compile it with your code.
+3. `getWritableDatabase()`
 
-=> SQLite databases are very lightweight, unlike other database systems, there is no configuration or installation required to start working on an SQLite database.
+=> Opens database for read/write operations.
 
-=> When you use a SQLite database, all interactions with the database are through an instance of the SQLiteOpenHelper class which executes your requests and manages your database for you.
+4. `getReadableDatabase()`
 
-=> The Android SQLite Database requires very little memory (around 250kb), which is available on all android devices.
+=> Opens database for reading.
 
-=> Every device has an inbuilt support for SQLite database, which is automatically managed on android right from its creation, execution to querying up process.
+## **4.7 SQLite Example: Student Database**
 
-=> SQLite is an open-source database, available on every android database, and it supports standard relational database features like SQL syntax, transactions & SQL statements.
+### DBHelper.java
 
-=> Most of the SQL commands don't run on the lighter version of SQL database (SQLite), so it is important to ensure that a feature or command is available in SQLite before executing it.
+```java
+public class DBHelper extends SQLiteOpenHelper {
+    private static final String DB_NAME = "StudentDB";
+    private static final int DB_VERSION = 1;
+    private static final String TABLE_NAME = "student";
 
-Advantages of SQLite
+    public DBHelper(Context context) {
+        super(context, DB_NAME, null, DB_VERSION);
+    }
 
-1. It's a light weight database.
-2. Requires very little memory.
-3. An Automatically managed database.
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        String query = "CREATE TABLE " + TABLE_NAME + "("
+                + "enrollment TEXT PRIMARY KEY,"
+                + "name TEXT,"
+                + "branch TEXT)";
+        db.execSQL(query);
+    }
 
-Types of Datatypes supported by SQLite
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        onCreate(db);
+    }
 
-1. Text (like string) - for storing data type store.
-2. Integer (like int) - for storing integer primary key.
-3. Real (like double) - for storing long.
+    public boolean insertStudent(String enrollment, String name, String branch) {
+        SQLiteDatabase db = getWritableDatabase();
 
-=> Unlike other database management systems, there is no CREATE DATABASE command in SQLite.
+        ContentValues values = new ContentValues();
+        values.put("enrollment", enrollment);
+        values.put("name", name);
+        values.put("branch", branch);
 
-=> The simplest way to create a new SQLiteDatabase instance for your application is to use the openOrCreateDatabase() method of your application Context.
+        long result = db.insert(TABLE_NAME, null, values);
+        return result != -1;
+    }
+}
+```
 
-## **4.6 Content Provider**
+### Use in Activity
 
-=> **Definition**: `A content provider manages access to a central repository of data.`
+```java
+DBHelper dbHelper = new DBHelper(this);
 
-=> A provider is part of an Android application, which often provides its own UI for working with the data.
+boolean inserted = dbHelper.insertStudent(
+        "22012301001",
+        "Aman",
+        "Computer");
 
-=> Content providers are primarily intended to be used by other applications, which access the provider using a provider client object.
+if (inserted) {
+    Toast.makeText(this, "Student inserted", Toast.LENGTH_SHORT).show();
+}
+```
 
-=> Together, providers and provider clients offer a consistent, standard interface to data that also handles inter-process communication and secure data access.
+## **4.8 Query, Update and Delete in SQLite**
 
-=> A content provider presents data to external applications as one or more tables that are similar to the tables found in a relational database.
+### Read data
 
-=> A row represents an instance of some type of data the provider collects, and each column in the row represents an individual piece of data collected for an instance.
+```java
+SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-=> Typically you work with content providers in one of two scenarios: you may want to implement code to access an existing content provider or implement one in another.
+Cursor cursor = db.rawQuery("SELECT * FROM student", null);
 
-=> A content provider coordinates access to the data storage layer in your application for a number of different APIs and components.
+while (cursor.moveToNext()) {
+    String enrollment = cursor.getString(0);
+    String name = cursor.getString(1);
+    String branch = cursor.getString(2);
+}
 
-Types of components the content provider handles
+cursor.close();
+```
 
-1. Sharing access to your application data with other applications.
-2. Sending data to a widget.
-3. Returning custom search suggestions for your application through the search framework using SearchRecentSuggestionsProvider.
-4. Synchronizing application data with your server using an implementation of AbstractThreadedSyncAdapter.
-5. Loading data in your UI using a CursorLoader.
+### Update data
 
-### **4.6.1 Content Provider Classes**
+```java
+SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-=> A content provider in Android shares data between applications, with each application usually running in its own process.
+ContentValues values = new ContentValues();
+values.put("branch", "IT");
 
-=> By default, applications can't access the data and files of other applications.
+db.update(
+        "student",
+        values,
+        "enrollment=?",
+        new String[]{"22012301001"});
+```
 
-=> You can make preferences and files available across application boundaries with the correct permissions and if each application knows the context and path.
+### Delete data
 
-=> This solution applies only to related applications that already know details about one another.
+```java
+SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-=> In contrast, with a content provider you can publish and expose a particular data type for other applications to query, add, update, and delete.
+db.delete(
+        "student",
+        "enrollment=?",
+        new String[]{"22012301001"});
+```
 
-=> With content providers, applications don't need to have any prior knowledge of paths, resources, or who provides the content.
+## **4.9 Content Provider**
 
-=> The canonical content provider in Android is the contacts list, which provides names, addresses, and phone numbers.
+=> **Definition**: `A Content Provider manages access to a central repository of data and allows data sharing between applications.`
 
-=> You can access this data from any application by using the correct URI and series of methods provided by the Activity and ContentResolver classes to retrieve and store data.
+=> By default, one app cannot directly access another app's private data. Content Provider provides a secure standard interface.
 
-### **4.6.2 Deleting Database Records**
+### Features
 
-=> The data modification clauses in SQLite are INSERT, UPDATE, and DELETE statements.
+1. Shares data between apps.
+2. Uses content URI.
+3. Works with `ContentResolver`.
+4. Supports query, insert, update and delete.
+5. Handles inter-process communication.
 
-=> It is used for inserting new rows, updating existing values, or deleting rows from the database.
+### Common built-in Content Providers
 
-=> You can remove records from the database using the remove() method, which takes a few arguments.
+1. Contacts Provider.
+2. MediaStore Provider.
+3. Calendar Provider.
+4. Call Log Provider.
+5. Settings Provider.
+6. User Dictionary Provider.
 
-=> Passing null to the WHERE clause deletes all records within the table.
+### Content URI example
 
-=> Most of the time, though, we want to delete individual records by their unique identifiers.
+```text
+content://contacts/people
+```
 
-=> You need not use the primary key (id) to delete records; the WHERE clause is entirely up to you.
+## **4.10 Access Content Provider Example**
 
-## **4.7 Handling Database in Android**
+### Read contacts
 
-=> In the same way that you retrieve data from a provider, you also use the interaction between a provider client and the provider's ContentProvider to modify data.
+```java
+Cursor cursor = getContentResolver().query(
+        ContactsContract.Contacts.CONTENT_URI,
+        null,
+        null,
+        null,
+        null);
 
-=> You call a method of ContentResolver with arguments that are passed to the corresponding method of ContentProvider.
+while (cursor != null && cursor.moveToNext()) {
+    String name = cursor.getString(
+            cursor.getColumnIndexOrThrow(
+                    ContactsContract.Contacts.DISPLAY_NAME));
+}
 
-=> The provider and provider client automatically handle security and inter-process communication.
+if (cursor != null) {
+    cursor.close();
+}
+```
 
-### **4.7.1 Inserting Data**
+### Required permission
 
-=> To insert data into a provider, you call the ContentResolver.insert() method.
+```xml
+<uses-permission android:name="android.permission.READ_CONTACTS" />
+```
 
-=> This method inserts a new row into the provider and returns a content URI for that row.
+## **4.11 ContentResolver Operations**
 
-=> The data for the new row goes into a single ContentValues object, which is similar in form to a one-row cursor.
+### Insert
 
-=> The columns in this object don't need to have the same data type, and if you don't want to specify a value at all, you can set a column to null using ContentValues.putNull().
+```java
+ContentValues values = new ContentValues();
+values.put("name", "Aman");
 
-=> You generally don't add the _ID column to the ContentValues because this column is maintained automatically.
+Uri uri = getContentResolver().insert(CONTENT_URI, values);
+```
 
-=> The provider assigns a unique value of _ID to every row that is added, which providers usually use as the table's primary key.
+### Query
 
-=> The content URI returned identifies the newly-added row with a specific format containing the <id_value> for the new row.
+```java
+Cursor cursor = getContentResolver().query(
+        CONTENT_URI,
+        null,
+        null,
+        null,
+        null);
+```
 
-=> Most providers can detect this form of content URI automatically and then perform the requested operation on that particular row.
+### Update
 
-=> To get the value of _ID from the returned Uri, call ContentUris.parseId().
+```java
+ContentValues values = new ContentValues();
+values.put("name", "New Name");
 
-### **4.7.2 Updating Data**
+getContentResolver().update(
+        CONTENT_URI,
+        values,
+        "id=?",
+        new String[]{"1"});
+```
 
-=> To update a row, you use a ContentValues object with the updated values just as you do with an insertion.
+### Delete
 
-=> You specify selection criteria just as you do with a query to identify the rows to update.
+```java
+getContentResolver().delete(
+        CONTENT_URI,
+        "id=?",
+        new String[]{"1"});
+```
 
-=> You should also sanitize user input when you call ContentResolver.update().
+## **4.12 Data Storage Comparison**
 
-### **4.7.3 Deleting data**
+| Storage | Best for | Shared with other apps |
+|---|---|---|
+| SharedPreferences | Small key-value settings | No |
+| Internal Storage | Private files | No |
+| External Storage | Media/documents | Yes, depending on location |
+| SQLite | Structured records | No |
+| Content Provider | Shared structured data | Yes |
 
-=> Deleting rows is similar to retrieving row data: you specify selection criteria for the rows you want to delete.
+## **4.13 Exam Short Questions**
 
-=> The client method returns the number of deleted rows.
+=> **Question**: `What is SharedPreferences?`
 
-=> You should also sanitize user input when you call ContentResolver.delete().
+=> **Answer**: SharedPreferences store small key-value data persistently.
+
+=> **Question**: `What is SQLite?`
+
+=> **Answer**: SQLite is a lightweight relational database built into Android.
+
+=> **Question**: `What is ContentProvider?`
+
+=> **Answer**: ContentProvider shares data between applications using a standard secure interface.
+
+=> **Question**: `Which storage is best for login status?`
+
+=> **Answer**: SharedPreferences.
+
+=> **Question**: `Which class manages SQLite database creation?`
+
+=> **Answer**: SQLiteOpenHelper.

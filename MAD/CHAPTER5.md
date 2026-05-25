@@ -2,215 +2,416 @@
 
 ## **5.1 Location Services**
 
-### **5.1.1 Current Location**
+=> **Definition**: `Location services are Android features used to find the geographical location of a device.`
 
-=> The Android location API can be used to actively track the mobile's current location and dynamically show it in the app.
+=> Location is commonly represented using latitude and longitude.
 
-=> To securely get the current location, developers must create a location client which is a LocationClient object.
+### Uses
 
-=> This client must be connected to Location Services using the connect() method, after which the getLastLocation() method is called.
+1. Maps and navigation.
+2. Cab booking.
+3. Food delivery.
+4. Fitness tracking.
+5. Weather apps.
+6. Location tagging.
+7. Nearby place search.
 
-=> The getLastLocation() method safely returns the most recent location strictly in the form of a Location object that contains latitude and longitude coordinates.
+## **5.2 Location Providers**
 
-=> To successfully implement location-based functionality within an activity, you will have to implement two specific interfaces.
+=> Android can obtain location from different providers.
 
-Types of required location client interfaces
+### 1. GPS Provider
 
-1. GooglePlayServicesClient.ConnectionCallbacks.
-2. GooglePlayServicesClient.OnConnectionFailedListener.
+=> Uses satellites to determine location.
 
-Types of callback methods provided by the location client
+### Advantages
 
-1. `abstract void onConnected(Bundle connectionHint)`: This callback method is securely called when the location service is successfully connected to the location client.
-2. `abstract void onDisconnected()`: This callback method is called exactly when the client is disconnected after safely using the disconnect() method.
-3. `abstract void onConnectionFailed(ConnectionResult result)`: This callback method is triggered when there is an error connecting the client to the underlying service.
+1. More accurate outdoors.
+2. Does not depend on mobile network.
 
-### **5.1.2 Location Listener**
+### Disadvantages
 
-=> The LocationListener interface is a core part of the Android Locations API and is used primarily for receiving notifications from the LocationManager when the location has changed.
+1. Slow first fix.
+2. Consumes more battery.
+3. Works poorly indoors.
 
-=> The LocationManager class securely provides access to the underlying system location services.
+### 2. Network Provider
 
-Types of callback methods implemented by the LocationListener class
+=> Uses mobile towers and Wi-Fi networks.
 
-1. `onLocationChanged(Location location)`: Called immediately when the registered location has changed.
-2. `onProviderDisabled(String provider)`: Called safely when the location provider is explicitly disabled by the user.
-3. `onProviderEnabled(String provider)`: Called securely when the location provider is actively enabled by the user.
-4. `onStatusChanged(String provider, int status, Bundle extras)`: Called directly when the provider status experiences a change.
+### Advantages
 
-Types of means for acquiring location data in android.location
+1. Faster than GPS.
+2. Works better indoors.
+3. Consumes less battery.
 
-1. `LocationManager.GPS_PROVIDER`: Determines location actively using satellites, though depending on conditions, it may take a while to return a precise location fix.
-2. `LocationManager.NETWORK_PROVIDER`: Determines location rapidly based on the availability of nearby cell towers and WiFi access points, making it generally faster than the GPS provider.
+### Disadvantages
 
-## **5.2 Working with Google Map**
+1. Less accurate than GPS.
+2. Depends on network availability.
 
-=> **Core concept**: `Google maps are widely considered the most popular method of visually displaying maps on mobile devices.`
+## **5.3 LocationManager and LocationListener**
 
-=> Android officially allows developers to integrate Google Maps within an application by providing it as a library via Google Play Services.
+=> `LocationManager` provides access to Android location services.
 
-=> In order to correctly use the Google Maps API, developers must register their application natively on the Google Developer Console and actively enable the API.
+=> `LocationListener` receives updates when location changes.
 
-=> The Google Maps Android API fundamentally consists of a core set of classes that elegantly combine to provide robust mapping capabilities.
+### LocationListener callbacks
 
-=> To accurately use the com.google.android.maps package and reliably support all features related to a MapView, developers must strictly use a MapActivity.
+1. `onLocationChanged(Location location)`: Called when location changes.
+2. `onProviderEnabled(String provider)`: Called when provider is enabled.
+3. `onProviderDisabled(String provider)`: Called when provider is disabled.
+4. `onStatusChanged()`: Older callback for provider status changes.
 
-=> The UiSettings class dynamically provides a high level of control from within an application regarding which user interface controls visibly appear on a map.
+### Required permissions
 
-### **5.2.1 APIs in Google Maps**
+```xml
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+```
 
-=> There are several specialized APIs available in Google Maps that manage SPONSORED SEARCHES, process mapping, satellite mapping, and GPS location tracking.
+### Example: Get current location
 
-Types of Web APIs provided by Google Maps
+```java
+public class MainActivity extends AppCompatActivity {
+    TextView txtLocation;
+    LocationManager locationManager;
 
-1. Google Maps JavaScript API.
-2. Google Street View Image API.
-3. Google Static Maps API.
-4. Google Maps Embed API.
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-### **5.2.4 Adding a Map to an Application**
+        txtLocation = findViewById(R.id.txtLocation);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-=> The absolute simplest way to visually add a map to an application is to specify it directly in the user interface layout XML file for an active activity.
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
 
-=> A standard SupportMapFragment instance can be easily added to the activity layout file (such as activity_map_demo.xml) that is generated by Android Studio.
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                5000,
+                5,
+                location -> {
+                    double lat = location.getLatitude();
+                    double lng = location.getLongitude();
+                    txtLocation.setText("Latitude: " + lat + "\nLongitude: " + lng);
+                });
+    }
+}
+```
 
-### **5.2.5 Types of Google Map**
+## **5.4 Fused Location Provider**
+
+=> Fused Location Provider is a Google Play Services API that combines GPS, Wi-Fi, mobile network and sensors to provide efficient location.
 
-Types of Google maps available for display
+### Advantages
 
-1. **Road map**: This is the standard default map type that cleanly displays the default road map view.
-2. **Satellite**: This visually displays real-world Google Earth satellite images.
-3. **Hybrid**: This dynamically displays a functional mixture of normal road map details and satellite views.
-4. **Terrain**: This specifically displays a physical map heavily based on territory information.
+1. More battery efficient.
+2. Automatically chooses best provider.
+3. Provides last known location.
+4. Good accuracy for most apps.
 
-=> The specific type of map displayed can be modified dynamically at runtime by making a direct call to the setMapType() method of the corresponding GoogleMap object.
+### Example: Get last location
 
-Types of values passed to the setMapType() method
+```java
+FusedLocationProviderClient client =
+        LocationServices.getFusedLocationProviderClient(this);
 
-1. `GoogleMap.MAP_TYPE_NONE`: Safely displays an empty grid completely devoid of mapping tiles.
-2. `GoogleMap.MAP_TYPE_NORMAL`: Smoothly displays the standard view strictly consisting of the classic road map.
-3. `GoogleMap.MAP_TYPE_SATELLITE`: Visually displays the detailed satellite imagery of the active map region.
-4. `GoogleMap.MAP_TYPE_HYBRID`: Dynamically displays satellite imagery with the structured road map neatly superimposed.
-5. `GoogleMap.MAP_TYPE_TERRAIN`: Accurately displays topographical information heavily featuring elements such as contour lines and colors.
+if (ActivityCompat.checkSelfPermission(this,
+        Manifest.permission.ACCESS_FINE_LOCATION)
+        == PackageManager.PERMISSION_GRANTED) {
 
-### **5.2.6 Displaying the User's Current Location**
+    client.getLastLocation().addOnSuccessListener(location -> {
+        if (location != null) {
+            double lat = location.getLatitude();
+            double lng = location.getLongitude();
+        }
+    });
+}
+```
 
-=> The user's exact current location may be actively displayed on the map by obtaining a secure reference to the GoogleMap object associated with the displayed map.
+## **5.5 Google Maps in Android**
 
-=> Developers must strictly call the setMyLocationEnabled() method of that instance, safely passing through a Boolean value of true.
+=> Google Maps can be integrated into Android applications using Google Maps SDK for Android.
 
-=> When the map is fully ready to display, the system automatically calls the onMapReady() method of the hosting activity.
+### Uses
 
-=> The onMapReady() method will also be successfully called when the map is dynamically refreshed within the onRequestPermissionsResult() method.
+1. Display map.
+2. Show current location.
+3. Add markers.
+4. Draw routes.
+5. Search places.
+6. Change map type.
 
-### **5.2.7 User Interface (UI) Controls of Google Maps**
+### Basic steps
 
-=> Google maps generously provides various user-friendly interface controls to allow the end-user to easily interact with the map.
+1. Create project in Google Cloud Console.
+2. Enable Maps SDK for Android.
+3. Generate API key.
+4. Add API key to app.
+5. Add `SupportMapFragment` in layout.
+6. Implement `OnMapReadyCallback`.
 
-=> Developers can dynamically add, cleanly customize, and completely disable these explicit controls.
+### Layout example
 
-Types of default UI controls provided
+```xml
+<fragment
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+```
 
-1. **Zoom**: Strictly displays the "+" and "-" buttons neatly in the bottom right corner of the map to change the active zoom level.
-2. **Pan**: A control used efficiently for panning the active map view.
-3. **Map type**: This logically appears on the top right corner and seamlessly provides map type options such as Satellite, Road map, and Terrain.
-4. **Street view**: This uniquely contains a Pegman icon which can be safely dragged to obtain the street view of a particular highlighted location.
+### Manifest API key
 
-### **5.2.8 Features of Google Maps**
+```xml
+<meta-data
+    android:name="com.google.android.geo.API_KEY"
+    android:value="YOUR_API_KEY" />
+```
 
-=> **Feature**: `It accurately searches physical places and calculates route directions.`
+### Activity example
 
-=> **Feature**: `It securely provides highly precise distance information.`
+```java
+public class MapsActivity extends AppCompatActivity
+        implements OnMapReadyCallback {
 
-=> **Feature**: `It functionally helps users seamlessly find live traffic details and navigation instructions.`
+    GoogleMap googleMap;
 
-=> **Feature**: `It visually displays highly detailed street views.`
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
 
-=> **Feature**: `It actively receives and dynamically outputs verbal instructions.`
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.map);
 
-=> **Feature**: `It generously provides native location sharing and advanced location editing capabilities.`
+        mapFragment.getMapAsync(this);
+    }
 
-### **5.2.9 Difference between Google Maps and Google Earth**
+    @Override
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
 
-=> Google Maps intelligently contains all essential information strictly focused on navigation, safely providing lightweight point-to-point navigation paired with only a small hint of satellite imagery.
+        LatLng ahmedabad = new LatLng(23.0225, 72.5714);
+        googleMap.addMarker(new MarkerOptions()
+                .position(ahmedabad)
+                .title("Ahmedabad"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ahmedabad, 12));
+    }
+}
+```
 
-=> Google Earth vividly displays the complete 3D view of satellite data alongside only a very small subset of location information, deliberately avoiding point-to-point navigation.
+## **5.6 Types of Google Maps**
 
-## **5.3 Geocoding**
+### Map types
 
-=> **Definition**: `Geocoding is the precise process of transforming a text-based description of a location, such as an address or place name, into exact coordinates on the earth's surface.`
+1. `GoogleMap.MAP_TYPE_NORMAL`
 
-=> Geocoding can be best described as actively converting a textual geographical location seamlessly into geographical coordinates mathematically expressed strictly in longitude and latitude.
+=> Standard road map.
 
-=> Geocoding operations can dynamically be done by entering a single location description at a time or by securely providing multiple entries at once structured in a table.
+2. `GoogleMap.MAP_TYPE_SATELLITE`
 
-=> The generated resulting locations are cleanly output as geographic features richly containing attributes that can be heavily used for future mapping or spatial analysis.
+=> Satellite imagery.
 
-=> Geocoding can be successfully achieved utilizing the powerful Android Geocoder class.
+3. `GoogleMap.MAP_TYPE_HYBRID`
 
-=> An operational instance of the Geocoder class can be seamlessly passed a standard string representing a location, such as a city name, precise street address, or airport code.
+=> Satellite imagery with roads and labels.
 
-=> The active geocoder will automatically attempt to find a valid match for the location and smoothly return a ranked list of Address objects, smartly placing the absolute closest match at position 0.
+4. `GoogleMap.MAP_TYPE_TERRAIN`
 
-=> A massive variety of data can natively be extracted directly from the Address objects, deeply including the exact longitude and latitude of the potential matched locations.
+=> Terrain and topographic details.
 
-### **5.3.1 Use of Geolocations**
+5. `GoogleMap.MAP_TYPE_NONE`
 
-=> Geolocation can be utilized to definitively determine time zones and extract exact positioning coordinates widely used for tracking wildlife or monitoring cargo shipments.
+=> Empty grid without map tiles.
 
-=> Both smart mobile devices and standard desktop devices can safely use geolocation protocols.
+### Example
 
-=> There are heavily optimized apps which only briefly use location once, and alternatively, there are dedicated apps which continuously track your active location.
+```java
+googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+```
 
-Types of famous apps actively using Geolocation
+## **5.7 Google Maps UI Controls**
 
-1. Uber / Lyft for Cab booking operations.
-2. Google Maps for core Map services.
-3. Swiggy / Zomato for Food delivery logistics.
-4. Fitbit for active Fitness tracking.
-5. Instagram / Facebook strictly for Tagging photos.
+=> Google Maps provides built-in UI controls.
 
-### **5.3.2 Effectiveness of Geocoder**
+### Common controls
 
-=> **Core concept**: `A specialized system that functionally provides geocoding capabilities is officially called a geocoding service or simply a geocoder.`
+1. Zoom controls.
+2. Compass.
+3. My Location button.
+4. Map toolbar.
+5. Rotate gestures.
+6. Scroll gestures.
+7. Zoom gestures.
 
-=> To accurately assess the absolute effectiveness of a geocoder, developers must strictly evaluate two basic parameters.
+### Example
 
-Types of basic parameters for assessing effectiveness
+```java
+UiSettings settings = googleMap.getUiSettings();
+settings.setZoomControlsEnabled(true);
+settings.setCompassEnabled(true);
+settings.setMyLocationButtonEnabled(true);
+```
 
-1. **The size of the database**: The fuller the base database, the far more accurate and detailed the ultimate response to the user request will be, securely allowing addresses to be correctly specified up to the exact house level.
-2. **Geocoding speed**: The speed of a geocoder is mathematically determined by the absolute number of requests continuously processed per second.
+### Show current location on map
 
-## **5.4 Reverse Geocoding Revgeocode**
+```java
+if (ActivityCompat.checkSelfPermission(this,
+        Manifest.permission.ACCESS_FINE_LOCATION)
+        == PackageManager.PERMISSION_GRANTED) {
+    googleMap.setMyLocationEnabled(true);
+}
+```
 
-=> **Definition**: `Reverse geocoding is the exact process of effectively transforming a mathematical (latitude, longitude) coordinate gracefully into a partial or complete real-world address.`
+## **5.8 Geocoding**
 
-=> As reverse geocoding directly converts geographic latitude/longitude coordinates to a readable address, the provided amount of detail strongly varies.
+=> **Definition**: `Geocoding is the process of converting an address or place name into latitude and longitude.`
 
-=> One returned result might precisely contain the full street address of the closest building, while another might strictly contain only a broad city name and postal code.
+### Example
 
-=> A robust reverse geocoding Application Programming Interface (API) acts natively as a web service that empowers developers to easily add reverse geocoding features strictly into their custom mapping applications.
+```java
+Geocoder geocoder = new Geocoder(this);
+List<Address> list =
+        geocoder.getFromLocationName("Ahmedabad, Gujarat", 1);
 
-=> The end-user will be perfectly able to rapidly search a latitude and longitude location and successfully obtain the exact street address or simply the largest nearest city.
+if (!list.isEmpty()) {
+    double lat = list.get(0).getLatitude();
+    double lng = list.get(0).getLongitude();
+}
+```
 
-=> An API for reverse geocoding is highly important because the physical latitude and longitude of an area perfectly remain the same, safely making it an extremely reliable method to accurately locate streets, landmarks, and other places.
+### Uses
 
-### **5.4.1 Difference between Forward and Reverse Geocoding**
+1. Search address on map.
+2. Convert city name to coordinates.
+3. Navigation and delivery apps.
+4. Place search.
 
-=> Forward geocoding is essentially the process of safely looking up a standard plain-text address or known place name, such as Girnar Mountain.
+## **5.9 Reverse Geocoding**
 
-=> Reverse geocoding is strictly performed by cleanly passing the exact mathematical latitude and longitude values of a desired location directly to the API.
+=> **Definition**: `Reverse geocoding is the process of converting latitude and longitude into a readable address.`
 
-=> If executed successfully, both specific types of geocoding securely return an extensive array of deep location-related data gracefully bundled with multiple potential results safely ranked with confidence scores.
+### Example
 
-## **5.5 Short Questions and Answers**
+```java
+Geocoder geocoder = new Geocoder(this);
+List<Address> list =
+        geocoder.getFromLocation(23.0225, 72.5714, 1);
 
-=> **Question**: `What exactly is the alarm manager broadcast receiver service?`
+if (!list.isEmpty()) {
+    String address = list.get(0).getAddressLine(0);
+}
+```
 
-=> **Answer**: `An Alarm manager is natively used to actively trigger specific code completely at a strictly scheduled specific time.`
+### Difference
 
-=> It dynamically utilizes the underlying Android SDK's alarm service and safely runs entirely independently of the normal application's lifecycle.
+| Geocoding | Reverse Geocoding |
+|---|---|
+| Address to coordinates. | Coordinates to address. |
+| Input is place name/address. | Input is latitude and longitude. |
+| Example: Ahmedabad -> lat/lng. | Example: lat/lng -> Ahmedabad address. |
 
-=> To logically start an Alarm manager, you strictly need to first secure the active instance directly from the OS system.
+## **5.10 Challenges in Location-Based Services**
 
-=> You must then properly pass the required PendingIntent which would perfectly get executed exactly at a future time that you exclusively specify.
+### Challenges
+
+1. **Battery consumption**
+
+=> GPS and continuous location updates consume battery.
+
+2. **Accuracy**
+
+=> Location may be inaccurate indoors or in dense city areas.
+
+3. **Network dependency**
+
+=> Network provider needs Wi-Fi or mobile network.
+
+4. **Permission handling**
+
+=> App must request location permission and handle denial.
+
+5. **Privacy**
+
+=> Location is sensitive personal data.
+
+6. **Provider disabled**
+
+=> User may disable GPS or location services.
+
+7. **Latency**
+
+=> First location fix can take time.
+
+8. **Background restrictions**
+
+=> New Android versions restrict background location access.
+
+### Good practices
+
+1. Request location only when needed.
+2. Stop location updates after use.
+3. Use coarse location when exact location is not required.
+4. Explain why permission is needed.
+5. Use Fused Location Provider for better battery efficiency.
+
+## **5.11 Google Maps vs Google Earth**
+
+| Google Maps | Google Earth |
+|---|---|
+| Mainly used for navigation and places. | Mainly used for 3D earth visualization. |
+| Provides routes, traffic and directions. | Provides rich satellite and 3D imagery. |
+| Lightweight for daily use. | More visual and exploration-focused. |
+
+## **5.12 AlarmManager Short Note**
+
+=> AlarmManager is used to schedule work at a specific future time.
+
+=> It fires a `PendingIntent` at the scheduled time.
+
+### Example
+
+```java
+AlarmManager alarmManager =
+        (AlarmManager) getSystemService(ALARM_SERVICE);
+
+Intent intent = new Intent(this, AlarmReceiver.class);
+PendingIntent pendingIntent = PendingIntent.getBroadcast(
+        this, 1, intent, PendingIntent.FLAG_IMMUTABLE);
+
+alarmManager.set(
+        AlarmManager.RTC_WAKEUP,
+        System.currentTimeMillis() + 10000,
+        pendingIntent);
+```
+
+## **5.13 Exam Short Questions**
+
+=> **Question**: `What is LocationManager?`
+
+=> **Answer**: LocationManager provides access to Android location services.
+
+=> **Question**: `What is GPS provider?`
+
+=> **Answer**: GPS provider uses satellites to determine device location.
+
+=> **Question**: `What is geocoding?`
+
+=> **Answer**: Geocoding converts address or place name into latitude and longitude.
+
+=> **Question**: `What is reverse geocoding?`
+
+=> **Answer**: Reverse geocoding converts latitude and longitude into a readable address.
+
+=> **Question**: `Which permission is used for exact location?`
+
+=> **Answer**: `ACCESS_FINE_LOCATION`.
