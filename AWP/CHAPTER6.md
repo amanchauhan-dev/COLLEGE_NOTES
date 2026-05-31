@@ -1126,45 +1126,421 @@ employeeCRUD();
 
 ---
 
-## **6.9 Exam Short Questions**
+## **6.9 Exam Short Questions with Answers**
 
-1. Define MongoDB.
-2. What is NoSQL database?
-3. List features of MongoDB.
-4. Differentiate NoSQL and relational database.
-5. What is BSON?
-6. What is collection?
-7. What is document?
-8. What is `_id` in MongoDB?
-9. Explain MongoDB database structure.
-10. Explain embedded data model.
-11. Explain referenced data model.
-12. Differentiate embedded and referenced model.
-13. List MongoDB data types.
-14. Explain ObjectId.
-15. Write steps to install MongoDB.
-16. What is MongoDB Compass?
-17. What is MongoDB Atlas?
-18. Write command to show databases.
-19. Write command to create or switch database.
-20. Write command to create collection.
-21. Write command to insert one document.
-22. Write command to find documents.
-23. Write command to update one document.
-24. Write command to delete one document.
-25. List MongoDB comparison operators.
-26. Explain `$and` and `$or` operators.
-27. How to connect Node.js with MongoDB?
-28. What is MongoClient?
-29. Write npm command to install MongoDB driver.
-30. Write Node.js code to connect MongoDB.
-31. Explain `insertOne()` with example.
-32. Explain `insertMany()` with example.
-33. Explain `find()` and `findOne()`.
-34. Why is `toArray()` used?
-35. Explain `updateOne()` with example.
-36. Explain `deleteOne()` with example.
-37. Explain sort and limit operations.
-38. Write CRUD operations on Student collection using Node.js and MongoDB.
-39. Write CRUD operations on Employee collection using Node.js and MongoDB.
-40. State common mistakes in Node.js MongoDB programming.
+### **Q1. Define MongoDB.**
+
+=> MongoDB is an open-source NoSQL document-oriented database.
+
+=> It stores data in BSON documents, which are similar to JSON objects.
+
+=> It is commonly used with Node.js for modern web applications.
+
+### **Q2. What is NoSQL database?**
+
+=> NoSQL database is a non-relational database used to store flexible and large data.
+
+=> It does not require fixed table-based schema like relational databases.
+
+=> Types include document, key-value, column and graph databases.
+
+### **Q3. List features of MongoDB.**
+
+=> Important features of MongoDB are:
+
+1. Document-oriented storage.
+2. Flexible schema.
+3. Indexing.
+4. Replication.
+5. Sharding.
+6. Aggregation.
+7. High performance.
+
+### **Q4. Differentiate NoSQL and relational database.**
+
+| NoSQL Database | Relational Database |
+|---|---|
+| Stores data as documents/key-value etc. | Stores data in tables |
+| Flexible schema | Fixed schema |
+| Example: MongoDB | Example: MySQL |
+| Good for nested/changing data | Good for structured data |
+
+### **Q5. What is BSON?**
+
+=> BSON stands for Binary JSON.
+
+=> MongoDB stores documents internally in BSON format.
+
+=> BSON supports extra data types such as ObjectId, Date and binary data.
+
+### **Q6. What is collection?**
+
+=> Collection is a group of MongoDB documents.
+
+=> It is similar to a table in relational database.
+
+=> Example: `students` collection stores multiple student documents.
+
+### **Q7. What is document?**
+
+=> Document is a single record in MongoDB.
+
+=> It stores data as field-value pairs.
+
+```json
+{ "rollno": 101, "name": "Aman", "branch": "CE" }
+```
+
+### **Q8. What is `_id` in MongoDB?**
+
+=> `_id` is the unique identifier of a MongoDB document.
+
+=> MongoDB automatically creates `_id` if not provided.
+
+=> It works like a primary key in relational database.
+
+### **Q9. Explain MongoDB database structure.**
+
+```text
+Database
+  |
+  Collection
+  |
+  Document
+  |
+  Field-value pairs
+```
+
+=> Example: `GTU` database contains `students` collection, and collection contains student documents.
+
+### **Q10. Explain embedded data model.**
+
+=> Embedded data model stores related data inside the same document.
+
+```json
+{
+  "name": "Aman",
+  "address": { "city": "Surat", "state": "Gujarat" }
+}
+```
+
+=> It gives faster read because related data is available in one document.
+
+### **Q11. Explain referenced data model.**
+
+=> Referenced model stores related data in separate collections.
+
+=> Documents are linked using an ID such as `studentId`.
+
+=> It is useful when related data is large, shared or many-to-many.
+
+### **Q12. Differentiate embedded and referenced model.**
+
+| Embedded Model | Referenced Model |
+|---|---|
+| Related data in same document | Related data in separate documents |
+| Faster read | Reduces duplication |
+| Good for small related data | Good for large/shared data |
+
+### **Q13. List MongoDB data types.**
+
+=> MongoDB data types include:
+
+1. String.
+2. Number / Integer / Double.
+3. Boolean.
+4. Array.
+5. Object / Document.
+6. ObjectId.
+7. Date.
+8. Null.
+
+### **Q14. Explain ObjectId.**
+
+=> ObjectId is a unique value used in MongoDB `_id` field.
+
+=> It is automatically generated when a document is inserted.
+
+=> It helps identify each document uniquely in a collection.
+
+### **Q15. Write steps to install MongoDB.**
+
+1. Download MongoDB Community Server.
+2. Install MongoDB.
+3. Add MongoDB `bin` folder to PATH if required.
+4. Start server using `mongod`.
+5. Open shell using `mongosh`.
+6. Use Compass for GUI if needed.
+
+### **Q16. What is MongoDB Compass?**
+
+=> MongoDB Compass is a graphical user interface for MongoDB.
+
+=> It helps view databases, collections and documents visually.
+
+=> It can run queries, create indexes and inspect schema without command line.
+
+### **Q17. What is MongoDB Atlas?**
+
+=> MongoDB Atlas is a cloud database service for MongoDB.
+
+=> It allows creating MongoDB database without local installation.
+
+=> It provides cloud hosting, backup, monitoring and scaling.
+
+### **Q18. Write command to show databases.**
+
+```js
+show dbs
+```
+
+=> This command lists available MongoDB databases.
+
+=> A database appears after it contains data.
+
+### **Q19. Write command to create or switch database.**
+
+```js
+use GTU
+```
+
+=> This command switches to `GTU` database.
+
+=> If database does not exist, MongoDB creates it when data is inserted.
+
+### **Q20. Write command to create collection.**
+
+```js
+db.createCollection("students")
+```
+
+=> This creates a collection named `students`.
+
+=> MongoDB can also create collection automatically during first insert.
+
+### **Q21. Write command to insert one document.**
+
+```js
+db.students.insertOne({
+  rollno: 101,
+  name: "Aman",
+  branch: "CE"
+});
+```
+
+=> `insertOne()` inserts one document into collection.
+
+### **Q22. Write command to find documents.**
+
+```js
+db.students.find()
+```
+
+=> This displays all documents from `students` collection.
+
+```js
+db.students.find({ branch: "CE" })
+```
+
+=> This finds documents matching condition.
+
+### **Q23. Write command to update one document.**
+
+```js
+db.students.updateOne(
+  { rollno: 101 },
+  { $set: { branch: "IT" } }
+);
+```
+
+=> `updateOne()` updates first matching document.
+
+### **Q24. Write command to delete one document.**
+
+```js
+db.students.deleteOne({ rollno: 101 })
+```
+
+=> `deleteOne()` deletes first document matching the condition.
+
+=> Delete commands should be used carefully.
+
+### **Q25. List MongoDB comparison operators.**
+
+=> Important comparison operators are:
+
+1. `$eq` equal to.
+2. `$ne` not equal to.
+3. `$gt` greater than.
+4. `$gte` greater than or equal.
+5. `$lt` less than.
+6. `$lte` less than or equal.
+7. `$in` match values in array.
+
+### **Q26. Explain `$and` and `$or` operators.**
+
+=> `$and` returns documents where all conditions are true.
+
+=> `$or` returns documents where at least one condition is true.
+
+```js
+db.students.find({ $and: [{ branch: "CE" }, { age: { $gte: 20 } }] })
+```
+
+### **Q27. How to connect Node.js with MongoDB?**
+
+=> Node.js connects with MongoDB using the `mongodb` driver.
+
+=> Steps are install driver, import `MongoClient`, create client, connect, select database, select collection and perform operations.
+
+=> Connection URL for local server is usually `mongodb://127.0.0.1:27017`.
+
+### **Q28. What is MongoClient?**
+
+=> `MongoClient` is a class provided by MongoDB Node.js driver.
+
+=> It is used to connect Node.js application with MongoDB server.
+
+=> It provides methods to connect, select database and close connection.
+
+### **Q29. Write npm command to install MongoDB driver.**
+
+```bash
+npm install mongodb
+```
+
+=> This installs official MongoDB driver for Node.js.
+
+=> After installation, `MongoClient` can be imported from `mongodb`.
+
+### **Q30. Write Node.js code to connect MongoDB.**
+
+```js
+const { MongoClient } = require("mongodb");
+
+const client = new MongoClient("mongodb://127.0.0.1:27017");
+
+async function main() {
+  await client.connect();
+  console.log("Connected");
+  await client.close();
+}
+
+main();
+```
+
+=> This connects Node.js with local MongoDB server.
+
+### **Q31. Explain `insertOne()` with example.**
+
+=> `insertOne()` inserts one document into a collection.
+
+```js
+await students.insertOne({
+  rollno: 101,
+  name: "Aman",
+  branch: "CE"
+});
+```
+
+=> MongoDB automatically adds `_id` if it is missing.
+
+### **Q32. Explain `insertMany()` with example.**
+
+=> `insertMany()` inserts multiple documents at once.
+
+```js
+await students.insertMany([
+  { rollno: 102, name: "Riya" },
+  { rollno: 103, name: "Neha" }
+]);
+```
+
+=> It is useful for bulk insert operations.
+
+### **Q33. Explain `find()` and `findOne()`.**
+
+=> `find()` returns all matching documents as a cursor.
+
+=> `findOne()` returns only the first matching document.
+
+```js
+await students.find({ branch: "CE" }).toArray();
+await students.findOne({ rollno: 101 });
+```
+
+### **Q34. Why is `toArray()` used?**
+
+=> `find()` returns a cursor, not a direct array.
+
+=> `toArray()` converts cursor result into an array of documents.
+
+=> It is commonly used to print or process query results in Node.js.
+
+### **Q35. Explain `updateOne()` with example.**
+
+=> `updateOne()` updates first document matching the filter.
+
+```js
+await students.updateOne(
+  { rollno: 101 },
+  { $set: { age: 22 } }
+);
+```
+
+=> `$set` updates or adds field value.
+
+### **Q36. Explain `deleteOne()` with example.**
+
+=> `deleteOne()` deletes first document matching the condition.
+
+```js
+await students.deleteOne({ rollno: 101 });
+```
+
+=> It returns result containing `deletedCount`.
+
+### **Q37. Explain sort and limit operations.**
+
+=> `sort()` arranges documents in ascending or descending order.
+
+=> `limit()` restricts number of returned documents.
+
+```js
+await students.find().sort({ name: 1 }).limit(5).toArray();
+```
+
+=> `1` means ascending and `-1` means descending.
+
+### **Q38. Write CRUD operations on Student collection using Node.js and MongoDB.**
+
+```js
+await students.insertOne({ rollno: 101, name: "Aman", branch: "CE" });
+const data = await students.find().toArray();
+await students.updateOne({ rollno: 101 }, { $set: { branch: "IT" } });
+await students.deleteOne({ rollno: 101 });
+```
+
+=> These statements perform create, read, update and delete operations on `students`.
+
+### **Q39. Write CRUD operations on Employee collection using Node.js and MongoDB.**
+
+```js
+await employees.insertOne({ emp_id: 1, name: "Raj", salary: 25000 });
+const data = await employees.find({ salary: { $gte: 20000 } }).toArray();
+await employees.updateOne({ emp_id: 1 }, { $set: { salary: 30000 } });
+await employees.deleteOne({ emp_id: 1 });
+```
+
+=> These operations insert, read, update and delete employee documents.
+
+### **Q40. State common mistakes in Node.js MongoDB programming.**
+
+=> Common mistakes are:
+
+1. MongoDB server not running.
+2. Forgetting `npm install mongodb`.
+3. Not using `await`.
+4. Forgetting `toArray()` after `find()`.
+5. Wrong database or collection name.
+6. Not closing connection in small scripts.

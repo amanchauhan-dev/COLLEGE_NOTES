@@ -1432,29 +1432,270 @@ function sendData() {
 
 => POST request sends data to the server in request body.
 
-## **Exam Short Questions**
+## **Exam Short Questions with Answers**
 
-1. Define CSS.
-2. List benefits of CSS.
-3. Explain inline, internal and external CSS.
-4. What is CSS selector?
-5. Differentiate class selector and ID selector.
-6. Explain attribute selector with example.
-7. What is responsive design?
-8. What is viewport meta tag?
-9. Explain media query.
-10. What is Bootstrap?
-11. Explain Bootstrap grid system.
-12. Define JavaScript.
-13. List JavaScript inbuilt objects.
-14. Explain Math object.
-15. Explain String object.
-16. What is DOM?
-17. Draw DOM tree.
-18. List DOM methods.
-19. Explain event handling.
-20. Explain JavaScript error handling.
-21. What is AJAX?
-22. Explain `XMLHttpRequest`.
-23. Write email validation using JavaScript.
-24. Explain asynchronous programming.
+### **Q1. Define CSS.**
+
+=> **CSS** stands for **Cascading Style Sheets**.
+
+=> CSS is used to control the presentation of HTML elements, such as color, font, spacing, border, layout and responsiveness.
+
+=> It separates webpage content from webpage design, making websites easier to maintain.
+
+### **Q2. List benefits of CSS.**
+
+=> CSS improves webpage design and maintenance.
+
+1. It separates content and design.
+2. One stylesheet can be reused on many pages.
+3. It gives consistent design across a website.
+4. External CSS can be cached by browser, improving loading speed.
+5. CSS supports responsive design using media queries.
+
+### **Q3. Explain inline, internal and external CSS.**
+
+=> **Inline CSS** is written inside an HTML tag using the `style` attribute.
+
+=> **Internal CSS** is written inside the `<style>` tag in the `<head>` section.
+
+=> **External CSS** is written in a separate `.css` file and linked using `<link>`. External CSS is best for large websites because it is reusable and easy to maintain.
+
+### **Q4. What is CSS selector?**
+
+=> CSS selector is used to select HTML elements for applying styles.
+
+=> Example: `p { color: red; }` selects all `<p>` elements.
+
+=> Common selectors are element selector, class selector, ID selector, universal selector, attribute selector and contextual selector.
+
+### **Q5. Differentiate class selector and ID selector.**
+
+| Class Selector | ID Selector |
+|---|---|
+| Uses dot `.` symbol | Uses hash `#` symbol |
+| Can be applied to many elements | Should be unique on a page |
+| Example: `.box` | Example: `#header` |
+| Used for reusable styles | Used for one specific element |
+
+### **Q6. Explain attribute selector with example.**
+
+=> Attribute selector selects elements based on their attribute or attribute value.
+
+=> It is useful for styling inputs, links or elements with specific attributes.
+
+```css
+input[type="text"] {
+  border: 1px solid blue;
+}
+```
+
+=> This CSS applies style only to text input fields.
+
+### **Q7. What is responsive design?**
+
+=> Responsive design is a web design technique where webpage layout adjusts according to device screen size.
+
+=> It makes a website usable on mobile, tablet and desktop.
+
+=> Responsive design is created using flexible layouts, flexible images, viewport meta tag and CSS media queries.
+
+### **Q8. What is viewport meta tag?**
+
+=> Viewport meta tag controls how a webpage is displayed on mobile devices.
+
+=> It sets page width according to device width and controls initial zoom level.
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+```
+
+=> It is important for responsive websites.
+
+### **Q9. Explain media query.**
+
+=> Media query is a CSS technique used to apply styles based on screen size or device type.
+
+=> It helps create responsive layouts.
+
+```css
+@media (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+}
+```
+
+=> This style applies when screen width is 600px or less.
+
+### **Q10. What is Bootstrap?**
+
+=> Bootstrap is a popular front-end CSS framework.
+
+=> It provides ready-made classes for grid layout, buttons, tables, forms, navigation and responsive design.
+
+=> Bootstrap saves development time and helps create mobile-first websites.
+
+### **Q11. Explain Bootstrap grid system.**
+
+=> Bootstrap grid system is used to create responsive page layouts.
+
+=> It divides a row into 12 columns.
+
+=> Classes like `col-md-6`, `col-sm-12` and `col-lg-4` define how much width an element takes on different screen sizes.
+
+### **Q12. Define JavaScript.**
+
+=> JavaScript is a client-side scripting language used to make webpages dynamic and interactive.
+
+=> It can validate forms, handle events, manipulate DOM, create animations and communicate with server using AJAX.
+
+=> JavaScript runs in the browser and is also used on server side with Node.js.
+
+### **Q13. List JavaScript inbuilt objects.**
+
+=> JavaScript provides many built-in objects for common operations.
+
+1. `Math`
+2. `Number`
+3. `Date`
+4. `Boolean`
+5. `String`
+6. `Array`
+7. `Object`
+
+=> These objects provide predefined properties and methods.
+
+### **Q14. Explain Math object.**
+
+=> `Math` object provides methods and constants for mathematical operations.
+
+=> It is not created using `new`; methods are directly accessed using `Math`.
+
+```js
+console.log(Math.sqrt(25));
+console.log(Math.max(10, 20, 5));
+```
+
+=> Common methods are `sqrt()`, `pow()`, `round()`, `random()`, `max()` and `min()`.
+
+### **Q15. Explain String object.**
+
+=> String object is used to store and manipulate text.
+
+=> JavaScript provides many string methods for searching, replacing and changing text.
+
+```js
+let name = "AngularJS";
+console.log(name.length);
+console.log(name.toUpperCase());
+```
+
+=> Common methods are `length`, `charAt()`, `substring()`, `replace()`, `toUpperCase()` and `toLowerCase()`.
+
+### **Q16. What is DOM?**
+
+=> **DOM** stands for **Document Object Model**.
+
+=> It represents an HTML document as a tree of objects.
+
+=> JavaScript can use DOM to access, modify, add or delete HTML elements dynamically.
+
+### **Q17. Draw DOM tree.**
+
+```text
+document
+  |
+  html
+  |
+  |-- head
+  |     |
+  |     title
+  |
+  |-- body
+        |
+        h1
+        p
+```
+
+=> DOM tree shows parent-child relationship between HTML elements.
+
+### **Q18. List DOM methods.**
+
+=> Important DOM methods are:
+
+1. `getElementById()`
+2. `getElementsByClassName()`
+3. `getElementsByTagName()`
+4. `querySelector()`
+5. `querySelectorAll()`
+6. `createElement()`
+7. `appendChild()`
+
+=> These methods are used to access and modify HTML elements.
+
+### **Q19. Explain event handling.**
+
+=> Event handling means executing JavaScript code when an event occurs.
+
+=> Events include click, key press, mouse move, form submit and page load.
+
+```html
+<button onclick="alert('Button clicked')">Click</button>
+```
+
+=> Event handling makes webpages interactive.
+
+### **Q20. Explain JavaScript error handling.**
+
+=> JavaScript error handling is used to handle runtime errors without stopping the entire program.
+
+=> `try...catch` block is commonly used.
+
+```js
+try {
+  let x = y + 10;
+} catch (err) {
+  console.log(err.message);
+}
+```
+
+=> `finally` block can be used for cleanup code.
+
+### **Q21. What is AJAX?**
+
+=> **AJAX** stands for **Asynchronous JavaScript and XML**.
+
+=> It is used to send and receive data from server without reloading the whole webpage.
+
+=> AJAX improves user experience by updating only required part of the webpage.
+
+### **Q22. Explain `XMLHttpRequest`.**
+
+=> `XMLHttpRequest` is a browser object used to make AJAX requests.
+
+=> It can send GET or POST requests to server and receive response data.
+
+=> Important members are `open()`, `send()`, `onreadystatechange`, `readyState`, `status` and `responseText`.
+
+### **Q23. Write email validation using JavaScript.**
+
+```html
+<script>
+function validateEmail(email) {
+  let pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return pattern.test(email);
+}
+
+console.log(validateEmail("test@gmail.com"));
+</script>
+```
+
+=> This code checks whether email has correct basic format using a regular expression.
+
+### **Q24. Explain asynchronous programming.**
+
+=> Asynchronous programming allows long-running tasks to execute without blocking the main program.
+
+=> Examples include AJAX request, timers, file reading and API calls.
+
+=> JavaScript handles asynchronous tasks using callbacks, promises and `async/await`.

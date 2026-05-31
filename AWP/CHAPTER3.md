@@ -1309,40 +1309,365 @@ Search:
 
 ---
 
-## **3.8 Exam Short Questions**
+## **3.8 Exam Short Questions with Answers**
 
-1. Define directive in AngularJS.
-2. List any five built-in AngularJS directives.
-3. Explain `ng-app` directive.
-4. Explain `ng-model` directive with example.
-5. Explain `ng-repeat` directive with example.
-6. Differentiate `ng-show` and `ng-if`.
-7. What is custom directive?
-8. Write syntax for creating custom directive.
-9. What is module in AngularJS?
-10. Write syntax of AngularJS module.
-11. What is dependency array in module?
-12. What is config block?
-13. What is run block?
-14. Define routing in AngularJS.
-15. What is `ngRoute`?
-16. What is `$routeProvider`?
-17. What is `ng-view`?
-18. Write steps to implement routing in AngularJS.
-19. What is route parameter?
-20. Define AngularJS form validation.
-21. List AngularJS form states.
-22. What is `$valid` and `$invalid`?
-23. What is `$dirty` and `$pristine`?
-24. Why is `novalidate` used?
-25. Explain validation using `ng-pattern`.
-26. Define data binding.
-27. Differentiate one-way and two-way data binding.
-28. Explain two-way data binding with example.
-29. What is SPA?
-30. State advantages of SPA.
-31. State disadvantages of SPA.
-32. Write file structure for AngularJS SPA.
-33. Explain how `templateUrl` is used.
-34. Explain use of controller in route.
-35. Write a short note on AngularJS forms.
+### **Q1. Define directive in AngularJS.**
+
+=> Directive is a special AngularJS marker or attribute used to extend HTML behavior.
+
+=> Directives usually start with `ng-`, such as `ng-app`, `ng-model` and `ng-repeat`.
+
+=> They are used for data binding, event handling, validation, repetition and DOM control.
+
+### **Q2. List any five built-in AngularJS directives.**
+
+=> Built-in AngularJS directives include:
+
+1. `ng-app`
+2. `ng-model`
+3. `ng-bind`
+4. `ng-repeat`
+5. `ng-click`
+6. `ng-show`
+7. `ng-if`
+
+=> These directives add dynamic behavior to HTML.
+
+### **Q3. Explain `ng-app` directive.**
+
+=> `ng-app` initializes an AngularJS application.
+
+=> It defines the root element where AngularJS starts working.
+
+```html
+<html ng-app="studentApp">
+```
+
+=> If a module name is given, AngularJS loads that module.
+
+### **Q4. Explain `ng-model` directive with example.**
+
+=> `ng-model` binds form input with AngularJS model data.
+
+=> It supports two-way data binding.
+
+```html
+<input ng-model="name">
+<p>Hello {{name}}</p>
+```
+
+=> When user types in input, `name` is updated automatically.
+
+### **Q5. Explain `ng-repeat` directive with example.**
+
+=> `ng-repeat` repeats an HTML element for every item in a collection.
+
+```html
+<li ng-repeat="s in students">{{s.name}}</li>
+```
+
+=> It is commonly used to display arrays, lists and table rows dynamically.
+
+### **Q6. Differentiate `ng-show` and `ng-if`.**
+
+| `ng-show` | `ng-if` |
+|---|---|
+| Shows/hides element using CSS | Adds/removes element from DOM |
+| Element remains in DOM | Element is destroyed when false |
+| Faster for frequent toggling | Better for conditional creation |
+
+### **Q7. What is custom directive?**
+
+=> Custom directive is a user-defined directive created by developer.
+
+=> It is used to create reusable HTML components or custom behavior.
+
+=> Example: `student-card` directive can display common student information in many places.
+
+### **Q8. Write syntax for creating custom directive.**
+
+```js
+app.directive("studentCard", function() {
+  return {
+    template: "<h3>Student Card</h3>"
+  };
+});
+```
+
+=> In JavaScript directive name is camelCase, while in HTML it is used as `student-card`.
+
+### **Q9. What is module in AngularJS?**
+
+=> Module is a container for AngularJS application components.
+
+=> It contains controllers, services, filters, directives and configuration.
+
+=> It helps organize code in a clean and maintainable way.
+
+### **Q10. Write syntax of AngularJS module.**
+
+```js
+var app = angular.module("myApp", []);
+```
+
+=> `myApp` is module name.
+
+=> `[]` is dependency array. Dependencies like `"ngRoute"` are added inside this array.
+
+### **Q11. What is dependency array in module?**
+
+=> Dependency array lists other AngularJS modules required by the application.
+
+```js
+var app = angular.module("myApp", ["ngRoute"]);
+```
+
+=> Here `ngRoute` is required for routing.
+
+=> Empty array `[]` means module has no dependency.
+
+### **Q12. What is config block?**
+
+=> `config()` block is used to configure AngularJS application before it starts.
+
+=> It is commonly used for route configuration.
+
+```js
+app.config(function($routeProvider) {
+  // route configuration
+});
+```
+
+### **Q13. What is run block?**
+
+=> `run()` block executes after AngularJS application starts.
+
+=> It is used for initialization code required after module loading.
+
+```js
+app.run(function($rootScope) {
+  $rootScope.appTitle = "Student Portal";
+});
+```
+
+### **Q14. Define routing in AngularJS.**
+
+=> Routing is a technique used to load different views in the same page based on URL.
+
+=> It is used to create single page applications.
+
+=> AngularJS routing uses `ngRoute`, `$routeProvider` and `ng-view`.
+
+### **Q15. What is `ngRoute`?**
+
+=> `ngRoute` is an AngularJS module that provides routing support.
+
+=> It allows an application to map URLs with templates and controllers.
+
+=> It must be included in module dependencies before using routes.
+
+### **Q16. What is `$routeProvider`?**
+
+=> `$routeProvider` is used to define routes in AngularJS.
+
+=> It maps a URL path with template and controller.
+
+```js
+$routeProvider.when("/home", {
+  templateUrl: "home.html",
+  controller: "HomeCtrl"
+});
+```
+
+### **Q17. What is `ng-view`?**
+
+=> `ng-view` is a placeholder directive where routed templates are displayed.
+
+```html
+<div ng-view></div>
+```
+
+=> When route changes, AngularJS loads the selected view inside `ng-view`.
+
+### **Q18. Write steps to implement routing in AngularJS.**
+
+1. Add AngularJS and `angular-route.min.js`.
+2. Create module with `["ngRoute"]`.
+3. Configure routes using `$routeProvider`.
+4. Add navigation links using `#!`.
+5. Add `<div ng-view></div>` in main page.
+6. Create templates and controllers.
+
+### **Q19. What is route parameter?**
+
+=> Route parameter is a value passed through URL route.
+
+```js
+$routeProvider.when("/student/:id", {
+  templateUrl: "student.html"
+});
+```
+
+=> It can be accessed using `$routeParams.id`.
+
+### **Q20. Define AngularJS form validation.**
+
+=> AngularJS form validation checks user input before submission.
+
+=> It uses directives like `required`, `ng-minlength`, `ng-pattern` and validation states.
+
+=> It helps display error messages and disable invalid form submission.
+
+### **Q21. List AngularJS form states.**
+
+=> Important form states are:
+
+1. `$valid`
+2. `$invalid`
+3. `$pristine`
+4. `$dirty`
+5. `$touched`
+6. `$untouched`
+7. `$submitted`
+
+=> These states help check input status.
+
+### **Q22. What is `$valid` and `$invalid`?**
+
+=> `$valid` is true when form or input satisfies all validation rules.
+
+=> `$invalid` is true when form or input fails any validation rule.
+
+=> They are commonly used to enable or disable submit button.
+
+### **Q23. What is `$dirty` and `$pristine`?**
+
+=> `$pristine` means user has not changed the input value.
+
+=> `$dirty` means user has changed the input value.
+
+=> These states are useful for showing validation messages only after user interaction.
+
+### **Q24. Why is `novalidate` used?**
+
+=> `novalidate` disables browser default HTML validation.
+
+=> It allows AngularJS validation messages and states to work clearly.
+
+```html
+<form name="regForm" novalidate>
+```
+
+=> It is commonly used in AngularJS forms.
+
+### **Q25. Explain validation using `ng-pattern`.**
+
+=> `ng-pattern` validates input using a regular expression.
+
+```html
+<input name="mobile" ng-model="mobile" ng-pattern="/^[0-9]{10}$/">
+```
+
+=> This example accepts only 10-digit mobile number.
+
+### **Q26. Define data binding.**
+
+=> Data binding connects application data with HTML view.
+
+=> In AngularJS, it automatically synchronizes model and view.
+
+=> It reduces manual DOM update code.
+
+### **Q27. Differentiate one-way and two-way data binding.**
+
+| One-way Binding | Two-way Binding |
+|---|---|
+| Data flows from model to view | Data flows both ways |
+| Used for display | Used for input forms |
+| Example: `{{title}}` | Example: `ng-model="name"` |
+
+### **Q28. Explain two-way data binding with example.**
+
+=> Two-way binding updates model when view changes and updates view when model changes.
+
+```html
+<input ng-model="city">
+<p>{{city}}</p>
+```
+
+=> When user types city name, paragraph updates automatically.
+
+### **Q29. What is SPA?**
+
+=> SPA stands for **Single Page Application**.
+
+=> It loads one main HTML page and dynamically changes content without full page reload.
+
+=> AngularJS creates SPA using routing, templates, controllers and `ng-view`.
+
+### **Q30. State advantages of SPA.**
+
+=> Advantages of SPA are:
+
+1. Fast navigation.
+2. Better user experience.
+3. Less full-page reload.
+4. Reusable templates.
+5. Suitable for dashboards and dynamic applications.
+
+### **Q31. State disadvantages of SPA.**
+
+=> Disadvantages of SPA are:
+
+1. Depends on JavaScript.
+2. Initial loading can be heavy.
+3. SEO requires extra care.
+4. Routing must be configured properly.
+5. Security needs careful handling.
+
+### **Q32. Write file structure for AngularJS SPA.**
+
+```text
+student-spa/
+  index.html
+  app.js
+  views/
+    home.html
+    students.html
+    about.html
+```
+
+=> `index.html` is main page, `app.js` contains routes and controllers, and `views` stores templates.
+
+### **Q33. Explain how `templateUrl` is used.**
+
+=> `templateUrl` specifies the path of external HTML template for a route.
+
+```js
+$routeProvider.when("/about", {
+  templateUrl: "views/about.html"
+});
+```
+
+=> AngularJS loads this template inside `ng-view`.
+
+### **Q34. Explain use of controller in route.**
+
+=> Controller in route handles data and logic for that specific view.
+
+```js
+.when("/students", {
+  templateUrl: "students.html",
+  controller: "StudentCtrl"
+})
+```
+
+=> When route opens, `StudentCtrl` supplies data to `students.html`.
+
+### **Q35. Write a short note on AngularJS forms.**
+
+=> AngularJS forms provide two-way binding and built-in validation.
+
+=> They track input states such as `$valid`, `$invalid`, `$dirty` and `$touched`.
+
+=> They help display custom error messages and prevent invalid form submission.

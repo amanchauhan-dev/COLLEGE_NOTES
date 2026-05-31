@@ -1586,50 +1586,449 @@ if (cluster.isMaster) {
 
 ---
 
-## **5.14 Exam Short Questions**
+## **5.14 Exam Short Questions with Answers**
 
-1. Define event in Node.js.
-2. What is EventEmitter?
-3. Explain `on()` and `emit()` methods.
-4. Write a program to create custom event.
-5. What is event loop?
-6. Explain event loop with diagram.
-7. Differentiate blocking and non-blocking code.
-8. Explain `setTimeout()` with example.
-9. Explain `setInterval()` with example.
-10. What is error handling?
-11. Explain error-first callback pattern.
-12. Explain `try...catch` in Node.js.
-13. What is Buffer?
-14. Write code to create Buffer.
-15. What is Stream?
-16. List types of streams.
-17. Explain `pipe()` method.
-18. What is File System module?
-19. Explain `readFile()` with example.
-20. Explain `writeFile()` with example.
-21. List networking modules in Node.js.
-22. Create simple HTTP server in Node.js.
-23. What is request object?
-24. What is response object?
-25. What is debugging?
-26. Write command to start Node.js inspector.
-27. What is Express.js?
-28. List advantages of Express.js.
-29. Explain middleware in Express.
-30. Explain route parameter and query parameter.
-31. Define REST API.
-32. List HTTP methods used in REST API.
-33. Write REST API endpoints for student resource.
-34. Differentiate session and cookie.
-35. What is session?
-36. What is cookie?
-37. State cookie security points.
-38. What is design pattern?
-39. Explain module pattern.
-40. Explain MVC pattern.
-41. What is caching?
-42. Why is caching used?
-43. What is scalability?
-44. Differentiate vertical and horizontal scaling.
-45. List scalability techniques in Node.js.
+### **Q1. Define event in Node.js.**
+
+=> Event is an action or occurrence detected by a Node.js program.
+
+=> Examples are HTTP request, file read completion, timer completion and data received from stream.
+
+=> Node.js executes listener functions when events occur.
+
+### **Q2. What is EventEmitter?**
+
+=> `EventEmitter` is a class from Node.js `events` module.
+
+=> It is used to create, emit and listen to custom events.
+
+=> Methods like `on()` and `emit()` are used with EventEmitter.
+
+### **Q3. Explain `on()` and `emit()` methods.**
+
+=> `on()` registers a listener function for an event.
+
+=> `emit()` triggers or fires that event.
+
+```js
+emitter.on("msg", function() { console.log("Hello"); });
+emitter.emit("msg");
+```
+
+### **Q4. Write a program to create custom event.**
+
+```js
+const EventEmitter = require("events");
+const emitter = new EventEmitter();
+
+emitter.on("login", function(name) {
+  console.log(name + " logged in");
+});
+
+emitter.emit("login", "Aman");
+```
+
+=> This program creates and triggers a custom `login` event.
+
+### **Q5. What is event loop?**
+
+=> Event loop is a mechanism that handles asynchronous callbacks in Node.js.
+
+=> It checks whether call stack is empty and then executes pending callbacks.
+
+=> It allows Node.js to handle many operations without blocking.
+
+### **Q6. Explain event loop with diagram.**
+
+```text
+Call Stack -> Node APIs -> Callback Queue
+      ^                         |
+      |                         v
+      +------ Event Loop <------+
+```
+
+=> Async tasks go to Node APIs. After completion, callback enters queue. Event loop executes callback when call stack is empty.
+
+### **Q7. Differentiate blocking and non-blocking code.**
+
+| Blocking Code | Non-blocking Code |
+|---|---|
+| Waits until task completes | Does not wait |
+| Stops next statement | Continues execution |
+| Example: `readFileSync()` | Example: `readFile()` |
+
+### **Q8. Explain `setTimeout()` with example.**
+
+=> `setTimeout()` executes code once after a specified delay.
+
+```js
+setTimeout(function() {
+  console.log("After 2 seconds");
+}, 2000);
+```
+
+=> Delay is written in milliseconds.
+
+### **Q9. Explain `setInterval()` with example.**
+
+=> `setInterval()` executes code repeatedly after a fixed interval.
+
+```js
+setInterval(function() {
+  console.log("Runs every second");
+}, 1000);
+```
+
+=> It can be stopped using `clearInterval()`.
+
+### **Q10. What is error handling?**
+
+=> Error handling is the process of detecting and managing errors in a program.
+
+=> It prevents application crash and helps debugging.
+
+=> Node.js uses `try...catch`, error-first callbacks and Express error middleware.
+
+### **Q11. Explain error-first callback pattern.**
+
+=> Error-first callback is a common Node.js convention.
+
+=> First parameter is `err`; second parameter is data/result.
+
+```js
+function(err, data) {
+  if (err) return console.log(err.message);
+  console.log(data);
+}
+```
+
+### **Q12. Explain `try...catch` in Node.js.**
+
+=> `try...catch` handles errors in synchronous code.
+
+```js
+try {
+  throw new Error("Invalid data");
+} catch (err) {
+  console.log(err.message);
+}
+```
+
+=> It prevents program from stopping suddenly.
+
+### **Q13. What is Buffer?**
+
+=> Buffer is a Node.js object used to store binary data.
+
+=> It is useful for files, streams, images and network data.
+
+=> Buffer size is fixed after creation.
+
+### **Q14. Write code to create Buffer.**
+
+```js
+const buf = Buffer.from("Node.js");
+
+console.log(buf);
+console.log(buf.toString());
+```
+
+=> `Buffer.from()` creates buffer from a string and `toString()` converts it back.
+
+### **Q15. What is Stream?**
+
+=> Stream is an object used to read or write data in chunks.
+
+=> It is useful for large files because complete file is not loaded in memory.
+
+=> Streams improve memory efficiency and performance.
+
+### **Q16. List types of streams.**
+
+=> Types of streams are:
+
+1. Readable stream.
+2. Writable stream.
+3. Duplex stream.
+4. Transform stream.
+
+=> Example: `fs.createReadStream()` creates readable stream.
+
+### **Q17. Explain `pipe()` method.**
+
+=> `pipe()` sends data from readable stream to writable stream.
+
+```js
+fs.createReadStream("input.txt")
+  .pipe(fs.createWriteStream("copy.txt"));
+```
+
+=> It is commonly used for file copy and streaming.
+
+### **Q18. What is File System module?**
+
+=> File System module is a built-in Node.js module named `fs`.
+
+=> It is used to read, write, append, delete and manage files/directories.
+
+=> It provides both synchronous and asynchronous methods.
+
+### **Q19. Explain `readFile()` with example.**
+
+```js
+fs.readFile("data.txt", "utf8", function(err, data) {
+  if (err) return console.log(err.message);
+  console.log(data);
+});
+```
+
+=> `readFile()` reads file asynchronously and returns data in callback.
+
+### **Q20. Explain `writeFile()` with example.**
+
+```js
+fs.writeFile("data.txt", "Hello", function(err) {
+  if (err) return console.log(err.message);
+  console.log("File written");
+});
+```
+
+=> `writeFile()` creates or replaces file content asynchronously.
+
+### **Q21. List networking modules in Node.js.**
+
+=> Important networking modules are:
+
+1. `http`
+2. `https`
+3. `net`
+4. `dgram`
+5. `dns`
+6. `url`
+
+=> These modules support web, TCP, UDP and DNS operations.
+
+### **Q22. Create simple HTTP server in Node.js.**
+
+```js
+const http = require("http");
+
+http.createServer(function(req, res) {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Hello Server");
+}).listen(3000);
+```
+
+=> This server listens on port `3000`.
+
+### **Q23. What is request object?**
+
+=> Request object represents client request in Node.js server.
+
+=> It contains URL, method, headers and request data.
+
+=> Commonly named `req` in server code.
+
+### **Q24. What is response object?**
+
+=> Response object represents server response sent to client.
+
+=> It is used to send status code, headers and response body.
+
+=> Commonly named `res` in server code.
+
+### **Q25. What is debugging?**
+
+=> Debugging is the process of finding and fixing errors in a program.
+
+=> In Node.js, debugging can be done using `console.log()`, stack trace and Node inspector.
+
+=> It helps understand program flow and variable values.
+
+### **Q26. Write command to start Node.js inspector.**
+
+```bash
+node --inspect app.js
+```
+
+=> To pause at first line:
+
+```bash
+node --inspect-brk app.js
+```
+
+### **Q27. What is Express.js?**
+
+=> Express.js is a lightweight web framework for Node.js.
+
+=> It simplifies routing, middleware, request handling and REST API development.
+
+=> It reduces manual code required with raw `http` module.
+
+### **Q28. List advantages of Express.js.**
+
+=> Advantages of Express.js are:
+
+1. Simple routing.
+2. Middleware support.
+3. Easy REST API development.
+4. JSON request handling.
+5. Large community support.
+6. Less boilerplate code.
+
+### **Q29. Explain middleware in Express.**
+
+=> Middleware is a function that runs between request and response.
+
+=> It has access to `req`, `res` and `next()`.
+
+```js
+app.use(function(req, res, next) {
+  console.log(req.url);
+  next();
+});
+```
+
+### **Q30. Explain route parameter and query parameter.**
+
+=> Route parameter is part of URL path, example `/students/:id`.
+
+=> Query parameter is written after `?`, example `/search?q=node`.
+
+=> In Express, route params are accessed using `req.params`, and query params using `req.query`.
+
+### **Q31. Define REST API.**
+
+=> REST API is a web service that uses HTTP methods to perform operations on resources.
+
+=> It commonly uses JSON for data exchange.
+
+=> REST APIs use methods like GET, POST, PUT and DELETE.
+
+### **Q32. List HTTP methods used in REST API.**
+
+| Method | Use |
+|---|---|
+| GET | Read data |
+| POST | Create data |
+| PUT | Update full data |
+| PATCH | Update partial data |
+| DELETE | Delete data |
+
+### **Q33. Write REST API endpoints for student resource.**
+
+| Operation | Method and URL |
+|---|---|
+| Get all students | `GET /students` |
+| Get one student | `GET /students/:id` |
+| Add student | `POST /students` |
+| Update student | `PUT /students/:id` |
+| Delete student | `DELETE /students/:id` |
+
+### **Q34. Differentiate session and cookie.**
+
+| Cookie | Session |
+|---|---|
+| Stored in browser | Stored on server |
+| Less secure for sensitive data | More secure |
+| Small size | Can store more data |
+| Sent with every request | Identified using session ID |
+
+### **Q35. What is session?**
+
+=> Session stores user information on server side.
+
+=> It is commonly used for login systems and user authentication.
+
+=> Browser usually stores only session ID in cookie.
+
+### **Q36. What is cookie?**
+
+=> Cookie is small data stored in client browser.
+
+=> It is sent to server with HTTP requests.
+
+=> Cookies are used for preferences, session ID and small non-sensitive data.
+
+### **Q37. State cookie security points.**
+
+=> Cookie security points are:
+
+1. Do not store passwords in cookies.
+2. Use `httpOnly`.
+3. Use `secure` for HTTPS.
+4. Set expiry time.
+5. Store only required data.
+
+### **Q38. What is design pattern?**
+
+=> Design pattern is a reusable solution to a common software design problem.
+
+=> It helps organize code and improve maintainability.
+
+=> Common Node.js patterns are module, middleware, singleton, factory and MVC.
+
+### **Q39. Explain module pattern.**
+
+=> Module pattern divides code into reusable files/modules.
+
+```js
+// math.js
+module.exports.add = function(a, b) {
+  return a + b;
+};
+```
+
+=> Other files can import it using `require()`.
+
+### **Q40. Explain MVC pattern.**
+
+=> MVC stands for Model View Controller.
+
+=> Model handles data, View handles UI and Controller handles request/response logic.
+
+=> MVC separates responsibilities and makes applications easier to maintain.
+
+### **Q41. What is caching?**
+
+=> Caching means storing frequently used data temporarily for faster access.
+
+=> It reduces repeated processing and database queries.
+
+=> Cache can be stored in browser, server memory, CDN or Redis.
+
+### **Q42. Why is caching used?**
+
+=> Caching is used to improve application performance.
+
+=> It reduces database load and response time.
+
+=> It helps applications handle more users efficiently.
+
+### **Q43. What is scalability?**
+
+=> Scalability is the ability of an application to handle increased users, requests or data.
+
+=> A scalable system performs well even when load increases.
+
+=> It can be improved using caching, clustering, load balancing and optimized database queries.
+
+### **Q44. Differentiate vertical and horizontal scaling.**
+
+| Vertical Scaling | Horizontal Scaling |
+|---|---|
+| Increases power of one server | Adds more servers |
+| Example: more RAM/CPU | Example: multiple app servers |
+| Simple but limited | More scalable |
+
+### **Q45. List scalability techniques in Node.js.**
+
+=> Scalability techniques in Node.js are:
+
+1. Use non-blocking I/O.
+2. Use cluster module.
+3. Add load balancing.
+4. Use caching.
+5. Optimize database queries.
+6. Use message queues.
+7. Avoid CPU-heavy work on main thread.

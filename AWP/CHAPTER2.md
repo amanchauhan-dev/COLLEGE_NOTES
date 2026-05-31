@@ -724,25 +724,206 @@ app.controller("CalcCtrl", function($scope, MathService) {
 4. Cleaner controllers.
 5. Easier testing and maintenance.
 
-## **Exam Short Questions**
+## **Exam Short Questions with Answers**
 
-1. Define AngularJS.
-2. List features of AngularJS.
-3. State advantages of AngularJS.
-4. Write disadvantages of AngularJS.
-5. What is two-way data binding?
-6. Define MVC.
-7. Explain MVC with AngularJS.
-8. What is AngularJS module?
-9. Explain application structure of AngularJS.
-10. What is routing in AngularJS?
-11. What is `ngRoute`?
-12. What is `ng-view`?
-13. Define AngularJS expression.
-14. Differentiate AngularJS expression and JavaScript expression.
-15. What is controller?
-16. What is `$scope`?
-17. What is `$rootScope`?
-18. What are AngularJS services?
-19. Explain `$http` service.
-20. Explain `$timeout` service.
+### **Q1. Define AngularJS.**
+
+=> AngularJS is an open-source JavaScript framework used to create dynamic web applications and single page applications.
+
+=> It extends HTML using directives such as `ng-app`, `ng-model` and `ng-repeat`.
+
+=> It supports data binding, MVC, form validation, routing, services and dependency injection.
+
+### **Q2. List features of AngularJS.**
+
+=> Important features of AngularJS are:
+
+1. Two-way data binding.
+2. MVC architecture.
+3. Directives.
+4. Controllers and scope.
+5. Services and dependency injection.
+6. Filters and form validation.
+7. Routing for SPA.
+
+### **Q3. State advantages of AngularJS.**
+
+=> AngularJS reduces manual DOM manipulation and makes dynamic web application development easier.
+
+=> It supports two-way data binding, reusable services, MVC architecture and built-in validation.
+
+=> It is useful for single page applications because routing can load different views without full page reload.
+
+### **Q4. Write disadvantages of AngularJS.**
+
+=> AngularJS depends on JavaScript, so application will not work properly if JavaScript is disabled.
+
+=> Large applications with too many watchers may face performance issues.
+
+=> Concepts like scope, dependency injection, routing and directives can be difficult for beginners.
+
+### **Q5. What is two-way data binding?**
+
+=> Two-way data binding means automatic synchronization between model and view.
+
+=> When user changes input in the view, the model is updated.
+
+=> When model value changes, the view is updated automatically.
+
+```html
+<input ng-model="name">
+<p>{{name}}</p>
+```
+
+### **Q6. Define MVC.**
+
+=> MVC stands for **Model View Controller**.
+
+=> Model stores data, View displays user interface and Controller handles logic.
+
+=> MVC separates application into different parts, making code organized and maintainable.
+
+### **Q7. Explain MVC with AngularJS.**
+
+=> In AngularJS, **Model** is application data stored in scope variables.
+
+=> **View** is the HTML page that displays data using expressions and directives.
+
+=> **Controller** is a JavaScript function that controls data and business logic for the view.
+
+### **Q8. What is AngularJS module?**
+
+=> AngularJS module is a container for application components such as controllers, services, filters and directives.
+
+=> It is created using `angular.module()`.
+
+```js
+var app = angular.module("studentApp", []);
+```
+
+=> Every large AngularJS application should be organized using modules.
+
+### **Q9. Explain application structure of AngularJS.**
+
+=> AngularJS application is commonly divided into module, controller, view, service and route.
+
+=> `index.html` loads AngularJS and contains main layout.
+
+=> Controllers handle view logic, services hold reusable logic and routes define navigation between views.
+
+### **Q10. What is routing in AngularJS?**
+
+=> Routing is used to load different views in a single page application without refreshing the whole page.
+
+=> AngularJS routing is commonly implemented using `ngRoute`.
+
+=> Routes are configured using `$routeProvider`, and selected view is displayed inside `ng-view`.
+
+### **Q11. What is `ngRoute`?**
+
+=> `ngRoute` is an AngularJS module used for routing.
+
+=> It provides `$routeProvider` service and `ng-view` directive.
+
+=> It must be included as a dependency:
+
+```js
+var app = angular.module("myApp", ["ngRoute"]);
+```
+
+### **Q12. What is `ng-view`?**
+
+=> `ng-view` is a directive used as a placeholder for routed templates.
+
+=> When URL route changes, AngularJS loads the matching template inside `ng-view`.
+
+```html
+<div ng-view></div>
+```
+
+=> It is required for AngularJS single page application routing.
+
+### **Q13. Define AngularJS expression.**
+
+=> AngularJS expression is code written inside double curly braces `{{ }}`.
+
+=> It binds data from scope to HTML view.
+
+```html
+<p>{{firstName + " " + lastName}}</p>
+```
+
+=> Expressions can display variables, calculations and object properties.
+
+### **Q14. Differentiate AngularJS expression and JavaScript expression.**
+
+| AngularJS Expression | JavaScript Expression |
+|---|---|
+| Written inside `{{ }}` | Written inside script code |
+| Evaluated against AngularJS scope | Evaluated by JavaScript engine |
+| Does not support loops/conditions directly | Supports full JavaScript syntax |
+| Used mainly in view | Used in logic code |
+
+### **Q15. What is controller?**
+
+=> Controller is a JavaScript function that controls data and behavior of a view.
+
+=> It is connected to HTML using `ng-controller`.
+
+=> Controller uses `$scope` to pass data and functions to the view.
+
+### **Q16. What is `$scope`?**
+
+=> `$scope` is an object that connects controller and view.
+
+=> Data assigned to `$scope` inside controller can be displayed in HTML.
+
+```js
+app.controller("Ctrl", function($scope) {
+  $scope.message = "Hello AngularJS";
+});
+```
+
+### **Q17. What is `$rootScope`?**
+
+=> `$rootScope` is the parent scope available to the entire AngularJS application.
+
+=> Data stored in `$rootScope` can be accessed by different controllers.
+
+=> It should be used carefully because excessive global data can make application difficult to maintain.
+
+### **Q18. What are AngularJS services?**
+
+=> Services are reusable objects or functions used to share common logic across application.
+
+=> Examples are `$http`, `$timeout`, `$interval`, `$location` and custom services.
+
+=> Services keep controllers clean and improve code reusability.
+
+### **Q19. Explain `$http` service.**
+
+=> `$http` service is used to communicate with server using HTTP requests.
+
+=> It can perform GET, POST, PUT and DELETE operations.
+
+```js
+$http.get("students.json").then(function(response) {
+  $scope.students = response.data;
+});
+```
+
+=> It is commonly used to fetch JSON data from server.
+
+### **Q20. Explain `$timeout` service.**
+
+=> `$timeout` service executes a function after a specified delay.
+
+=> It is AngularJS wrapper around JavaScript `setTimeout()`.
+
+```js
+$timeout(function() {
+  $scope.message = "Updated after 2 seconds";
+}, 2000);
+```
+
+=> It works properly with AngularJS digest cycle.

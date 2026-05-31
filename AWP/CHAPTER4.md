@@ -918,43 +918,371 @@ loginUser("aman", loadProfile);
 
 ---
 
-## **4.8 Exam Short Questions**
+## **4.8 Exam Short Questions with Answers**
 
-1. Define Node.js.
-2. Why is Node.js used?
-3. Is Node.js a programming language? Explain.
-4. What is V8 engine?
-5. List features of Node.js.
-6. Explain asynchronous and non-blocking nature of Node.js.
-7. What is event-driven architecture?
-8. Write steps to install and setup Node.js.
-9. Write command to check Node.js version.
-10. Write command to run a Node.js file.
-11. What is REPL?
-12. Explain REPL with example.
-13. Create a simple HTTP server in Node.js.
-14. What is npm?
-15. Why is package manager used?
-16. Write any five npm commands.
-17. What is `package.json`?
-18. State uses of `package.json`.
-19. Differentiate local and global packages.
-20. What is dependency?
-21. What is dev dependency?
-22. Differentiate dependency and dev dependency.
-23. What is `node_modules`?
-24. What is console object?
-25. List methods of console object.
-26. Explain `console.log()` with example.
-27. Explain `console.table()` with example.
-28. Differentiate `console.log()` and `console.error()`.
-29. Define callback.
-30. Why are callbacks used in Node.js?
-31. Explain callback with example.
-32. Explain asynchronous callback using `setTimeout()`.
-33. What is error-first callback?
-34. Explain `fs.readFile()` callback.
-35. What is callback hell?
-36. How can callback hell be avoided?
-37. State advantages of callbacks.
-38. State disadvantages of callbacks.
+### **Q1. Define Node.js.**
+
+=> Node.js is an open-source JavaScript runtime environment.
+
+=> It executes JavaScript outside the browser, mainly on server side.
+
+=> It is built on Google Chrome V8 JavaScript engine and is used for scalable backend applications.
+
+### **Q2. Why is Node.js used?**
+
+=> Node.js is used to build fast server-side applications, REST APIs and real-time systems.
+
+=> It supports asynchronous and non-blocking I/O, so it handles many requests efficiently.
+
+=> It also allows developers to use JavaScript for both frontend and backend.
+
+### **Q3. Is Node.js a programming language? Explain.**
+
+=> No, Node.js is not a programming language.
+
+=> JavaScript is the programming language, and Node.js is a runtime environment that runs JavaScript outside browser.
+
+=> Node.js provides APIs for file system, network, HTTP server and process handling.
+
+### **Q4. What is V8 engine?**
+
+=> V8 is Google Chrome's JavaScript engine.
+
+=> It compiles JavaScript code into machine code for fast execution.
+
+=> Node.js uses V8 engine to execute JavaScript on server side.
+
+### **Q5. List features of Node.js.**
+
+=> Important features of Node.js are:
+
+1. Asynchronous and non-blocking.
+2. Event-driven architecture.
+3. Fast execution using V8.
+4. Single-threaded event loop.
+5. npm package ecosystem.
+6. Cross-platform support.
+7. Suitable for scalable applications.
+
+### **Q6. Explain asynchronous and non-blocking nature of Node.js.**
+
+=> Asynchronous means Node.js can start a task and continue executing other code without waiting.
+
+=> Non-blocking means slow operations like file reading or database query do not stop the main thread.
+
+=> Result is handled later using callback, promise or `async/await`.
+
+### **Q7. What is event-driven architecture?**
+
+=> Event-driven architecture means program flow depends on events.
+
+=> Events can be request received, file read completed, timer finished or data received.
+
+=> Node.js executes a callback function when the related event occurs.
+
+### **Q8. Write steps to install and setup Node.js.**
+
+1. Download Node.js LTS version.
+2. Install Node.js on system.
+3. Open terminal or command prompt.
+4. Check version using `node -v`.
+5. Check npm using `npm -v`.
+6. Create `.js` file and run using `node filename.js`.
+
+### **Q9. Write command to check Node.js version.**
+
+```bash
+node -v
+```
+
+=> This command prints installed Node.js version.
+
+=> It is useful to confirm that Node.js is installed correctly.
+
+### **Q10. Write command to run a Node.js file.**
+
+```bash
+node app.js
+```
+
+=> Here `app.js` is the JavaScript file.
+
+=> Node.js executes this file outside the browser.
+
+### **Q11. What is REPL?**
+
+=> REPL stands for **Read Eval Print Loop**.
+
+=> It is an interactive Node.js shell used to execute JavaScript statements immediately.
+
+=> It reads input, evaluates it, prints result and repeats the process.
+
+### **Q12. Explain REPL with example.**
+
+=> Start REPL by typing `node` in terminal.
+
+```js
+> 10 + 20
+30
+> "Node" + ".js"
+'Node.js'
+```
+
+=> REPL is useful for quick testing and learning JavaScript syntax.
+
+### **Q13. Create a simple HTTP server in Node.js.**
+
+```js
+const http = require("http");
+
+http.createServer(function(req, res) {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Hello Node.js");
+}).listen(3000);
+```
+
+=> This server sends `"Hello Node.js"` response on port `3000`.
+
+### **Q14. What is npm?**
+
+=> npm stands for **Node Package Manager**.
+
+=> It is used to install, update, remove and manage Node.js packages.
+
+=> npm also manages dependencies and scripts using `package.json`.
+
+### **Q15. Why is package manager used?**
+
+=> Package manager is used to manage reusable libraries in a project.
+
+=> It installs third-party modules, maintains versions and removes packages when not needed.
+
+=> It saves development time because developers can use ready-made packages.
+
+### **Q16. Write any five npm commands.**
+
+| Command | Use |
+|---|---|
+| `npm init` | Creates package file |
+| `npm install express` | Installs package |
+| `npm uninstall express` | Removes package |
+| `npm update` | Updates packages |
+| `npm run start` | Runs script |
+
+### **Q17. What is `package.json`?**
+
+=> `package.json` is a configuration file of a Node.js project.
+
+=> It stores project name, version, entry file, scripts and dependencies.
+
+=> It helps recreate project setup using `npm install`.
+
+### **Q18. State uses of `package.json`.**
+
+=> Uses of `package.json` are:
+
+1. Stores project metadata.
+2. Lists dependencies and dev dependencies.
+3. Defines npm scripts.
+4. Shows main entry file.
+5. Helps share and rebuild project environment.
+
+### **Q19. Differentiate local and global packages.**
+
+| Local Package | Global Package |
+|---|---|
+| Installed inside current project | Installed system-wide |
+| Used by project code | Used as command-line tool |
+| Example: `express` | Example: `nodemon` |
+
+### **Q20. What is dependency?**
+
+=> Dependency is a package required by an application to run.
+
+=> Example: Express is a dependency if application uses Express server.
+
+=> Dependencies are stored in `dependencies` section of `package.json`.
+
+### **Q21. What is dev dependency?**
+
+=> Dev dependency is required only during development.
+
+=> It is not usually required to run production application.
+
+=> Examples are testing tools, linters and `nodemon`.
+
+### **Q22. Differentiate dependency and dev dependency.**
+
+| Dependency | Dev Dependency |
+|---|---|
+| Required to run application | Required for development only |
+| Stored in `dependencies` | Stored in `devDependencies` |
+| Example: `express` | Example: `nodemon` |
+
+### **Q23. What is `node_modules`?**
+
+=> `node_modules` is a folder where npm installs packages.
+
+=> It contains project dependencies and their sub-dependencies.
+
+=> It is usually large and should not be manually edited.
+
+### **Q24. What is console object?**
+
+=> Console object is a global object in Node.js used to print output and debugging information.
+
+=> It provides methods like `log()`, `error()`, `warn()` and `table()`.
+
+=> It can be used without importing any module.
+
+### **Q25. List methods of console object.**
+
+=> Common console methods are:
+
+1. `console.log()`
+2. `console.error()`
+3. `console.warn()`
+4. `console.table()`
+5. `console.time()`
+6. `console.timeEnd()`
+7. `console.count()`
+
+### **Q26. Explain `console.log()` with example.**
+
+=> `console.log()` prints normal output on terminal.
+
+```js
+let name = "Aman";
+console.log("Name:", name);
+```
+
+=> It is commonly used for output checking and debugging.
+
+### **Q27. Explain `console.table()` with example.**
+
+=> `console.table()` prints array or object data in table format.
+
+```js
+console.table([
+  { rollno: 1, name: "Aman" },
+  { rollno: 2, name: "Riya" }
+]);
+```
+
+=> It is useful for displaying structured data clearly.
+
+### **Q28. Differentiate `console.log()` and `console.error()`.**
+
+| `console.log()` | `console.error()` |
+|---|---|
+| Prints normal messages | Prints error messages |
+| Writes to standard output | Writes to standard error |
+| Used for general output | Used for error debugging |
+
+### **Q29. Define callback.**
+
+=> Callback is a function passed as an argument to another function.
+
+=> It is executed later after completion of a task.
+
+=> In Node.js, callbacks are commonly used for asynchronous operations.
+
+### **Q30. Why are callbacks used in Node.js?**
+
+=> Callbacks are used to handle asynchronous tasks.
+
+=> They allow Node.js to continue execution without waiting for slow operations.
+
+=> They are used in file system, timers, HTTP requests and database operations.
+
+### **Q31. Explain callback with example.**
+
+```js
+function greet(name, callback) {
+  console.log("Hello " + name);
+  callback();
+}
+
+greet("Aman", function() {
+  console.log("Goodbye");
+});
+```
+
+=> The second function is called after greeting is printed.
+
+### **Q32. Explain asynchronous callback using `setTimeout()`.**
+
+```js
+console.log("Start");
+
+setTimeout(function() {
+  console.log("After 2 seconds");
+}, 2000);
+
+console.log("End");
+```
+
+=> Output order is `Start`, `End`, then delayed callback. This shows asynchronous execution.
+
+### **Q33. What is error-first callback?**
+
+=> Error-first callback is a Node.js convention where first callback parameter is error.
+
+=> Second parameter usually contains result or data.
+
+```js
+function(err, data) {
+  if (err) return;
+  console.log(data);
+}
+```
+
+### **Q34. Explain `fs.readFile()` callback.**
+
+=> `fs.readFile()` reads file asynchronously.
+
+```js
+fs.readFile("data.txt", "utf8", function(err, data) {
+  if (err) return console.log(err.message);
+  console.log(data);
+});
+```
+
+=> Callback receives error and file data after reading completes.
+
+### **Q35. What is callback hell?**
+
+=> Callback hell is a situation where callbacks are deeply nested.
+
+=> It makes code difficult to read, debug and maintain.
+
+=> It commonly occurs when many asynchronous operations depend on each other.
+
+### **Q36. How can callback hell be avoided?**
+
+=> Callback hell can be avoided by:
+
+1. Using named functions.
+2. Using Promises.
+3. Using `async` and `await`.
+4. Keeping functions small.
+5. Handling errors clearly.
+
+### **Q37. State advantages of callbacks.**
+
+=> Advantages of callbacks are:
+
+1. Useful for asynchronous programming.
+2. Avoids blocking execution.
+3. Executes code after task completion.
+4. Supports event-driven programming.
+5. Useful in file, network and database operations.
+
+### **Q38. State disadvantages of callbacks.**
+
+=> Disadvantages of callbacks are:
+
+1. Nested callbacks reduce readability.
+2. Error handling can become complex.
+3. Callback hell may occur.
+4. Program flow becomes difficult to understand in large applications.
